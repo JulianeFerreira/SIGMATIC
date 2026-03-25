@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicativo GAA - Novo Contrato</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/img/logo_pcp.png"
+                 alt="Polícia Científica do Paraná"
+                 class="sidebar-logo-img">
+
+            <div class="logo-text">
+                <span class="app-title">Aplicativo GAA</span>
+                <span class="app-subtitle">Polícia Científica do Paraná</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item">Compras</a>
+            <a href="/ui/contratos" class="nav-item {% if '/contratos' in request.url.path %}active{% endif %}">Contratos</a>
+            <a href="/ui/patrimonio" class="nav-item">Patrimônio</a>
+            <a href="/ui/planejamento" class="nav-item">Planejamento</a>
+            <a href="/ui/configuracoes" class="nav-item">Configurações</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span>GAA - v1.0</span>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <header class="topbar">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar contrato...">
+            </div>
+            <div class="user-area">
+                <span class="user-name">{{ current_user.name }}</span>
+            </div>
+        </header>
+
+        <section class="page-header">
+            <h1>Novo Contrato</h1>
+            <p>Cadastre um novo contrato de serviço contínuo</p>
+        </section>
+
+        <!-- Abas internas -->
+        <section class="tabs-nav">
+            <a href="/ui/contratos" class="tab-item">Dashboard</a>
+            <a href="/ui/contratos/lista" class="tab-item">Contratos</a>
+            <a href="/ui/contratos/novo" class="tab-item active">Novo Contrato</a>
+            <a href="/ui/contratos/relatorios" class="tab-item">Relatórios</a>
+        </section>
+
+        <!-- FORMULÁRIO -->
+        <section class="card">
+            <div class="card-header-inline">
+                <h2>Informações Básicas</h2>
+            </div>
+
+            <div class="form-grid-3">
+                <div class="form-field">
+                    <label class="field-label" for="gms">Número GMS *</label>
+                    <input id="gms" class="field-input" placeholder="Ex: 12345/2025">
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="numero_contrato">Número do Contrato *</label>
+                    <input id="numero_contrato" class="field-input" placeholder="Ex: 01/2025">
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="empresa">Empresa *</label>
+                    <input id="empresa" class="field-input" placeholder="Nome da empresa contratada">
+                </div>
+            </div>
+
+            <div class="form-grid-3">
+                <div class="form-field">
+                    <label class="field-label" for="categoria_servico">Categoria do Serviço *</label>
+                    <select id="categoria_servico" class="field-input">
+                        <option value="">Selecione</option>
+                        <option value="LIMPEZA">Limpeza</option>
+                        <option value="ASSISTENTE_ADMINISTRATIVO">Assistente Administrativo</option>
+                        <option value="VIGILANCIA_ARMADA">Vigilância Armada</option>
+                        <option value="COLETA_RESIDUOS">Coleta de Resíduos</option>
+                        <option value="REPROGRAFIA">Reprografia</option>
+                        <option value="CONTROLADORES_ACESSO">Controladores de Acesso</option>
+                        <option value="MANUTENCAO_CAMARAS_FRIAS">Manutenção Câmaras Frias</option>
+                        <option value="LOCACAO_VEICULOS">Locação de Veículos</option>
+                        <option value="LOCACAO_IMOVEL">Locação de Imóvel</option>
+                        <option value="LAVANDERIA">Lavanderia</option>
+                        <option value="FLATSCAN">Flatscan</option>
+                        <option value="ELEVADORES">Elevadores</option>
+                        <option value="LIMPEZA_CAIXA_DAGUA_DEDETIZACAO">Limpeza Caixa d’Água / Dedetização</option>
+                        <option value="DOSIMETRIA">Dosimetria</option>
+                        <option value="MANUTENCAO_PREDIAL">Manutenção Predial</option>
+                        <option value="CONTRATO_SOFTWARE">Contrato de Software</option>
+                        <option value="CORREIOS">Correios</option>
+                        <option value="CONVENIO">Convênio</option>
+                        <option value="RASTREAMENTO">Rastreamento</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="local">Local *</label>
+                    <input id="local" class="field-input" placeholder="Cidade / Unidade">
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="quantidade">Quantidade (postos/itens)</label>
+                    <input id="quantidade" class="field-input" placeholder="Ex: 10 postos, 2 equipamentos">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-field">
+                    <label class="field-label" for="posto">Descrição do Posto</label>
+                    <input id="posto" class="field-input" placeholder="Ex: 12x36, 44h, 40h">
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header-inline">
+                <h2>Vigência e Situação</h2>
+            </div>
+            <div class="form-grid-3">
+                <div class="form-field">
+                    <label class="field-label" for="data_inicio">Data de Início *</label>
+                    <input id="data_inicio" type="date" class="field-input">
+                </div>
+                <div class="form-field">
+                    <label class="field-label" for="data_termino">Data de Término *</label>
+                    <input id="data_termino" type="date" class="field-input">
+                </div>
+                <div class="form-field">
+                    <label class="field-label" for="status_vigencia">Status de Vigência</label>
+                    <select id="status_vigencia" class="field-input">
+                        <option value="">Selecione</option>
+                        <option value="vigente">Vigente</option>
+                        <option value="proximo_vencimento">Próximo do vencimento</option>
+                        <option value="vencido">Vencido</option>
+                        <option value="prorrogado">Prorrogado</option>
+                        <option value="rescindido">Rescindido</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-grid-3">
+                <div class="form-field">
+                    <label class="field-label" for="status_tramitacao">Status de Tramitação</label>
+                    <select id="status_tramitacao" class="field-input">
+                        <option value="">Selecione</option>
+                        <option value="em_analise">Em análise</option>
+                        <option value="aprovado">Aprovado</option>
+                        <option value="rejeitado">Rejeitado</option>
+                        <option value="pendente_documentacao">Pendente documentação</option>
+                        <option value="finalizado">Finalizado</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label class="field-label" for="status_financeiro">Status Financeiro</label>
+                    <select id="status_financeiro" class="field-input">
+                        <option value="">Selecione</option>
+                        <option value="reajuste_pendente">Reajuste pendente</option>
+                        <option value="reajuste_aplicado">Reajuste aplicado</option>
+                        <option value="supressao_aplicada">Supressão aplicada</option>
+                        <option value="aditivo_assinado">Aditivo assinado</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header-inline">
+                <h2>Prorrogação e Reajuste</h2>
+            </div>
+            <div class="form-grid-3">
+                <div class="form-field">
+                    <label class="field-label" for="status_ta">Status TA (Prorrogação)</label>
+                    <select id="status_ta" class="field-input">
+                        <option value="">Selecione</option>
+                        <option value="em_andamento">Em andamento</option>
+                        <option value="ok">OK</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="rescindindo">Rescindindo</option>
+                        <option value="rescindido">Rescindido</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="status_tap">Status TAP (Reajuste)</label>
+                    <select id="status_tap" class="field-input">
+                        <option value="">Selecione</option>
+                        <option value="em_andamento">Em andamento</option>
+                        <option value="ok">OK</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="concluido">Concluído</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="ano_reajuste">Ano do Reajuste</label>
+                    <input id="ano_reajuste" class="field-input" placeholder="Ex: 2025 ok, 2024 ok">
+                </div>
+            </div>
+
+            <div class="form-grid-1">
+                <div class="form-field">
+                    <label class="field-label" for="observacoes_ta">Observações de Prorrogação</label>
+                    <textarea id="observacoes_ta" class="field-textarea"
+                              placeholder="Observações sobre termos aditivos de prorrogação..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header-inline">
+                <h2>Tramitação e Documentos</h2>
+            </div>
+            <div class="form-grid-3">
+                <div class="form-field">
+                    <label class="field-label" for="numero_protocolo">Número do Protocolo</label>
+                    <input id="numero_protocolo" class="field-input" placeholder="Número do processo/protocolo">
+                </div>
+                <div class="form-field">
+                    <label class="field-label" for="data_tramitacao">Data da Tramitação</label>
+                    <input id="data_tramitacao" type="date" class="field-input">
+                </div>
+                <div class="form-field">
+                    <label class="field-label" for="localizacao_documento">Localização do Documento</label>
+                    <input id="localizacao_documento" class="field-input" placeholder="Ex: GAA, GAOFS, NAT, etc.">
+                </div>
+            </div>
+
+            <div class="form-grid-1">
+                <div class="form-field">
+                    <label class="field-label" for="descricao_tramitacao">Descrição da Tramitação</label>
+                    <textarea id="descricao_tramitacao" class="field-textarea"
+                              placeholder="Descreva a tramitação, movimentações e despachos..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header-inline">
+                <h2>Observações Gerais</h2>
+            </div>
+            <div class="form-grid-1">
+                <div class="form-field">
+                    <label class="field-label" for="observacoes_gerais">Observações</label>
+                    <textarea id="observacoes_gerais" class="field-textarea"
+                              placeholder="Observações gerais sobre o contrato..."></textarea>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="historico_alteracoes">Histórico de Alterações</label>
+                    <textarea id="historico_alteracoes" class="field-textarea"
+                              placeholder="Registre aditivos, supressões, reajustes e alterações relevantes..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn secondary" id="btnCancelarContrato">Cancelar</button>
+                <button class="btn primary" id="btnSalvarContrato">Salvar Contrato</button>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="/static/js/contratos/contratos_form.js"></script>
+</body>
+</html>

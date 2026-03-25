@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicativo GAA - Configurações</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/img/logo_pcp.png"
+                 alt="Polícia Científica do Paraná"
+                 class="sidebar-logo-img">
+
+            <div class="logo-text">
+                <span class="app-title">Aplicativo GAA</span>
+                <span class="app-subtitle">Polícia Científica do Paraná</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item {% if request.url.path == '/' %}active{% endif %}">Compras</a>
+            <a href="/ui/contratos" class="nav-item {% if '/contratos' in request.url.path %}active{% endif %}">Contratos</a>
+            <a href="/ui/patrimonio" class="nav-item {% if '/patrimonio' in request.url.path %}active{% endif %}">Patrimônio</a>
+            <a href="/ui/planejamento" class="nav-item {% if '/planejamento' in request.url.path %}active{% endif %}">Planejamento</a>
+            <a href="/ui/configuracoes" class="nav-item {% if '/configuracoes' in request.url.path %}active{% endif %}">Configurações</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span>GAA - v1.0</span>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar...">
+            </div>
+            <div class="user-area">
+                <span>{{ current_user.name }}</span>
+            </div>
+        </header>
+
+        <section class="page-header">
+            <h1>Configurações</h1>
+            <p>Parâmetros gerais do Aplicativo GAA</p>
+        </section>
+
+        <section class="card">
+            <div class="card-header-inline">
+                <h2>Preferências do Sistema</h2>
+            </div>
+            <p style="font-size: 13px; color: #6b7280;">
+                Aqui você poderá, futuramente, configurar parâmetros globais do sistema:
+                unidades padrão, prazos, notificações por e-mail, permissões, entre outros.
+            </p>
+        </section>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>GAA Compras - Detalhes do Processo</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/img/logo_pcp.png"
+                 alt="Polícia Científica do Paraná"
+                 class="sidebar-logo-img">
+
+            <div class="logo-text">
+                <span class="app-title">Aplicativo GAA</span>
+                <span class="app-subtitle">Polícia Científica do Paraná</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item {% if request.url.path == '/' %}active{% endif %}">Compras</a>
+            <a href="/ui/contratos" class="nav-item {% if '/contratos' in request.url.path %}active{% endif %}">Contratos</a>
+            <a href="/ui/patrimonio" class="nav-item {% if '/patrimonio' in request.url.path %}active{% endif %}">Patrimônio</a>
+            <a href="/ui/planejamento" class="nav-item {% if '/planejamento' in request.url.path %}active{% endif %}">Planejamento</a>
+            <a href="/ui/configuracoes" class="nav-item {% if '/configuracoes' in request.url.path %}active{% endif %}">Configurações</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span>GAA - v1.0</span>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main" data-processo-numero="{{ processo_numero }}">
+        <header class="topbar">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar processo..." disabled>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn secondary" id="btnVoltar">Voltar</button>
+            </div>
+        </header>
+
+        <section class="page-header">
+            <h1 id="tituloProcesso">Processo {{ processo_numero }}</h1>
+            <p id="subtituloProcesso">Carregando detalhes do processo...</p>
+        </section>
+
+        <!-- CARDS PRINCIPAIS -->
+        <section class="detail-cards-grid">
+            <div class="card">
+                <h2>Informações Gerais</h2>
+                <div class="detail-field">
+                    <span class="detail-label">Número do Processo</span>
+                    <span class="detail-value" id="det-numero"></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Data de Criação</span>
+                    <span class="detail-value" id="det-data-criacao"></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Situação</span>
+                    <span class="detail-value"><span class="status-pill" id="det-situacao"></span></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Unidade Atendida</span>
+                    <span class="detail-value" id="det-unidade"></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Onde Está</span>
+                    <span class="detail-value" id="det-onde-esta"></span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Financeiro</h2>
+                <div class="detail-field">
+                    <span class="detail-label">Valor Previsto</span>
+                    <span class="detail-value" id="det-valor"></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Fonte do Recurso</span>
+                    <span class="detail-value" id="det-fonte"></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Modalidade</span>
+                    <span class="detail-value" id="det-modalidade"></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Convênio</span>
+                    <span class="detail-value" id="det-convenio"></span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Responsáveis</h2>
+                <div class="detail-field">
+                    <span class="detail-label">Gestor</span>
+                    <span class="detail-value" id="det-gestor"></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Fiscal(is)</span>
+                    <span class="detail-value" id="det-fiscal"></span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Responsável pela Instrução</span>
+                    <span class="detail-value" id="det-instrucao"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <section class="card">
+            <h2>Cronograma do Processo</h2>
+            <div class="timeline" id="timeline">
+                <!-- preenchido via JS -->
+            </div>
+        </section>
+
+        <!-- OBSERVAÇÕES -->
+        <section class="card">
+            <h2>Observações e Anotações</h2>
+            <div class="detail-notes">
+                <div>
+                    <span class="detail-label">Observação</span>
+                    <p class="detail-note-text" id="det-observacao"></p>
+                </div>
+                <div>
+                    <span class="detail-label">Observações Adicionais</span>
+                    <p class="detail-note-text" id="det-obs-adicionais"></p>
+                </div>
+                <div>
+                    <span class="detail-label">Observações Extras</span>
+                    <p class="detail-note-text" id="det-obs-extras"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AUDITORIA (opcional) -->
+        <section class="card">
+            <h2>Histórico de Alterações (Auditoria)</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Campo</th>
+                    <th>Valor Antigo</th>
+                    <th>Valor Novo</th>
+                    <th>Usuário</th>
+                </tr>
+                </thead>
+                <tbody id="tabela-auditoria">
+                <!-- preenchido via JS -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
+
+<script src="/static/js/processo_detail.js"></script>
+</body>
+</html>
