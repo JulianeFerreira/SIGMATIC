@@ -33,3 +33,18 @@ htmlcov/
 # sistema
 .DS_Store
 Thumbs.db
+
+# bancos e dados locais
+*.db
+*.sqlite3
+
+# arquivos de dados
+*.xlsx
+*.csv
+
+# logs
+*.log
+
+# arquivos temporários
+*.tmp
+*.bak
