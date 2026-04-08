@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p==y5ftkb-u)k26x@f=$jwwg8%_0qydvy9nuau#cq9#%)x-!v&'
+SECRET_KEY = 'django-insecure-(0kf(w%wvc%d&z%_7a^^v2uo_3+4rv(#yiqis(9itc-1doc#i)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,12 +31,39 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'apps.base.core',
+    'apps.base.usuarios',
+    'apps.base.acessos',
+    'apps.base.organizacao',
+
+    'apps.planejamento.necessidades',
+    'apps.planejamento.pca',
+    'apps.planejamento.pei',
+    'apps.planejamento.petic',
+    'apps.planejamento.pdtic',
+    'apps.planejamento.posic',
+
+    'apps.contratacoes.compras',
+    'apps.contratacoes.licitacoes',
+    'apps.contratacoes.contratos',
+
+    'apps.governanca.governanca_dados',
+    'apps.governanca.plano_gestao_riscos',
+    'apps.governanca.ripds',
+    'apps.governanca.relatorios',
+
+    'apps.suporte.documentos',
+    'apps.suporte.carga_dados',
+    'apps.suporte.notificacoes',
+
 ]
 
 MIDDLEWARE = [

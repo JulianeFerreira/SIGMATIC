@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class GovernancaDadosConfig(AppConfig):
-    name = 'governanca_dados'
+class CoreConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'apps.governanca.governanca_dados'

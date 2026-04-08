@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class RelatoriosConfig(AppConfig):
-    name = 'relatorios'
+class CoreConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'apps.governanca.relatorios'
