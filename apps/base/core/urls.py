@@ -1,9 +1,12 @@
 from django.urls import path
-from django.http import HttpResponse
-
-def home(request):
-    return HttpResponse("Projeto SIGMATIC rodando 🚀")
+from . import views
 
 urlpatterns = [
-    path('', home),
+    path('', views.home, name='home'),
+
+    path('compras/', views.compras, name='compras'),
+    path('contratos/', views.contratos, name='contratos'),
+    path('patrimonio/', views.patrimonio, name='patrimonio'),
+    path('planejamento/', views.planejamento, name='planejamento'),
 ]
+
