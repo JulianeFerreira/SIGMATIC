@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Aplicativo GAA - Registro</title>
+</head>
+
+<body>
+    <h2>Login</h2>
+    <form>
+        <label>Nome:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>E-mail (login):</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Senha:</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <button type="submit">Registrar</button>
+    </form>
+
+</body>
+
+</html>
+<script>
+const form = document.querySelector('form');
+form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // evita reload da página
+
+    const data = {
+        name: form.name.value,
+        email: form.email.value,
+        password: form.password.value
+    };
+
+    try {
+        const res = await fetch('/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        console.log("Resposta do backend:", result);
+
+        if (res.ok) {
+            alert("Usuário registrado com sucesso!");
+        } else {
+            alert("Erro: " + result.detail || JSON.stringify(result));
+        }
+
+    } catch (err) {
+        console.error("Erro ao registrar:", err);
+    }
+});
+</script>

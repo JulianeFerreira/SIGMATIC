@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicativo GAA - Contratos</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/img/logo_pcp.png"
+                 alt="Polícia Científica do Paraná"
+                 class="sidebar-logo-img">
+
+            <div class="logo-text">
+                <span class="app-title">Aplicativo GAA</span>
+                <span class="app-subtitle">Polícia Científica do Paraná</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item {% if request.url.path == '/' %}active{% endif %}">Compras</a>
+            <a href="/ui/contratos" class="nav-item {% if '/contratos' in request.url.path %}active{% endif %}">Contratos</a>
+            <a href="/ui/patrimonio" class="nav-item {% if '/patrimonio' in request.url.path %}active{% endif %}">Patrimônio</a>
+            <a href="/ui/planejamento" class="nav-item {% if '/planejamento' in request.url.path %}active{% endif %}">Planejamento</a>
+            <a href="/ui/configuracoes" class="nav-item {% if '/configuracoes' in request.url.path %}active{% endif %}">Configurações</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span>GAA - v1.0</span>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <header class="topbar">
+            <div class="search-box">
+                <input type="text" id="filtroBuscaContrato" placeholder="Buscar por empresa, GMS ou nº contrato...">
+            </div>
+            <div class="topbar-actions">
+                <button class="btn secondary" id="btnExportarContratos">Exportar</button>
+                <button class="btn primary" id="btnNovoContrato">Novo Contrato</button>
+            </div>
+        </header>
+
+        <section class="page-header">
+            <h1>Contratos</h1>
+            <p>Gerencie todos os contratos de serviços contínuos</p>
+        </section>
+
+        <!-- Abas internas do módulo CONTRATOS -->
+        <section class="tabs-nav">
+            <a href="/ui/contratos" class="tab-item">Dashboard</a>
+            <a href="/ui/contratos/lista" class="tab-item active">Contratos</a>
+            <a href="/ui/contratos/novo" class="tab-item">Novo Contrato</a>
+            <a href="/ui/contratos/relatorios" class="tab-item">Relatórios</a>
+        </section>
+
+        <!-- FILTROS -->
+        <section class="card">
+            <div class="card-header-inline">
+                <h2>Filtros</h2>
+            </div>
+
+            <div class="filters-grid">
+                <div class="form-field">
+                    <label class="field-label" for="filtroCategoria">Categoria do Serviço</label>
+                    <select id="filtroCategoria" class="field-input">
+                        <option value="">Todas</option>
+                        <option value="LIMPEZA">Limpeza</option>
+                        <option value="ASSISTENTE_ADMINISTRATIVO">Assistente Administrativo</option>
+                        <option value="VIGILANCIA_ARMADA">Vigilância Armada</option>
+                        <option value="COLETA_RESIDUOS">Coleta de Resíduos</option>
+                        <option value="REPROGRAFIA">Reprografia</option>
+                        <option value="CONTROLADORES_ACESSO">Controladores de Acesso</option>
+                        <option value="MANUTENCAO_CAMARAS_FRIAS">Manutenção Câmaras Frias</option>
+                        <option value="LOCACAO_VEICULOS">Locação de Veículos</option>
+                        <option value="LOCACAO_IMOVEL">Locação de Imóvel</option>
+                        <option value="LAVANDERIA">Lavanderia</option>
+                        <option value="FLATSCAN">Flatscan</option>
+                        <option value="ELEVADORES">Elevadores</option>
+                        <option value="LIMPEZA_CAIXA_DAGUA_DEDETIZACAO">Limpeza Caixa d’Água / Dedetização</option>
+                        <option value="DOSIMETRIA">Dosimetria</option>
+                        <option value="MANUTENCAO_PREDIAL">Manutenção Predial</option>
+                        <option value="CONTRATO_SOFTWARE">Contrato de Software</option>
+                        <option value="CORREIOS">Correios</option>
+                        <option value="CONVENIO">Convênio</option>
+                        <option value="RASTREAMENTO">Rastreamento</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="filtroEmpresa">Empresa</label>
+                    <input id="filtroEmpresa" class="field-input" placeholder="Nome da empresa">
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="filtroLocal">Localidade</label>
+                    <input id="filtroLocal" class="field-input" placeholder="Cidade / Unidade">
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="filtroStatusVigencia">Status de Vigência</label>
+                    <select id="filtroStatusVigencia" class="field-input">
+                        <option value="">Todos</option>
+                        <option value="vigente">Vigente</option>
+                        <option value="proximo_vencimento">Próximo do vencimento</option>
+                        <option value="vencido">Vencido</option>
+                        <option value="prorrogado">Prorrogado</option>
+                        <option value="rescindido">Rescindido</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label" for="filtroStatusTramitacao">Status de Tramitação</label>
+                    <select id="filtroStatusTramitacao" class="field-input">
+                        <option value="">Todos</option>
+                        <option value="em_analise">Em análise</option>
+                        <option value="aprovado">Aprovado</option>
+                        <option value="rejeitado">Rejeitado</option>
+                        <option value="pendente_documentacao">Pendente documentação</option>
+                        <option value="finalizado">Finalizado</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- INFO QUANTIDADE -->
+        <p class="result-info" id="infoQuantidadeContratos">
+            Mostrando 0 contrato(s)
+        </p>
+
+        <!-- TABELA DE CONTRATOS -->
+        <section class="table-card">
+            <div class="table-header">
+                <h2>Lista de Contratos</h2>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>GMS</th>
+                    <th>Nº Contrato</th>
+                    <th>Empresa</th>
+                    <th>Categoria</th>
+                    <th>Local</th>
+                    <th>Início</th>
+                    <th>Término</th>
+                    <th>Status Vigência</th>
+                    <th>Status Tramitação</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody id="tabela-contratos-lista">
+                <!-- preenchido via JS -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
+
+<script src="/static/js/contratos/contratos_lista.js"></script>
+</body>
+</html>
