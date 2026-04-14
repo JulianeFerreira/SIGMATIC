@@ -1,121 +1,84 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Aplicativo GAA - Dashboard de Contratos</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+{% extends 'base.html' %}
+{% load static %}
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-<div class="layout">
+{% block title %}Contratos{% endblock %}
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <img src="/static/img/logo_pcp.png"
-                 alt="Polícia Científica do Paraná"
-                 class="sidebar-logo-img">
+{% block content %}
 
-            <div class="logo-text">
-                <span class="app-title">Aplicativo GAA</span>
-                <span class="app-subtitle">Polícia Científica do Paraná</span>
+<main class="main">
+
+    <header class="topbar">
+        <div class="search-box">
+            <input type="text" placeholder="Buscar contrato...">
+        </div>
+    </header>
+
+    <section class="page-header">
+        <h1>Dashboard de Contratos</h1>
+        <p>Visão geral dos contratos de serviços contínuos</p>
+    </section>
+
+    <!-- Abas do módulo -->
+    <section class="tabs-nav">
+        <a href="{% url 'contratos' %}" class="tab-item active">Dashboard</a>
+        <a href="#" class="tab-item">Contratos</a>
+        <a href="#" class="tab-item">Novo Contrato</a>
+        <a href="#" class="tab-item">Relatórios</a>
+    </section>
+
+    <!-- MÉTRICAS -->
+    <section class="metrics-grid">
+        <div class="metric-card">
+            <span class="metric-label">Total de Contratos</span>
+            <span class="metric-value" id="metric-total-contratos">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Vigentes</span>
+            <span class="metric-value" id="metric-vigentes">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Próx. Vencimento</span>
+            <span class="metric-value" id="metric-proximo-venc">0</span>
+        </div>
+        <div class="metric-card warning">
+            <span class="metric-label">Vencidos</span>
+            <span class="metric-value" id="metric-vencidos">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Prorrogados</span>
+            <span class="metric-value" id="metric-prorrogados">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Rescindidos</span>
+            <span class="metric-value" id="metric-rescindidos">0</span>
+        </div>
+    </section>
+
+    <!-- GRÁFICOS -->
+    <section class="charts-grid">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h2>Contratos por Categoria</h2>
             </div>
+            <canvas id="chartContratosCategoria"></canvas>
         </div>
 
-        <nav class="sidebar-nav">
-            <a href="/" class="nav-item">Compras</a>
-            <a href="/ui/contratos" class="nav-item active">Contratos</a>
-            <a href="/ui/patrimonio" class="nav-item">Patrimônio</a>
-            <a href="/ui/planejamento" class="nav-item">Planejamento</a>
-            <a href="/ui/configuracoes" class="nav-item">Configurações</a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <span>GAA - v1.0</span>
+        <div class="chart-card">
+            <div class="chart-header">
+                <h2>Contratos por Status de Tramitação</h2>
+            </div>
+            <canvas id="chartContratosTramitacao"></canvas>
         </div>
-    </aside>
+    </section>
 
-    <!-- MAIN -->
-    <main class="main">
-        <header class="topbar">
-            <div class="search-box">
-                <input type="text" placeholder="Buscar contrato...">
-            </div>
-            <div class="user-area">
-                <span>{{ current_user.name }}</span>
-            </div>
-        </header>
+    <!-- TABELA -->
+    <section class="table-card">
+        <div class="table-header">
+            <h2>Resumo Rápido</h2>
+        </div>
 
-        <section class="page-header">
-            <h1>Dashboard de Contratos</h1>
-            <p>Visão geral dos contratos de serviços contínuos</p>
-        </section>
-
-        <!-- Abas internas do módulo CONTRATOS -->
-        <section class="tabs-nav">
-            <a href="/ui/contratos" class="tab-item active">Dashboard</a>
-            <a href="/ui/contratos/lista" class="tab-item">Contratos</a>
-            <a href="/ui/contratos/novo" class="tab-item">Novo Contrato</a>
-            <a href="/ui/contratos/relatorios" class="tab-item">Relatórios</a>
-        </section>
-
-        <!-- MÉTRICAS -->
-        <section class="metrics-grid">
-            <div class="metric-card">
-                <span class="metric-label">Total de Contratos</span>
-                <span class="metric-value" id="metric-total-contratos">0</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Vigentes</span>
-                <span class="metric-value" id="metric-vigentes">0</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Próx. Vencimento</span>
-                <span class="metric-value" id="metric-proximo-venc">0</span>
-            </div>
-            <div class="metric-card warning">
-                <span class="metric-label">Vencidos</span>
-                <span class="metric-value" id="metric-vencidos">0</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Prorrogados</span>
-                <span class="metric-value" id="metric-prorrogados">0</span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-label">Rescindidos</span>
-                <span class="metric-value" id="metric-rescindidos">0</span>
-            </div>
-        </section>
-
-        <!-- GRÁFICOS -->
-        <section class="charts-grid">
-            <div class="chart-card">
-                <div class="chart-header">
-                    <h2>Contratos por Categoria</h2>
-                </div>
-                <canvas id="chartContratosCategoria"></canvas>
-            </div>
-
-            <div class="chart-card">
-                <div class="chart-header">
-                    <h2>Contratos por Status de Tramitação</h2>
-                </div>
-                <canvas id="chartContratosTramitacao"></canvas>
-            </div>
-        </section>
-
-        <!-- TABELA RESUMO (opcional, últimos contratos) -->
-        <section class="table-card">
-            <div class="table-header">
-                <h2>Resumo Rápido (últimos contratos)</h2>
-            </div>
-            <table>
-                <thead>
+        <table>
+            <thead>
                 <tr>
                     <th>GMS</th>
                     <th>Nº Contrato</th>
@@ -124,15 +87,15 @@
                     <th>Status Vigência</th>
                     <th>Status Tramitação</th>
                 </tr>
-                </thead>
-                <tbody id="tabela-contratos-resumo">
-                <!-- Preenchido via JS no futuro, se desejar -->
-                </tbody>
-            </table>
-        </section>
-    </main>
-</div>
+            </thead>
 
-<script src="/static/js/contratos/contratos_dashboard.js"></script>
-</body>
-</html>
+            <tbody id="tabela-contratos-resumo">
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+<script src="{% static 'js/contratos/contratos_dashboard.js' %}"></script>
+
+{% endblock %}
