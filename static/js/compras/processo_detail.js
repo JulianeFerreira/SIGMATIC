@@ -1,18 +1,33 @@
 function formatCurrencyBRL(value) {
-    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return Number(value || 0).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
 }
 
-function formatDateBR(d) {
-    if (!d) return '';
+function formatDateBR(value) {
+    if (!value) return '';
     try {
-        return new Date(d).toLocaleDateString('pt-BR');
+        return new Date(value).toLocaleDateString('pt-BR');
     } catch {
-        return d;
+        return value;
     }
 }
 
+function escapeHTML(value) {
+    return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
 function setText(id, value) {
-    document.getElementById(id).innerText = value || '';
+    const el = document.getElementById(id);
+    if (el) {
+        el.innerText = value || '';
+    }
 }
 
 function preencherTimeline(processo) {
@@ -23,83 +38,110 @@ function preencherTimeline(processo) {
         { field: 'empenho_assinado', label: 'Empenho Assinado' },
         { field: 'empenho_contrato_enviado', label: 'Enviado ao Fornecedor' },
         { field: 'data_prevista_entrega', label: 'Entrega Prevista' },
-        { field: 'material_entregue', label: 'Material Entregue' },
+        { field: 'material_entregue', label: 'Material Entregue' }
     ];
 
     const container = document.getElementById('timeline');
+    if (!container) return;
+
     container.innerHTML = '';
 
     eventos.forEach(ev => {
         const value = processo[ev.field];
+
         if (!value) return;
 
         const item = document.createElement('div');
         item.className = 'timeline-item';
+
         item.innerHTML = `
             <div class="timeline-dot"></div>
             <div class="timeline-content">
-                <div class="timeline-label">${ev.label}</div>
+                <div class="timeline-label">${escapeHTML(ev.label)}</div>
                 <div class="timeline-date">${formatDateBR(value)}</div>
             </div>
         `;
+
         container.appendChild(item);
     });
 
     if (!container.children.length) {
-        container.innerHTML = '<p class="detail-note-text">Nenhuma data registrada no cronograma.</p>';
+        container.innerHTML = `
+            <p class="detail-note-text text-muted">
+                Nenhuma data registrada no cronograma.
+            </p>
+        `;
     }
 }
 
 function preencherAuditoria(auditorias) {
     const tbody = document.getElementById('tabela-auditoria');
+    if (!tbody) return;
+
     tbody.innerHTML = '';
 
     if (!auditorias || !auditorias.length) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = '<td colspan="5">Nenhum registro de auditoria.</td>';
-        tbody.appendChild(tr);
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center text-muted">
+                    Nenhum registro de auditoria.
+                </td>
+            </tr>
+        `;
         return;
     }
 
     auditorias.forEach(a => {
         const tr = document.createElement('tr');
         const data = a.data ? new Date(a.data).toLocaleString('pt-BR') : '';
+
         tr.innerHTML = `
-            <td>${data}</td>
-            <td>${a.campo}</td>
-            <td>${a.valor_antigo || ''}</td>
-            <td>${a.valor_novo || ''}</td>
-            <td>${a.usuario || ''}</td>
+            <td>${escapeHTML(data)}</td>
+            <td>${escapeHTML(a.campo)}</td>
+            <td>${escapeHTML(a.valor_antigo || '')}</td>
+            <td>${escapeHTML(a.valor_novo || '')}</td>
+            <td>${escapeHTML(a.usuario || '')}</td>
         `;
+
         tbody.appendChild(tr);
     });
 }
 
 async function carregarDetalhes() {
-    const main = document.querySelector('main');
-    const numero = main.dataset.processoNumero;
+    const main = document.querySelector('main[data-processo-numero]');
+    const numero = main?.dataset?.processoNumero;
+
+    if (!numero) {
+        alert('Número do processo não encontrado na página.');
+        return;
+    }
 
     const resp = await fetch(`/processos/${encodeURIComponent(numero)}`);
+
     if (!resp.ok) {
         alert('Não foi possível carregar o processo.');
         return;
     }
+
     const p = await resp.json();
 
-    // Título / subtítulo
-    document.getElementById('tituloProcesso').innerText = `Processo ${p.processo_numero}`;
+    document.getElementById('tituloProcesso').innerText = `Processo ${p.processo_numero || numero}`;
     document.getElementById('subtituloProcesso').innerText = p.descricao || '';
 
-    // Cards
     setText('det-numero', p.processo_numero);
     setText('det-data-criacao', formatDateBR(p.data_criacao));
+
     const situacaoSpan = document.getElementById('det-situacao');
-    situacaoSpan.innerText = p.situacao;
-    situacaoSpan.className = `status-pill status-${p.situacao}`;
+    if (situacaoSpan) {
+        const situacao = p.situacao || '';
+        situacaoSpan.innerText = situacao || '—';
+        situacaoSpan.className = `status-pill status-${situacao}`;
+    }
+
     setText('det-unidade', p.unidade_atendida);
     setText('det-onde-esta', p.onde_esta);
 
-    setText('det-valor', formatCurrencyBRL(Number(p.valor_previsto || 0)));
+    setText('det-valor', formatCurrencyBRL(p.valor_previsto));
     setText('det-fonte', p.fonte_recurso);
     setText('det-modalidade', p.modalidade);
     setText('det-convenio', p.convenio);
@@ -108,20 +150,21 @@ async function carregarDetalhes() {
     setText('det-fiscal', p.fiscal);
     setText('det-instrucao', p.instrucao_responsavel);
 
-    // Observações
     setText('det-observacao', p.observacao);
     setText('det-obs-adicionais', p.observacoes_adicionais);
     setText('det-obs-extras', p.obs_extras);
 
-    // Timeline + Auditoria
     preencherTimeline(p);
     preencherAuditoria(p.auditorias || []);
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('btnVoltar').addEventListener('click', () => {
-        window.history.back();
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('btnVoltar')?.addEventListener('click', () => {
+        window.location.href = '/ui/processos/';
     });
 
-    carregarDetalhes();
+    carregarDetalhes().catch(err => {
+        console.error(err);
+        alert('Erro ao carregar detalhes do processo.');
+    });
 });

@@ -1,101 +1,129 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Contratos{% endblock %}
+{% block title %}Aplicativo GAA - Dashboard de Contratos{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 
 {% block content %}
 
-<main class="main">
+<header class="topbar">
+    <div class="search-box">
+        <input type="text" class="form-control" placeholder="Buscar contrato...">
+    </div>
 
-    <header class="topbar">
-        <div class="search-box">
-            <input type="text" placeholder="Buscar contrato...">
-        </div>
-    </header>
+    <div class="user-area">
+        <span>{{ current_user.name }}</span>
+    </div>
+</header>
 
-    <section class="page-header">
-        <h1>Dashboard de Contratos</h1>
-        <p>Visão geral dos contratos de serviços contínuos</p>
-    </section>
+<section class="page-header">
+    <h1>Dashboard de Contratos</h1>
+    <p>Visão geral dos contratos de serviços contínuos.</p>
+</section>
 
-    <!-- Abas do módulo -->
-    <section class="tabs-nav">
-        <a href="{% url 'contratos' %}" class="tab-item active">Dashboard</a>
-        <a href="#" class="tab-item">Contratos</a>
-        <a href="#" class="tab-item">Novo Contrato</a>
-        <a href="#" class="tab-item">Relatórios</a>
-    </section>
+<section class="tabs-nav">
+    <a href="/ui/contratos/" class="tab-item active">Dashboard</a>
+    <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
+    <a href="/ui/contratos/novo/" class="tab-item">Novo Contrato</a>
+    <a href="/ui/contratos/relatorios/" class="tab-item">Relatórios</a>
+</section>
 
-    <!-- MÉTRICAS -->
-    <section class="metrics-grid">
-        <div class="metric-card">
+<div class="row g-4 mb-4">
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
             <span class="metric-label">Total de Contratos</span>
             <span class="metric-value" id="metric-total-contratos">0</span>
         </div>
-        <div class="metric-card">
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
             <span class="metric-label">Vigentes</span>
             <span class="metric-value" id="metric-vigentes">0</span>
         </div>
-        <div class="metric-card">
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
             <span class="metric-label">Próx. Vencimento</span>
             <span class="metric-value" id="metric-proximo-venc">0</span>
         </div>
-        <div class="metric-card warning">
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card warning h-100">
             <span class="metric-label">Vencidos</span>
             <span class="metric-value" id="metric-vencidos">0</span>
         </div>
-        <div class="metric-card">
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
             <span class="metric-label">Prorrogados</span>
             <span class="metric-value" id="metric-prorrogados">0</span>
         </div>
-        <div class="metric-card">
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
             <span class="metric-label">Rescindidos</span>
             <span class="metric-value" id="metric-rescindidos">0</span>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- GRÁFICOS -->
-    <section class="charts-grid">
-        <div class="chart-card">
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="chart-card h-100">
             <div class="chart-header">
                 <h2>Contratos por Categoria</h2>
             </div>
             <canvas id="chartContratosCategoria"></canvas>
         </div>
+    </div>
 
-        <div class="chart-card">
+    <div class="col-lg-6">
+        <div class="chart-card h-100">
             <div class="chart-header">
                 <h2>Contratos por Status de Tramitação</h2>
             </div>
             <canvas id="chartContratosTramitacao"></canvas>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- TABELA -->
-    <section class="table-card">
-        <div class="table-header">
-            <h2>Resumo Rápido</h2>
-        </div>
+<section class="table-card">
+    <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <h2>Resumo Rápido</h2>
+        <span class="text-muted">Últimos contratos cadastrados</span>
+    </div>
 
-        <table>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
             <thead>
-                <tr>
-                    <th>GMS</th>
-                    <th>Nº Contrato</th>
-                    <th>Empresa</th>
-                    <th>Categoria</th>
-                    <th>Status Vigência</th>
-                    <th>Status Tramitação</th>
-                </tr>
+            <tr>
+                <th>GMS</th>
+                <th>Nº Contrato</th>
+                <th>Empresa</th>
+                <th>Categoria</th>
+                <th>Status Vigência</th>
+                <th>Status Tramitação</th>
+            </tr>
             </thead>
-
             <tbody id="tabela-contratos-resumo">
+            <tr>
+                <td colspan="6" class="text-center text-muted">Carregando...</td>
+            </tr>
             </tbody>
         </table>
-    </section>
+    </div>
+</section>
 
-</main>
+{% endblock %}
 
+{% block extra_scripts %}
 <script src="{% static 'js/contratos/contratos_dashboard.js' %}"></script>
-
 {% endblock %}

@@ -1,33 +1,33 @@
 function coletarDadosContrato() {
     return {
-        gms: document.getElementById("gms").value.trim(),
-        numero_contrato: document.getElementById("numero_contrato").value.trim(),
-        empresa: document.getElementById("empresa").value.trim(),
-        categoria_servico: document.getElementById("categoria_servico").value,
-        local: document.getElementById("local").value.trim(),
-        quantidade: document.getElementById("quantidade").value.trim() || null,
-        posto: document.getElementById("posto").value.trim() || null,
+        gms: document.getElementById("gms")?.value.trim(),
+        numero_contrato: document.getElementById("numero_contrato")?.value.trim(),
+        empresa: document.getElementById("empresa")?.value.trim(),
+        categoria_servico: document.getElementById("categoria_servico")?.value,
+        local: document.getElementById("local")?.value.trim(),
+        quantidade: document.getElementById("quantidade")?.value.trim() || null,
+        posto: document.getElementById("posto")?.value.trim() || null,
 
-        data_inicio: document.getElementById("data_inicio").value || null,
-        data_termino: document.getElementById("data_termino").value || null,
+        data_inicio: document.getElementById("data_inicio")?.value || null,
+        data_termino: document.getElementById("data_termino")?.value || null,
 
-        status_vigencia: document.getElementById("status_vigencia").value || null,
-        status_tramitacao: document.getElementById("status_tramitacao").value || null,
-        status_financeiro: document.getElementById("status_financeiro").value || null,
+        status_vigencia: document.getElementById("status_vigencia")?.value || null,
+        status_tramitacao: document.getElementById("status_tramitacao")?.value || null,
+        status_financeiro: document.getElementById("status_financeiro")?.value || null,
 
-        status_ta: document.getElementById("status_ta").value || null,
-        observacoes_ta: document.getElementById("observacoes_ta").value.trim() || null,
+        status_ta: document.getElementById("status_ta")?.value || null,
+        observacoes_ta: document.getElementById("observacoes_ta")?.value.trim() || null,
 
-        status_tap: document.getElementById("status_tap").value || null,
-        ano_reajuste: document.getElementById("ano_reajuste").value.trim() || null,
+        status_tap: document.getElementById("status_tap")?.value || null,
+        ano_reajuste: document.getElementById("ano_reajuste")?.value.trim() || null,
 
-        numero_protocolo: document.getElementById("numero_protocolo").value.trim() || null,
-        descricao_tramitacao: document.getElementById("descricao_tramitacao").value.trim() || null,
-        localizacao_documento: document.getElementById("localizacao_documento").value.trim() || null,
-        data_tramitacao: document.getElementById("data_tramitacao").value || null,
+        numero_protocolo: document.getElementById("numero_protocolo")?.value.trim() || null,
+        descricao_tramitacao: document.getElementById("descricao_tramitacao")?.value.trim() || null,
+        localizacao_documento: document.getElementById("localizacao_documento")?.value.trim() || null,
+        data_tramitacao: document.getElementById("data_tramitacao")?.value || null,
 
-        observacoes_gerais: document.getElementById("observacoes_gerais").value.trim() || null,
-        historico_alteracoes: document.getElementById("historico_alteracoes").value.trim() || null
+        observacoes_gerais: document.getElementById("observacoes_gerais")?.value.trim() || null,
+        historico_alteracoes: document.getElementById("historico_alteracoes")?.value.trim() || null
     };
 }
 
@@ -42,20 +42,19 @@ function validarContrato(dados) {
         { campo: "data_termino", label: "Data de Término" }
     ];
 
-    const faltando = obrigatorios.filter(o => !dados[o.campo]);
+    const faltando = obrigatorios.filter(item => !dados[item.campo]);
+
     if (faltando.length > 0) {
-        const nomes = faltando.map(f => f.label).join(", ");
-        alert("Preencha os campos obrigatórios: " + nomes);
+        alert("Preencha os campos obrigatórios: " + faltando.map(f => f.label).join(", "));
         return false;
     }
 
-    if (dados.data_inicio && dados.data_termino) {
-        const di = new Date(dados.data_inicio);
-        const dt = new Date(dados.data_termino);
-        if (dt < di) {
-            alert("A data de término não pode ser anterior à data de início.");
-            return false;
-        }
+    const dataInicio = new Date(dados.data_inicio);
+    const dataTermino = new Date(dados.data_termino);
+
+    if (dataTermino < dataInicio) {
+        alert("A data de término não pode ser anterior à data de início.");
+        return false;
     }
 
     return true;
@@ -63,12 +62,13 @@ function validarContrato(dados) {
 
 async function salvarContrato() {
     const dados = coletarDadosContrato();
+
     if (!validarContrato(dados)) {
         return;
     }
 
     try {
-        const resp = await fetch("/contratos", {
+        const resp = await fetch("/contratos_api", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -78,13 +78,13 @@ async function salvarContrato() {
 
         if (!resp.ok) {
             const erro = await resp.json().catch(() => ({}));
-            console.error("Erro ao salvar contrato:", erro);
-            alert("Erro ao salvar o contrato. Verifique os dados e tente novamente.");
+            alert("Erro ao salvar contrato: " + (erro.detail || resp.statusText));
             return;
         }
 
         alert("Contrato salvo com sucesso!");
-        window.location.href = "/ui/contratos/lista";
+        window.location.href = "/ui/contratos/lista/";
+
     } catch (e) {
         console.error(e);
         alert("Erro de comunicação com o servidor.");
@@ -92,17 +92,17 @@ async function salvarContrato() {
 }
 
 function configurarEventosContratoForm() {
-    document.getElementById("btnSalvarContrato").addEventListener("click", (e) => {
+    document.getElementById("btnSalvarContrato")?.addEventListener("click", (e) => {
         e.preventDefault();
         salvarContrato();
     });
 
-    document.getElementById("btnCancelarContrato").addEventListener("click", (e) => {
+    document.getElementById("btnCancelarContrato")?.addEventListener("click", (e) => {
         e.preventDefault();
-        window.location.href = "/ui/contratos/lista";
+        window.location.href = "/ui/contratos/lista/";
     });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     configurarEventosContratoForm();
 });

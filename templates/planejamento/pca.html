@@ -1,168 +1,151 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Planejamento - PCA (Lista)</title>
-  <link rel="stylesheet" href="/static/css/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border-bottom: 1px solid #eee; padding: 10px 12px; vertical-align: top; background:#fff; }
-    thead th { position: sticky; top: 0; z-index: 5; background:#fafafa; }
-    .sticky-col { position: sticky; left: 0; z-index: 6; background:#fafafa; }
-    .sticky-col-2 { position: sticky; left: 140px; z-index: 6; background:#fafafa; }
-    tbody td.sticky-col, tbody td.sticky-col-2 { background:#fff; z-index: 4; }
-    .toolbar-flex{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    .substats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
-    .status-pill{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;background:#f8fafc;border:1px solid #e2e8f0}
-    .page-help{color:#64748b;font-size:13px}
-    @media (max-width: 1100px){ .substats{grid-template-columns:1fr} }
-  </style>
-</head>
-<body>
-<div class="layout">
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <img src="/static/img/logo_pcp.png" alt="Polícia Científica do Paraná" class="sidebar-logo-img">
-      <div class="logo-text">
-        <span class="app-title">Aplicativo GAA</span>
-        <span class="app-subtitle">Polícia Científica do Paraná</span>
-      </div>
-    </div>
-    <nav class="sidebar-nav">
-      <a href="/" class="nav-item">Compras</a>
-      <a href="/ui/contratos" class="nav-item">Contratos</a>
-      <a href="/ui/patrimonio" class="nav-item">Patrimônio</a>
-      <a href="/ui/planejamento" class="nav-item active">Planejamento</a>
-      <a href="/ui/configuracoes" class="nav-item">Configurações</a>
-    </nav>
-    <div class="sidebar-footer"><span>GAA - v1.0</span></div>
-  </aside>
+{% extends 'base.html' %}
+{% load static %}
 
-  <main class="main">
-    <header class="topbar">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Buscar no PCA (descrição, justificativa, observações...)">
-      </div>
-      <div class="user-area"><span>{{ current_user.name }}</span></div>
-      <div class="logout"><button id="btnLogout" type="button">Sair</button></div>
-    </header>
+{% block title %}Planejamento - PCA{% endblock %}
 
-    <section class="page-header">
-      <h1>PCA 2026</h1>
-      <p>Lista analítica do PCA com foco em <b>Número de Ordem</b>, <b>Tipo de Item</b>, priorização e detalhamento.</p>
-    </section>
+{% block content %}
 
-    <section class="tabs-nav">
-      <a href="/ui/planejamento" class="tab-item">Dashboard</a>
-      <a href="/ui/planejamento/pca" class="tab-item active">PCA</a>
-    </section>
-
-    <section class="card">
-      <div class="toolbar-flex">
-        <div>
-          <div class="card-header-inline"><h2>Importar / Atualizar PCA</h2></div>
-          <p class="page-help">O ideal é tratar o PCA como base mestra. A importação usa <b>Número de Ordem</b> como chave para atualizar ou inserir registros.</p>
-        </div>
-        <span class="status-pill">Base oficial do planejamento</span>
-      </div>
-      <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:8px;">
-        <input type="file" id="excelFile" accept=".xlsx,.xls" />
-        <button class="btn primary" id="btnImport">Importar</button>
-        <span id="importStatus" class="page-help"></span>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="card-header-inline"><h2>Filtros</h2></div>
-      <div class="filters-grid">
-        <div class="filter-item">
-          <label class="field-label">Número de Ordem</label>
-          <input type="number" id="fOrdem" class="field-input" placeholder="Ex: 145">
-        </div>
-        <div class="filter-item">
-          <label class="field-label">Tipo de Item</label>
-          <input type="text" id="fTipo" class="field-input" placeholder="Ex: Serviço, Material, Equipamento...">
-        </div>
-        <div class="filter-item full">
-          <label class="field-label">Busca</label>
-          <input type="text" id="fBusca" class="field-input" placeholder="Pesquisa textual em descrição, justificativa e observações...">
-        </div>
-      </div>
-      <div class="form-actions" style="margin-top: 12px;">
-        <button class="btn primary" id="btnFiltrar">Aplicar</button>
-      </div>
-    </section>
-
-    <section class="substats">
-      <div class="metric-card">
-        <span class="metric-label">Itens importados</span>
-        <span class="metric-value" id="kpiTotal">—</span>
-      </div>
-      <div class="metric-card">
-        <span class="metric-label">Valor total estimado</span>
-        <span class="metric-value" id="kpiValor">—</span>
-      </div>
-      <div class="metric-card">
-        <span class="metric-label">Top Tipo de Item</span>
-        <span class="metric-value" id="kpiTopTipo">—</span>
-      </div>
-      <div class="metric-card">
-        <span class="metric-label">Leitura recomendada</span>
-        <span class="metric-value" style="font-size:16px">detalhe por ordem</span>
-      </div>
-    </section>
-
-    <p class="result-info" id="tblInfo">—</p>
-
-    <section class="table-card">
-      <div class="toolbar-flex table-header">
-        <h2>Lista do PCA</h2>
-        <span class="page-help">Colunas fixas à esquerda para navegação horizontal mais eficiente.</span>
-      </div>
-      <div style="overflow:auto; max-height:70vh;">
-        <table>
-          <thead>
-            <tr>
-              <th class="sticky-col" style="width:140px;">Nº de Ordem</th>
-              <th class="sticky-col-2" style="width:220px;">Tipo de Item</th>
-              <th style="min-width:240px;">Categoria</th>
-              <th style="min-width:520px;">Descrição sucinta</th>
-              <th style="min-width:160px;">Valor total</th>
-              <th style="min-width:180px;">Prioridade</th>
-              <th style="min-width:220px;">Data pretendida</th>
-              <th style="min-width:140px;">Detalhe</th>
-            </tr>
-          </thead>
-          <tbody id="tblBody">
-            <tr><td colspan="8" style="text-align:center; color:#6b7280;">Carregando...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-</div>
-
-<div id="modalBackdrop" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35);"></div>
-<div id="detailModal" style="display:none; position:fixed; top:6%; left:50%; transform:translateX(-50%); width:min(980px, 92vw); background:#fff; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.25); max-height:88vh; overflow:auto;">
-  <div style="padding:16px 18px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; gap:12px; align-items:center;">
-    <div>
-      <div style="font-weight:700; font-size:16px;" id="mTitle">Item</div>
-      <div style="color:#6b7280; font-size:13px;" id="mSub">—</div>
-    </div>
-    <button class="btn" id="btnCloseModal">Fechar</button>
+<header class="topbar">
+  <div class="search-box">
+    <input type="text" id="searchInput" class="form-control" placeholder="Buscar no PCA (descrição, justificativa, observações...)">
   </div>
-  <div style="padding:16px 18px;"><div id="mBody" style="white-space:pre-wrap;"></div></div>
+  <div class="user-area"><span>{{ current_user.name }}</span></div>
+  <div class="logout"><button id="btnLogout" type="button">Sair</button></div>
+</header>
+
+<section class="page-header">
+  <h1>PCA 2026</h1>
+  <p>Lista analítica do PCA com foco em <b>Número de Ordem</b>, <b>Tipo de Item</b>, priorização e detalhamento.</p>
+</section>
+
+<section class="tabs-nav">
+  <a href="/ui/planejamento/" class="tab-item">Dashboard</a>
+  <a href="/ui/planejamento/pca/" class="tab-item active">PCA</a>
+</section>
+
+<section class="card mb-4">
+  <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+    <div>
+      <h2>Importar / Atualizar PCA</h2>
+      <p class="text-muted mb-0">
+        O PCA deve funcionar como base mestra. A importação usa <b>Número de Ordem</b> como chave para atualizar ou inserir registros.
+      </p>
+    </div>
+    <span class="status-pill">Base oficial do planejamento</span>
+  </div>
+
+  <div class="d-flex gap-3 align-items-center flex-wrap mt-3">
+    <input type="file" id="excelFile" class="form-control" accept=".xlsx,.xls" style="max-width: 360px;">
+    <button class="btn primary" id="btnImport">Importar</button>
+    <span id="importStatus" class="text-muted small"></span>
+  </div>
+</section>
+
+<section class="card mb-4">
+  <div class="card-header-inline"><h2>Filtros</h2></div>
+
+  <div class="row g-3">
+    <div class="col-md-3">
+      <label class="field-label">Número de Ordem</label>
+      <input type="number" id="fOrdem" class="form-control" placeholder="Ex: 145">
+    </div>
+
+    <div class="col-md-3">
+      <label class="field-label">Tipo de Item</label>
+      <input type="text" id="fTipo" class="form-control" placeholder="Ex: Serviço, Material, Equipamento...">
+    </div>
+
+    <div class="col-md-6">
+      <label class="field-label">Busca</label>
+      <input type="text" id="fBusca" class="form-control" placeholder="Pesquisa textual em descrição, justificativa e observações...">
+    </div>
+  </div>
+
+  <div class="form-actions mt-3">
+    <button class="btn primary" id="btnFiltrar">Aplicar</button>
+  </div>
+</section>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="metric-card h-100">
+      <span class="metric-label">Itens importados</span>
+      <span class="metric-value" id="kpiTotal">—</span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="metric-card h-100">
+      <span class="metric-label">Valor total estimado</span>
+      <span class="metric-value" id="kpiValor">—</span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="metric-card h-100">
+      <span class="metric-label">Top Tipo de Item</span>
+      <span class="metric-value" id="kpiTopTipo">—</span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="metric-card h-100">
+      <span class="metric-label">Leitura recomendada</span>
+      <span class="metric-value" style="font-size:16px">detalhe por ordem</span>
+    </div>
+  </div>
 </div>
 
-<script>
-  document.getElementById("btnLogout").addEventListener("click", () => {
-    localStorage.removeItem("token");
-    window.location.href = 'auth/login';
-  });
+<p class="result-info" id="tblInfo">—</p>
 
+<section class="table-card">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h2>Lista do PCA</h2>
+    <span class="text-muted small">Use rolagem horizontal para visualizar todas as colunas.</span>
+  </div>
+
+  <div class="table-responsive" style="max-height:70vh;">
+    <table class="table table-hover align-middle">
+      <thead class="table-light sticky-top">
+        <tr>
+          <th style="min-width:140px;">Nº de Ordem</th>
+          <th style="min-width:220px;">Tipo de Item</th>
+          <th style="min-width:240px;">Categoria</th>
+          <th style="min-width:520px;">Descrição sucinta</th>
+          <th style="min-width:160px;">Valor total</th>
+          <th style="min-width:180px;">Prioridade</th>
+          <th style="min-width:220px;">Data pretendida</th>
+          <th style="min-width:140px;">Detalhe</th>
+        </tr>
+      </thead>
+      <tbody id="tblBody">
+        <tr><td colspan="8" class="text-center text-muted">Carregando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="modal fade" id="detailModalBootstrap" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="mTitle">Item</h5>
+          <div class="text-muted small" id="mSub">—</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <div id="mBody" style="white-space:pre-wrap;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
   const fmtBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
   let page = 0;
   const pageSize = 50;
@@ -176,13 +159,18 @@
   async function apiPostFile(url, file){
     const fd = new FormData();
     fd.append("file", file);
+
     const res = await fetch(url, { method: "POST", body: fd });
+
     if (!res.ok) throw new Error(await res.text());
     return res.json();
   }
 
   function esc(s){
-    return (s ?? "").toString().replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    return (s ?? "").toString()
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;");
   }
 
   function getFilters(){
@@ -195,17 +183,23 @@
 
   async function loadMetrics(){
     const m = await apiGet("/api/pca/metrics");
+
     document.getElementById("kpiTotal").innerText = m.total_itens ?? 0;
     document.getElementById("kpiValor").innerText = fmtBRL.format(m.valor_total_estimado ?? 0);
-    document.getElementById("kpiTopTipo").innerText = (m.top_tipos && m.top_tipos.length) ? `${m.top_tipos[0].tipo_item} (${m.top_tipos[0].quantidade})` : "—";
+    document.getElementById("kpiTopTipo").innerText =
+      (m.top_tipos && m.top_tipos.length)
+        ? `${m.top_tipos[0].tipo_item} (${m.top_tipos[0].quantidade})`
+        : "—";
   }
 
   function renderTable(data){
     const body = document.getElementById("tblBody");
     body.innerHTML = "";
+
     const itens = data.itens || [];
+
     if (!itens.length){
-      body.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#6b7280;">Nenhum registro encontrado.</td></tr>`;
+      body.innerHTML = `<tr><td colspan="8" class="text-center text-muted">Nenhum registro encontrado.</td></tr>`;
       document.getElementById("tblInfo").innerText = `0 de ${data.total ?? 0}`;
       return;
     }
@@ -216,16 +210,18 @@
 
     for (const it of itens){
       const tr = document.createElement("tr");
+
       tr.innerHTML = `
-        <td class="sticky-col"><b>${esc(it.numero_ordem)}</b></td>
-        <td class="sticky-col-2">${esc(it.tipo_item)}</td>
+        <td><b>${esc(it.numero_ordem)}</b></td>
+        <td>${esc(it.tipo_item)}</td>
         <td>${esc(it.categoria_contratacao)}</td>
         <td>${esc(it.descricao_objeto)}</td>
         <td>${esc(it.valor_total)}</td>
         <td>${esc(it.grau_prioridade)}</td>
         <td>${esc(it.data_pretendida)}</td>
-        <td><button class="btn" data-ordem="${esc(it.numero_ordem)}">Ver</button></td>
+        <td><button class="btn secondary btn-sm" data-ordem="${esc(it.numero_ordem)}">Ver</button></td>
       `;
+
       body.appendChild(tr);
     }
 
@@ -237,20 +233,26 @@
   async function loadTable(){
     const f = getFilters();
     const params = new URLSearchParams();
+
     params.set("skip", String(page * pageSize));
     params.set("limit", String(pageSize));
+
     if (f.numero_ordem) params.set("numero_ordem", f.numero_ordem);
     if (f.tipo_item) params.set("tipo_item", f.tipo_item);
     if (f.busca) params.set("busca", f.busca);
+
     const data = await apiGet("/api/pca/lista?" + params.toString());
     renderTable(data);
   }
 
   async function openDetail(ordem){
     const d = await apiGet("/api/pca/" + ordem);
+
     document.getElementById("mTitle").innerText = `Ordem ${d.numero_ordem} • ${d.tipo_item || ""}`;
     document.getElementById("mSub").innerText = d.categoria_contratacao || "";
+
     const parts = [];
+
     if (d.descricao_objeto) parts.push("DESCRIÇÃO:\n" + d.descricao_objeto);
     if (d.justificativa) parts.push("\nJUSTIFICATIVA:\n" + d.justificativa);
     if (d.riscos_nao_contratacao) parts.push("\nRISCOS DA NÃO CONTRATAÇÃO:\n" + d.riscos_nao_contratacao);
@@ -261,17 +263,12 @@
     if (d.modalidade_prevista) parts.push("\nMODALIDADE PREVISTA:\n" + d.modalidade_prevista);
     if (d.duracao_total) parts.push("\nDURAÇÃO:\n" + d.duracao_total);
     if (d.observacoes) parts.push("\nOBSERVAÇÕES:\n" + d.observacoes);
-    document.getElementById("mBody").innerText = parts.join("\n");
-    document.getElementById("modalBackdrop").style.display = "block";
-    document.getElementById("detailModal").style.display = "block";
-  }
 
-  function closeModal(){
-    document.getElementById("modalBackdrop").style.display = "none";
-    document.getElementById("detailModal").style.display = "none";
+    document.getElementById("mBody").innerText = parts.join("\n");
+
+    const modal = new bootstrap.Modal(document.getElementById("detailModalBootstrap"));
+    modal.show();
   }
-  document.getElementById("btnCloseModal").addEventListener("click", closeModal);
-  document.getElementById("modalBackdrop").addEventListener("click", closeModal);
 
   document.getElementById("btnFiltrar").addEventListener("click", async () => {
     page = 0;
@@ -288,16 +285,23 @@
 
   document.getElementById("btnImport").addEventListener("click", async () => {
     const file = document.getElementById("excelFile").files[0];
+
     if (!file){
       alert("Selecione um arquivo Excel do PCA.");
       return;
     }
+
     document.getElementById("importStatus").innerText = "Importando...";
+
     try{
       const r = await apiPostFile("/api/pca/import", file);
-      document.getElementById("importStatus").innerText = `OK. Importados: ${r.importados}, Atualizados: ${r.atualizados} (linhas lidas: ${r.total_linhas_excel})`;
+
+      document.getElementById("importStatus").innerText =
+        `OK. Importados: ${r.importados}, Atualizados: ${r.atualizados} (linhas lidas: ${r.total_linhas_excel})`;
+
       await loadMetrics();
       await loadTable();
+
     } catch(err){
       console.error(err);
       document.getElementById("importStatus").innerText = "Erro ao importar.";
@@ -311,9 +315,9 @@
       await loadTable();
     } catch(e){
       console.error(e);
-      document.getElementById("tblBody").innerHTML = `<tr><td colspan="8" style="text-align:center; color:#b91c1c;">Erro ao carregar: ${String(e)}</td></tr>`;
+      document.getElementById("tblBody").innerHTML =
+        `<tr><td colspan="8" class="text-center text-danger">Erro ao carregar: ${String(e)}</td></tr>`;
     }
   })();
 </script>
-</body>
-</html>
+{% endblock %}

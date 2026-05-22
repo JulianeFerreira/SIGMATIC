@@ -1,191 +1,85 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplicativo GAA - Login</title>
 
-    <!-- Estilo específico da tela de login (pode mover para o styles.css depois, se quiser) -->
-    <style>
-        :root {
-            --primary: #FF385C;
-            --border: #DDDDDD;
-            --text: #222222;
-            --muted: #717171;
-            --bg: #F7F7F7;
-        }
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
-        * {
-            box-sizing: border-box;
-            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-
-        body {
-            margin: 0;
-            background: var(--bg);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-page {
-            width: 100%;
-            max-width: 420px;
-            padding: 24px;
-        }
-
-        .login-card {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
-            border: 1px solid var(--border);
-            padding: 24px 24px 20px;
-        }
-
-        .login-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .login-title {
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .login-subtitle {
-            font-size: 14px;
-            color: var(--muted);
-            margin-top: 4px;
-        }
-
-        .logo-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 999px;
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        #loginForm {
-            margin-top: 12px;
-        }
-
-        .field {
-            margin-bottom: 14px;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 11px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-size: 14px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--text);
-        }
-
-        .login-actions {
-            margin-top: 6px;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            background: var(--primary);
-            color: #fff;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        .btn-primary:hover {
-            filter: brightness(0.95);
-        }
-
-        .login-helper {
-            margin-top: 12px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--muted);
-        }
-
-        @media (max-width: 480px) {
-            .login-page {
-                padding: 16px;
-            }
-            .login-card {
-                border-radius: 0;
-                box-shadow: none;
-                border: none;
-            }
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="login-page">
-        <div class="login-card">
-            <div class="login-header">
+
+<body class="bg-light">
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center px-3">
+
+    <div class="card shadow-sm border-0" style="width: 100%; max-width: 420px;">
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <div class="login-title">Entrar</div>
-                    <div class="login-subtitle">Use seu usuário do Aplicativo GAA</div>
+                    <h1 class="h4 fw-bold mb-1">Entrar</h1>
+                    <p class="text-muted mb-0">Use seu usuário do Aplicativo GAA.</p>
                 </div>
-                <div class="logo-circle">G</div>
+
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+                     style="width: 42px; height: 42px; background: #2563eb;">
+                    G
+                </div>
             </div>
 
             <form id="loginForm">
-                <div class="field">
-                    <label for="username">Usuário (login)</label>
-                    <input type="text" id="username" name="username" required autocomplete="username">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Usuário</label>
+                    <input type="text"
+                           id="username"
+                           name="username"
+                           class="form-control"
+                           required
+                           autocomplete="username">
                 </div>
 
-                <div class="field">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                <div class="mb-3">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           class="form-control"
+                           required
+                           autocomplete="current-password">
                 </div>
 
-                <div class="login-actions">
-                    <button type="submit" class="btn-primary">Entrar</button>
-                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    Entrar
+                </button>
             </form>
 
-            <div class="login-helper">
+            <div class="text-center text-muted small mt-3">
                 Acesso restrito à equipe do Grupo Auxiliar Administrativo.
             </div>
+
+            <div class="text-center small mt-3">
+                <a href="/register/" class="text-decoration-none">Criar novo usuário</a>
+            </div>
+
         </div>
     </div>
-</body>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     const form = document.getElementById('loginForm');
 
     form.addEventListener('submit', async (e) => {
-        e.preventDefault(); // evita reload da página
+        e.preventDefault();
 
         const data = {
             username: form.username.value,
@@ -195,25 +89,27 @@
         try {
             const res = await fetch('/auth/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams(data) // necessário para OAuth2PasswordRequestForm
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(data)
             });
 
             const result = await res.json();
-            console.log("Resposta do backend:", result);
 
             if (res.ok) {
-                // ✅ Salva o token no localStorage
                 localStorage.setItem('token', result.access_token);
-                // alert("Login realizado com sucesso!");//Pode remover
                 window.location.href = '/';
             } else {
-                alert("Erro: " + result.detail || JSON.stringify(result));
+                alert("Erro: " + (result.detail || JSON.stringify(result)));
             }
 
         } catch (err) {
             console.error("Erro ao fazer login:", err);
+            alert("Erro de comunicação com o servidor.");
         }
     });
 </script>
+
+</body>
 </html>

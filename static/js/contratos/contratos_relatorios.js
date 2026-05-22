@@ -1,131 +1,172 @@
+function escapeHTML(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
 function formatDateBR(value) {
     if (!value) return "";
+
     try {
         return new Date(value).toLocaleDateString("pt-BR");
-    } catch (e) {
+    } catch {
         return value;
     }
 }
 
-async function carregarEstatisticasRapidasContratos() {
+async function carregarQuickStatsContratos() {
     const resp = await fetch("/contratos/dashboard/metricas");
+
+    if (!resp.ok) {
+        throw new Error("Erro ao carregar métricas.");
+    }
+
     const data = await resp.json();
 
-    document.getElementById("qs-total-contratos").innerText = data.total_contratos || 0;
-    document.getElementById("qs-vigentes").innerText = data.vigentes || 0;
-    document.getElementById("qs-prox-venc").innerText = data.proximo_vencimento || 0;
-    document.getElementById("qs-vencidos").innerText = data.vencidos || 0;
+    document.getElementById("qs-total-contratos").innerText =
+        data.total_contratos ?? 0;
+
+    document.getElementById("qs-vigentes").innerText =
+        data.vigentes ?? 0;
+
+    document.getElementById("qs-prox-venc").innerText =
+        data.proximo_vencimento ?? 0;
+
+    document.getElementById("qs-vencidos").innerText =
+        data.vencidos ?? 0;
 }
 
-async function carregarContratosBase() {
-    const resp = await fetch("/contratos?limit=500");
+async function gerarRelatorioPersonalizado() {
+    const categoria =
+        document.getElementById("filtroCategoriaRel")?.value || "";
+
+    const empresa =
+        document.getElementById("filtroEmpresaRel")?.value || "";
+
+    const statusVig =
+        document.getElementById("filtroStatusVigRel")?.value || "";
+
+    const statusTram =
+        document.getElementById("filtroStatusTramRel")?.value || "";
+
+    const inicio =
+        document.getElementById("filtroPeriodoInicioContrato")?.value || "";
+
+    const fim =
+        document.getElementById("filtroPeriodoFimContrato")?.value || "";
+
+    const params = new URLSearchParams();
+    params.set("limit", "200");
+
+    if (categoria) params.set("categoria_servico", categoria);
+    if (empresa) params.set("empresa", empresa);
+    if (statusVig) params.set("status_vigencia", statusVig);
+    if (statusTram) params.set("status_tramitacao", statusTram);
+    if (inicio) params.set("data_inicio", inicio);
+    if (fim) params.set("data_fim", fim);
+
+    const resp = await fetch("/contratos_api?" + params.toString());
+
+    if (!resp.ok) {
+        throw new Error("Erro ao gerar relatório.");
+    }
+
     const data = await resp.json();
-    return Array.isArray(data) ? data : [];
+    preencherTabelaRelatorio(data);
 }
 
-function aplicarFiltrosBasicos(lista, tipo) {
-    const categoria = document.getElementById("filtroCategoriaRel").value;
-    const empresa = document.getElementById("filtroEmpresaRel").value.trim().toLowerCase();
-    const statusVig = document.getElementById("filtroStatusVigRel").value;
-    const statusTram = document.getElementById("filtroStatusTramRel").value;
-    const inicio = document.getElementById("filtroPeriodoInicioContrato").value;
-    const fim = document.getElementById("filtroPeriodoFimContrato").value;
-
-    return lista.filter(c => {
-        if (categoria && c.categoria_servico !== categoria) return false;
-        if (empresa && !(c.empresa || "").toLowerCase().includes(empresa)) return false;
-        if (statusVig && c.status_vigencia !== statusVig) return false;
-        if (statusTram && c.status_tramitacao !== statusTram) return false;
-
-        if (inicio) {
-            if (!c.data_inicio) return false;
-            if (new Date(c.data_inicio) < new Date(inicio)) return false;
-        }
-        if (fim) {
-            if (!c.data_termino) return false;
-            if (new Date(c.data_termino) > new Date(fim)) return false;
-        }
-
-        if (tipo === "vencimentos") {
-            const s = c.status_vigencia || "";
-            if (!(s === "vencido" || s === "proximo_vencimento")) return false;
-        }
-
-        if (tipo === "tramitacao") {
-            if (!c.status_tramitacao) return false;
-        }
-
-        return true;
-    });
-}
-
-function preencherTabelaRelatorios(lista) {
+function preencherTabelaRelatorio(contratos) {
     const tbody = document.getElementById("tabela-relatorios-contratos");
+
+    if (!tbody) return;
+
     tbody.innerHTML = "";
 
-    if (!lista.length) {
-        const tr = document.createElement("tr");
-        const td = document.createElement("td");
-        td.colSpan = 9;
-        td.textContent = "Nenhum contrato encontrado para os critérios selecionados.";
-        tbody.appendChild(tr);
-        tr.appendChild(td);
+    if (!contratos || !contratos.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="text-center text-muted">
+                    Nenhum contrato encontrado.
+                </td>
+            </tr>
+        `;
         return;
     }
 
-    lista.forEach(c => {
+    contratos.forEach(c => {
         const tr = document.createElement("tr");
+
         tr.innerHTML = `
-            <td>${c.gms}</td>
-            <td>${c.numero_contrato}</td>
-            <td>${c.empresa}</td>
-            <td>${c.categoria_servico}</td>
-            <td>${c.local}</td>
+            <td>${escapeHTML(c.gms)}</td>
+            <td>${escapeHTML(c.numero_contrato)}</td>
+            <td>${escapeHTML(c.empresa)}</td>
+            <td>${escapeHTML(c.categoria_servico)}</td>
+            <td>${escapeHTML(c.local)}</td>
             <td>${formatDateBR(c.data_inicio)}</td>
             <td>${formatDateBR(c.data_termino)}</td>
-            <td>${c.status_vigencia || ""}</td>
-            <td>${c.status_tramitacao || ""}</td>
+            <td>
+                <span class="status-pill">
+                    ${escapeHTML(c.status_vigencia || "")}
+                </span>
+            </td>
+            <td>
+                <span class="status-pill">
+                    ${escapeHTML(c.status_tramitacao || "")}
+                </span>
+            </td>
         `;
-        document.getElementById("tabela-relatorios-contratos").appendChild(tr);
-    });
-}
 
-async function gerarRelatorio(tipo) {
-    const base = await carregarContratosBase();
-    const filtrados = aplicarFiltrosBasicos(base, tipo);
-    preencherTabelaRelatorios(filtrados);
+        tbody.appendChild(tr);
+    });
 }
 
 function configurarEventosRelatoriosContratos() {
-    document.getElementById("btnRelVencimentos").addEventListener("click", (e) => {
-        e.preventDefault();
-        gerarRelatorio("vencimentos");
-    });
 
-    document.getElementById("btnRelCategoria").addEventListener("click", (e) => {
-        e.preventDefault();
-        gerarRelatorio("categoria");
-    });
+    document.getElementById("btnRelVencimentos")
+        ?.addEventListener("click", async () => {
 
-    document.getElementById("btnRelEmpresa").addEventListener("click", (e) => {
-        e.preventDefault();
-        gerarRelatorio("empresa");
-    });
+            document.getElementById("filtroStatusVigRel").value =
+                "proximo_vencimento";
 
-    document.getElementById("btnRelTramitacao").addEventListener("click", (e) => {
-        e.preventDefault();
-        gerarRelatorio("tramitacao");
-    });
+            await gerarRelatorioPersonalizado();
+        });
 
-    document.getElementById("btnGerarRelatorioPersonalizado").addEventListener("click", (e) => {
-        e.preventDefault();
-        gerarRelatorio("personalizado");
-    });
+    document.getElementById("btnRelCategoria")
+        ?.addEventListener("click", async () => {
+            await gerarRelatorioPersonalizado();
+        });
+
+    document.getElementById("btnRelEmpresa")
+        ?.addEventListener("click", async () => {
+            await gerarRelatorioPersonalizado();
+        });
+
+    document.getElementById("btnRelTramitacao")
+        ?.addEventListener("click", async () => {
+            await gerarRelatorioPersonalizado();
+        });
+
+    document.getElementById("btnGerarRelatorioPersonalizado")
+        ?.addEventListener("click", async () => {
+
+            try {
+                await gerarRelatorioPersonalizado();
+            } catch (err) {
+                console.error(err);
+                alert("Erro ao gerar relatório.");
+            }
+        });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
+
     configurarEventosRelatoriosContratos();
-    carregarEstatisticasRapidasContratos();
-    // Opcional: já carregar algo ao abrir (por exemplo, todos)
-    // gerarRelatorio("personalizado");
+
+    carregarQuickStatsContratos().catch(err => {
+        console.error(err);
+    });
+
 });

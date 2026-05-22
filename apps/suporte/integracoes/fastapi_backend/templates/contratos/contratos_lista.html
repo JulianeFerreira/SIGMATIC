@@ -25,11 +25,11 @@
         </div>
 
         <nav class="sidebar-nav">
-            <a href="/" class="nav-item {% if request.url.path == '/' %}active{% endif %}">Compras</a>
-            <a href="/ui/contratos" class="nav-item {% if '/contratos' in request.url.path %}active{% endif %}">Contratos</a>
-            <a href="/ui/patrimonio" class="nav-item {% if '/patrimonio' in request.url.path %}active{% endif %}">Patrimônio</a>
-            <a href="/ui/planejamento" class="nav-item {% if '/planejamento' in request.url.path %}active{% endif %}">Planejamento</a>
-            <a href="/ui/configuracoes" class="nav-item {% if '/configuracoes' in request.url.path %}active{% endif %}">Configurações</a>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'compras' %}">Compras</a>
+            <a href="{% url 'contratos' %}">Contratos</a>
+            <a href="{% url 'patrimonio' %}">Patrimônio</a>
+            <a href="{% url 'planejamento' %}">Planejamento</a>
         </nav>
 
         <div class="sidebar-footer">

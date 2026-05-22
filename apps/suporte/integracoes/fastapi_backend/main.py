@@ -52,7 +52,7 @@ async def compras_dashboard_page(
     current_user=Depends(get_current_user),
 ):
     return templates.TemplateResponse(
-        "compras/dashboard.html",
+        "compras/contratos_dashboard.html",
         {"request": request, "current_user": current_user},
     )
 
@@ -179,7 +179,7 @@ async def patrimonio_dashboard_page(
     current_user=Depends(get_current_user),
 ):
     return templates.TemplateResponse(
-        "patrimonio/dashboard.html",
+        "patrimonio/contratos_dashboard.html",
         {"request": request, "current_user": current_user},
     )
 
@@ -233,7 +233,7 @@ async def patrimonio_relatorios_page(
 # ROTAS DE INTERFACE - MÓDULO PLANEJAMENTO (SEGURAS)
 # ------------------------------------------------------------------
 
-_PLANEJAMENTO_TEMPLATE = os.path.join("app", "templates", "planejamento", "dashboard.html")
+_PLANEJAMENTO_TEMPLATE = os.path.join("app", "templates", "planejamento", "contratos_dashboard.html")
 _PLANEJAMENTO_PCA_TEMPLATE = os.path.join("app", "templates", "planejamento", "pca.html")
 
 if os.path.exists(_PLANEJAMENTO_TEMPLATE):
@@ -244,7 +244,7 @@ if os.path.exists(_PLANEJAMENTO_TEMPLATE):
         current_user=Depends(get_current_user),
     ):
         return templates.TemplateResponse(
-            "planejamento/dashboard.html",
+            "planejamento/contratos_dashboard.html",
             {"request": request, "current_user": current_user},
         )
 

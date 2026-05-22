@@ -32,11 +32,11 @@
       </div>
     </div>
     <nav class="sidebar-nav">
-      <a href="/" class="nav-item">Compras</a>
-      <a href="/ui/contratos" class="nav-item">Contratos</a>
-      <a href="/ui/patrimonio" class="nav-item">Patrimônio</a>
-      <a href="/ui/planejamento" class="nav-item active">Planejamento</a>
-      <a href="/ui/configuracoes" class="nav-item">Configurações</a>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'compras' %}">Compras</a>
+            <a href="{% url 'contratos' %}">Contratos</a>
+            <a href="{% url 'patrimonio' %}">Patrimônio</a>
+            <a href="{% url 'planejamento' %}">Planejamento</a>
     </nav>
     <div class="sidebar-footer"><span>GAA - v1.0</span></div>
   </aside>

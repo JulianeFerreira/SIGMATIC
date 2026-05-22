@@ -1,66 +1,73 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Aplicativo GAA - Configurações</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-<div class="layout">
+{% extends 'base.html' %}
+{% load static %}
 
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <img src="/static/img/logo_pcp.png"
-                 alt="Polícia Científica do Paraná"
-                 class="sidebar-logo-img">
+{% block title %}Aplicativo GAA - Configurações{% endblock %}
 
-            <div class="logo-text">
-                <span class="app-title">Aplicativo GAA</span>
-                <span class="app-subtitle">Polícia Científica do Paraná</span>
+{% block content %}
+
+<header class="topbar">
+    <div class="search-box">
+        <input type="text"
+               class="form-control"
+               placeholder="Buscar..."
+               disabled>
+    </div>
+
+    <div class="user-area">
+        <span>{{ current_user.name }}</span>
+    </div>
+</header>
+
+<section class="page-header">
+    <h1>Configurações</h1>
+    <p>Parâmetros gerais do Aplicativo GAA.</p>
+</section>
+
+<section class="card mb-4">
+    <div class="card-header-inline">
+        <h2>Preferências do Sistema</h2>
+    </div>
+
+    <p class="text-muted mb-0">
+        Aqui poderão ser configurados parâmetros globais do sistema, como unidades padrão,
+        prazos, notificações, permissões e demais regras administrativas.
+    </p>
+</section>
+
+<section class="card">
+    <div class="card-header-inline">
+        <h2>Módulos Ativos</h2>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="metric-card h-100">
+                <span class="metric-label">Compras</span>
+                <span class="metric-value" style="font-size: 16px;">Ativo</span>
             </div>
         </div>
 
-        <nav class="sidebar-nav">
-            <a href="/" class="nav-item {% if request.url.path == '/' %}active{% endif %}">Compras</a>
-            <a href="/ui/contratos" class="nav-item {% if '/contratos' in request.url.path %}active{% endif %}">Contratos</a>
-            <a href="/ui/patrimonio" class="nav-item {% if '/patrimonio' in request.url.path %}active{% endif %}">Patrimônio</a>
-            <a href="/ui/planejamento" class="nav-item {% if '/planejamento' in request.url.path %}active{% endif %}">Planejamento</a>
-            <a href="/ui/configuracoes" class="nav-item {% if '/configuracoes' in request.url.path %}active{% endif %}">Configurações</a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <span>GAA - v1.0</span>
+        <div class="col-md-6 col-xl-3">
+            <div class="metric-card h-100">
+                <span class="metric-label">Contratos</span>
+                <span class="metric-value" style="font-size: 16px;">Ativo</span>
+            </div>
         </div>
-    </aside>
 
-    <main class="main">
-        <header class="topbar">
-            <div class="search-box">
-                <input type="text" placeholder="Buscar...">
+        <div class="col-md-6 col-xl-3">
+            <div class="metric-card h-100">
+                <span class="metric-label">Patrimônio</span>
+                <span class="metric-value" style="font-size: 16px;">Ativo</span>
             </div>
-            <div class="user-area">
-                <span>{{ current_user.name }}</span>
-            </div>
-        </header>
+        </div>
 
-        <section class="page-header">
-            <h1>Configurações</h1>
-            <p>Parâmetros gerais do Aplicativo GAA</p>
-        </section>
-
-        <section class="card">
-            <div class="card-header-inline">
-                <h2>Preferências do Sistema</h2>
+        <div class="col-md-6 col-xl-3">
+            <div class="metric-card h-100">
+                <span class="metric-label">Planejamento</span>
+                <span class="metric-value" style="font-size: 16px;">Ativo</span>
             </div>
-            <p style="font-size: 13px; color: #6b7280;">
-                Aqui você poderá, futuramente, configurar parâmetros globais do sistema:
-                unidades padrão, prazos, notificações por e-mail, permissões, entre outros.
-            </p>
-        </section>
-    </main>
-</div>
-</body>
-</html>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

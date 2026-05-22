@@ -1,56 +1,37 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>GAA Patrimônio - Detalhes do Bem</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+{% extends 'base.html' %}
+{% load static %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-<div class="layout">
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <img src="/static/img/logo_pcp.png" alt="Polícia Científica do Paraná" class="sidebar-logo-img">
-            <div class="logo-text">
-                <span class="app-title">Aplicativo GAA</span>
-                <span class="app-subtitle">Polícia Científica do Paraná</span>
-            </div>
+{% block title %}GAA Patrimônio - Detalhes do Bem{% endblock %}
+
+{% block content %}
+
+<main data-tombamento="{{ tombamento }}">
+
+    <header class="topbar">
+        <div class="search-box">
+            <input type="text" class="form-control" placeholder="Buscar bem..." disabled>
         </div>
 
-        <nav class="sidebar-nav">
-            <a href="/" class="nav-item {% if request.url.path == '/' %}active{% endif %}">Compras</a>
-            <a href="/ui/contratos" class="nav-item {% if '/contratos' in request.url.path %}active{% endif %}">Contratos</a>
-            <a href="/ui/patrimonio" class="nav-item {% if '/patrimonio' in request.url.path %}active{% endif %}">Patrimônio</a>
-            <a href="/ui/planejamento" class="nav-item {% if '/planejamento' in request.url.path %}active{% endif %}">Planejamento</a>
-            <a href="/ui/configuracoes" class="nav-item {% if '/configuracoes' in request.url.path %}active{% endif %}">Configurações</a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <span>GAA - v1.0</span>
+        <div class="topbar-actions">
+            <button class="btn secondary" id="btnVoltarBem">Voltar</button>
         </div>
-    </aside>
+    </header>
 
-    <main class="main" data-tombamento="{{ tombamento }}">
-        <header class="topbar">
-            <div class="search-box">
-                <input type="text" placeholder="Buscar bem..." disabled>
-            </div>
-            <div class="topbar-actions">
-                <button class="btn secondary" id="btnVoltarBem">Voltar</button>
-            </div>
-        </header>
+    <section class="page-header">
+        <h1 id="tituloBem">Bem {{ tombamento }}</h1>
+        <p id="subtituloBem">Carregando detalhes do bem...</p>
+    </section>
 
-        <section class="page-header">
-            <h1 id="tituloBem">Bem {{ tombamento }}</h1>
-            <p id="subtituloBem">Carregando detalhes do bem...</p>
-        </section>
+    <section class="tabs-nav">
+        <a href="/ui/patrimonio/" class="tab-item">Dashboard</a>
+        <a href="/ui/patrimonio/bens/" class="tab-item active">Bens</a>
+        <a href="/ui/patrimonio/bens/novo/" class="tab-item">Novo Bem</a>
+        <a href="/ui/patrimonio/relatorios/" class="tab-item">Relatórios</a>
+    </section>
 
-        <!-- CARDS (no mesmo espírito do processo_detail) -->
-        <section class="detail-cards-grid">
-            <div class="card">
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="card h-100">
                 <h2>Identificação</h2>
 
                 <div class="detail-field">
@@ -65,7 +46,9 @@
 
                 <div class="detail-field">
                     <span class="detail-label">Situação</span>
-                    <span class="detail-value"><span class="status-pill" id="det-situacao"></span></span>
+                    <span class="detail-value">
+                        <span class="status-pill" id="det-situacao"></span>
+                    </span>
                 </div>
 
                 <div class="detail-field">
@@ -73,8 +56,10 @@
                     <span class="detail-value" id="det-categoria"></span>
                 </div>
             </div>
+        </div>
 
-            <div class="card">
+        <div class="col-lg-4">
+            <div class="card h-100">
                 <h2>Localização</h2>
 
                 <div class="detail-field">
@@ -87,8 +72,10 @@
                     <span class="detail-value" id="det-local"></span>
                 </div>
             </div>
+        </div>
 
-            <div class="card">
+        <div class="col-lg-4">
+            <div class="card h-100">
                 <h2>Responsável</h2>
 
                 <div class="detail-field">
@@ -101,30 +88,37 @@
                     <span class="detail-value" id="det-resp-matricula"></span>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <!-- AÇÕES: Transferência (card) -->
-        <section class="card">
-            <h2>Transferência</h2>
-            <div class="form-grid-3">
-                <div class="form-field">
-                    <label class="field-label">Para unidade *</label>
-                    <input class="field-input" id="para_unidade" placeholder="Ex: UETC Londrina">
-                </div>
-                <div class="form-field">
-                    <label class="field-label">Motivo</label>
-                    <input class="field-input" id="motivo" placeholder="Ex: Remanejamento / troca de setor">
-                </div>
-                <div class="form-field" style="display:flex; align-items:flex-end;">
-                    <button class="btn primary" id="btnTransferir" type="button" style="width:100%;">Transferir</button>
-                </div>
+    <section class="card mb-4">
+        <h2>Transferência</h2>
+
+        <div class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="field-label">Para unidade *</label>
+                <input class="form-control" id="para_unidade" placeholder="Ex: UETC Londrina">
             </div>
-        </section>
 
-        <!-- HISTÓRICO -->
-        <section class="card">
+            <div class="col-md-5">
+                <label class="field-label">Motivo</label>
+                <input class="form-control" id="motivo" placeholder="Ex: Remanejamento / troca de setor">
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn primary w-100" id="btnTransferir" type="button">Transferir</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="table-card">
+        <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h2>Histórico de Movimentações</h2>
-            <table>
+            <span class="text-muted">Transferências e alterações vinculadas ao bem</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
                 <thead>
                 <tr>
                     <th>Data</th>
@@ -136,25 +130,32 @@
                 </tr>
                 </thead>
                 <tbody id="tabela-movimentacoes">
-                <!-- preenchido via JS -->
+                <tr>
+                    <td colspan="6" class="text-center text-muted">Carregando...</td>
+                </tr>
                 </tbody>
             </table>
-        </section>
-    </main>
-</div>
+        </div>
+    </section>
 
+</main>
+
+{% endblock %}
+
+{% block extra_scripts %}
 <script>
-    function fmt(v){ return (v === null || v === undefined) ? "" : String(v); }
+    function fmt(v){
+        return (v === null || v === undefined) ? "" : String(v);
+    }
 
     function setStatusPill(el, value){
         el.innerText = value || "—";
-        // reaproveita a classe status-pill do seu CSS; se você tiver cores por classe, dá pra mapear aqui depois
     }
 
     const tombamento = document.querySelector("main").dataset.tombamento;
 
     document.getElementById("btnVoltarBem").addEventListener("click", () => {
-        window.location.href = "/ui/patrimonio/bens";
+        window.location.href = "/ui/patrimonio/bens/";
     });
 
     document.getElementById("btnTransferir").addEventListener("click", async () => {
@@ -168,8 +169,13 @@
 
         const r = await fetch(`/api/patrimonio/bens/${encodeURIComponent(tombamento)}/transferir`, {
             method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({ para_unidade, motivo })
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                para_unidade,
+                motivo
+            })
         });
 
         if (!r.ok){
@@ -178,12 +184,14 @@
         }
 
         await load();
+
         document.getElementById("para_unidade").value = "";
         document.getElementById("motivo").value = "";
     });
 
     async function load(){
         const r = await fetch(`/api/patrimonio/bens/${encodeURIComponent(tombamento)}`);
+
         if (!r.ok){
             document.getElementById("subtituloBem").innerText = "Não foi possível carregar este bem.";
             return;
@@ -208,6 +216,12 @@
         tb.innerHTML = "";
 
         const movs = d.movimentacoes || [];
+
+        if (!movs.length) {
+            tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Nenhuma movimentação registrada.</td></tr>`;
+            return;
+        }
+
         for (const m of movs){
             const tr = document.createElement("tr");
             tr.innerHTML = `
@@ -224,5 +238,4 @@
 
     load();
 </script>
-</body>
-</html>
+{% endblock %}
