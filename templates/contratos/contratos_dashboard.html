@@ -21,7 +21,7 @@
 
 <section class="page-header">
     <h1>Dashboard de Contratos</h1>
-    <p>Visão geral dos contratos de serviços contínuos.</p>
+    <p>Visão gerencial dos contratos, vigências, alertas, fiscais e fornecedores.</p>
 </section>
 
 <section class="tabs-nav">
@@ -31,74 +31,161 @@
     <a href="/ui/contratos/relatorios/" class="tab-item">Relatórios</a>
 </section>
 
-<div class="row g-4 mb-4">
+<div class="row g-3 mb-4">
     <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
+        <div class="metric-card h-100 border-start border-primary border-4">
             <span class="metric-label">Total de Contratos</span>
             <span class="metric-value" id="metric-total-contratos">0</span>
+            <small class="text-muted">Base cadastrada</small>
         </div>
     </div>
 
     <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
+        <div class="metric-card h-100 border-start border-success border-4">
             <span class="metric-label">Vigentes</span>
             <span class="metric-value" id="metric-vigentes">0</span>
+            <small class="text-success">Situação regular</small>
         </div>
     </div>
 
     <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
+        <div class="metric-card h-100 border-start border-warning border-4">
             <span class="metric-label">Próx. Vencimento</span>
             <span class="metric-value" id="metric-proximo-venc">0</span>
+            <small class="text-warning">Atenção</small>
         </div>
     </div>
 
     <div class="col-md-4 col-xl-2">
-        <div class="metric-card warning h-100">
+        <div class="metric-card h-100 border-start border-danger border-4">
             <span class="metric-label">Vencidos</span>
             <span class="metric-value" id="metric-vencidos">0</span>
+            <small class="text-danger">Crítico</small>
         </div>
     </div>
 
     <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
+        <div class="metric-card h-100 border-start border-info border-4">
             <span class="metric-label">Prorrogados</span>
             <span class="metric-value" id="metric-prorrogados">0</span>
+            <small class="text-info">Com aditivo</small>
         </div>
     </div>
 
     <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
+        <div class="metric-card h-100 border-start border-secondary border-4">
             <span class="metric-label">Rescindidos</span>
             <span class="metric-value" id="metric-rescindidos">0</span>
+            <small class="text-muted">Encerrados</small>
         </div>
     </div>
 </div>
 
 <div class="row g-4 mb-4">
-    <div class="col-lg-6">
-        <div class="chart-card h-100">
-            <div class="chart-header">
-                <h2>Contratos por Categoria</h2>
+    <div class="col-xl-8">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="chart-card h-100">
+                    <div class="chart-header">
+                        <h2>Contratos por Categoria</h2>
+                    </div>
+                    <canvas id="chartContratosCategoria"></canvas>
+                </div>
             </div>
-            <canvas id="chartContratosCategoria"></canvas>
+
+            <div class="col-lg-6">
+                <div class="chart-card h-100">
+                    <div class="chart-header">
+                        <h2>Status de Tramitação</h2>
+                    </div>
+                    <canvas id="chartContratosTramitacao"></canvas>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2>Próximos Vencimentos</h2>
+                    </div>
+                    <canvas id="chartContratosVencimentos" style="min-height: 180px;"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-xl-4">
         <div class="chart-card h-100">
-            <div class="chart-header">
-                <h2>Contratos por Status de Tramitação</h2>
+            <div class="chart-header d-flex justify-content-between align-items-center">
+                <h2>Alertas e Pendências</h2>
+                <span class="badge bg-danger" id="badge-alertas">0</span>
             </div>
-            <canvas id="chartContratosTramitacao"></canvas>
+
+            <div id="lista-alertas-contratos" class="d-flex flex-column gap-3">
+                <div class="text-muted">Carregando alertas...</div>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="row g-4 mb-4">
+    <div class="col-xl-4">
+        <div class="metric-card h-100">
+            <span class="metric-label">Valor Total dos Contratos</span>
+            <span class="metric-value text-primary" id="metric-valor-total">R$ 0,00</span>
+            <small class="text-muted">Somatório dos contratos cadastrados</small>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="chart-card h-100">
+            <div class="chart-header">
+                <h2>Contratos por Fiscal</h2>
+            </div>
+            <div id="lista-fiscais" class="table-responsive"></div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="chart-card h-100">
+            <div class="chart-header">
+                <h2>Top Fornecedores</h2>
+            </div>
+            <div id="lista-fornecedores" class="table-responsive"></div>
+        </div>
+    </div>
+</div>
+
+<section class="table-card mb-4">
+    <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <h2>Semáforo Contratual</h2>
+        <span class="text-muted">Controle visual de vigência e risco</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th>Contrato</th>
+                <th>Empresa</th>
+                <th>Categoria</th>
+                <th>Vencimento</th>
+                <th>Status Vigência</th>
+                <th>Semáforo</th>
+            </tr>
+            </thead>
+            <tbody id="tabela-semaforo-contratos">
+            <tr>
+                <td colspan="6" class="text-center text-muted">Carregando...</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
 
 <section class="table-card">
     <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <h2>Resumo Rápido</h2>
-        <span class="text-muted">Últimos contratos cadastrados</span>
+        <h2>Últimos Contratos Cadastrados</h2>
+        <span class="text-muted">Resumo operacional</span>
     </div>
 
     <div class="table-responsive">
