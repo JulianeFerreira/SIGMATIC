@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Aplicativo GAA{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- CSS do projeto -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-light">
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar-bootstrap">
+
+        <div class="sidebar-top">
+
+            <div class="sidebar-brand">
+
+                <img src="{% static 'img/logo_pcp.png' %}"
+                     alt="Logo PCP"
+                     class="sidebar-logo">
+
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-title">
+                        Aplicativo GAA
+                    </span>
+
+                    <span class="sidebar-subtitle">
+                        Polícia Científica do Paraná
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="/"
+               class="sidebar-link {% if request.path == '/' %}active{% endif %}">
+                Compras
+            </a>
+
+            <a href="/ui/contratos/"
+               class="sidebar-link {% if '/contratos' in request.path %}active{% endif %}">
+                Contratos
+            </a>
+
+            <a href="/ui/patrimonio/"
+               class="sidebar-link {% if '/patrimonio' in request.path %}active{% endif %}">
+                Patrimônio
+            </a>
+
+            <a href="/ui/planejamento/"
+               class="sidebar-link {% if '/planejamento' in request.path %}active{% endif %}">
+                Planejamento
+            </a>
+
+            <a href="/ui/configuracoes/"
+               class="sidebar-link {% if '/configuracoes' in request.path %}active{% endif %}">
+                Configurações
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            GAA - v1.0
+        </div>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="main-content">
+
+        <div class="container-fluid py-3">
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.getElementById("btnLogout")?.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "/admin/login/";
+    });
+</script>
+
+{% block extra_scripts %}
+{% endblock %}
+
+</body>
+</html>

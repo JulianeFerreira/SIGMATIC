@@ -212,43 +212,43 @@ def _extract_mes(p):
 
 
 def home(request):
-    return redirect('/') if request.path != '/' else render(request, 'compras/dashboard.html', _ctx(request))
+    return redirect('/') if request.path != '/' else render(request, 'contratacoes/compras/dashboard.html', _ctx(request))
 
 
 def compras(request):
-    return render(request, 'compras/dashboard.html', _ctx(request))
+    return render(request, 'contratacoes/compras/dashboard.html', _ctx(request))
 
 
 def compras_processos(request):
-    return render(request, 'compras/processos.html', _ctx(request))
+    return render(request, 'contratacoes/compras/processos.html', _ctx(request))
 
 
 def compras_processo_novo(request):
-    return render(request, 'compras/processo_form.html', _ctx(request))
+    return render(request, 'contratacoes/compras/processo_form.html', _ctx(request))
 
 
 def compras_processo_detail(request, processo_numero):
-    return render(request, 'compras/processo_detail.html', _ctx(request, processo_numero=processo_numero))
+    return render(request, 'contratacoes/compras/processo_detail.html', _ctx(request, processo_numero=processo_numero))
 
 
 def compras_relatorios(request):
-    return render(request, 'compras/relatorios.html', _ctx(request))
+    return render(request, 'contratacoes/compras/relatorios.html', _ctx(request))
 
 
 def contratos(request):
-    return render(request, 'contratos/contratos_dashboard.html', _ctx(request))
+    return render(request, 'contratacoes/contratos/contratos_dashboard.html', _ctx(request))
 
 
 def contratos_lista(request):
-    return render(request, 'contratos/contratos_lista.html', _ctx(request))
+    return render(request, 'contratacoes/contratos/contratos_lista.html', _ctx(request))
 
 
 def contratos_form(request):
-    return render(request, 'contratos/contratos_form.html', _ctx(request))
+    return render(request, 'contratacoes/contratos/contratos_form.html', _ctx(request))
 
 
 def contratos_relatorios(request):
-    return render(request, 'contratos/contratos_relatorios.html', _ctx(request))
+    return render(request, 'contratacoes/contratos/contratos_relatorios.html', _ctx(request))
 
 
 def patrimonio(request):
@@ -276,7 +276,7 @@ def planejamento(request):
 
 
 def pca(request):
-    return render(request, 'planejamento/pca.html', _ctx(request))
+    return render(request, 'planejamento/pca/pca.html', _ctx(request))
 
 
 def configuracoes(request):
