@@ -70,3 +70,8 @@ urlpatterns = [
     path('api/pca/lista', views.pca_lista, name='pca_lista_api'),
     path('api/pca/<int:numero_ordem>', views.pca_detail, name='pca_detail_api'),
 ]
+
+path('api/pca/metrics', views.pca_metrics, name='pca_metrics'),
+path('api/pca/lista', views.pca_lista, name='pca_lista_api'),
+path('api/pca/<int:numero_ordem>', views.pca_detail, name='pca_detail_api'),
+path('api/gateway/<str:nome_modulo>/<path:caminho_restante>', views.gateway_roteador, name='gateway_roteador'),

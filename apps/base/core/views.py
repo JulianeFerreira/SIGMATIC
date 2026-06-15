@@ -613,3 +613,35 @@ def pca_detail(request, numero_ordem):
     if not it:
         return JsonResponse({'detail': 'Item não encontrado.'}, status=404)
     return JsonResponse(it)
+
+# Cole isso no FINAL do seu apps/base/core/views.py original (Mantenha o que já estava lá!)
+
+import requests
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import ModuloSistema
+
+@csrf_exempt
+def gateway_roteador(request, nome_modulo, caminho_restante):
+    try:
+        modulo = ModuloSistema.objects.get(slug=nome_modulo)
+        if not modulo.ativo:
+            return JsonResponse({"erro": f"O módulo '{modulo.nome}' está em manutenção."}, status=503)
+
+        url_destino = f"{modulo.url_destino.rstrip('/')}/{caminho_restante}"
+        
+        try:
+            resposta = requests.request(
+                method=request.method,
+                url=url_destino,
+                params=request.GET,
+                data=request.body if request.body else None,
+                headers={'Content-Type': request.headers.get('Content-Type', 'application/json')},
+                timeout=10
+            )
+            return HttpResponse(content=resposta.content, status=resposta.status_code, content_type=resposta.headers.get('Content-Type', 'application/json'))
+        except requests.exceptions.RequestException:
+            return JsonResponse({"erro": f"Módulo '{modulo.nome}' offline."}, status=502)
+
+    except ModuloSistema.DoesNotExist:
+        return JsonResponse({"erro": f"Módulo '{nome_modulo}' não cadastrado no Core."}, status=404)
