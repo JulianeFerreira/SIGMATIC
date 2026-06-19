@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from apps.base.core.models import ModuloSistema 
 
 def menu_principal(request):
-    return render(request, 'base/menu_principal.html')
+    return render(request, 'base_sesp/home_sesp.html')
 
 @csrf_exempt
 def gateway_base_roteador(request, nome_modulo, caminho_restante):

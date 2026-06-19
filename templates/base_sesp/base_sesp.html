@@ -1,0 +1,203 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}SIGMATIC{% endblock %}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+
+  <style>
+    body {
+      background-color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+
+    .bg-sistema-topo {
+      background-color: #F5F6F8 !important;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .fw-bold {
+      font-size: 30px;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      color: #194161;
+      font-weight: 500;
+      font-size: 20px;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .navbar-dark .navbar-nav .nav-link:hover,
+    .navbar-dark .navbar-nav .nav-link.active {
+      color: #2373c2;
+      background-color: rgba(174, 174, 179, 0.1);
+      border-radius: 4px;
+    }
+
+    /* Seta sutil nos submenus */
+    .dropdown-toggle::after {
+      vertical-align: middle;
+      margin-left: 0.35em;
+    }
+
+    /* Sombra elegante nos submenus abertos */
+    .dropdown-menu {
+      border: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    main {
+      flex: 1 0 auto;
+      /* Empurra o footer sempre para a base */
+    }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body id="page-top">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-sistema-topo py-0" style="height: 125px;">
+    <div class="container-fluid px-4 h-100 d-flex align-items-center justify-content-between">
+
+      <div class="d-flex align-items-center" style="min-width: 250px;">
+        <a class="navbar-brand d-flex align-items-center text-decoration-none position-relative" href="/"
+          style="height: 100%;">
+          <img src="{% static 'img/logo_sigmatic.jpg' %}" alt="Logo CTIC" class="me-2"
+            style="height: 137px; width: 100px; position: absolute; top: -70px; z-index: 1000;">
+          <div style="width: 100px;"></div>
+        </a>
+      </div>
+
+      <button class="navbar-collapse-toggle navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#menuSuperior" aria-controls="menuSuperior" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-center h-100" id="menuSuperior">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center gap-3">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropContratacoes" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Contratações
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropContratacoes">
+              <li><a class="dropdown-item py-2" href="/compras/">Compras</a></li>
+              <li><a class="dropdown-item py-2" href="/contratos/">Contratos</a></li>
+              <li><a class="dropdown-item py-2" href="/licitacoes/">Licitações</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropGovernanca" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Governança
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropGovernanca">
+              <li><a class="dropdown-item py-2" href="/governança/comites/">Comitês</a></li>
+              <li><a class="dropdown-item py-2" href="/governança/politicas/">Políticas TIC</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropPlanejamento" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Planejamento
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropPlanejamento">
+              <li><a class="dropdown-item py-2" href="/planejamento/">Estratégia</a></li>
+              <li><a class="dropdown-item py-2" href="/ui/planejamento/pca/">PCA</a></li>
+              <li><a class="dropdown-item py-2" href="/patrimonio/">Patrimônio</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropSuporte" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Suporte
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropSuporte">
+              <li><a class="dropdown-item py-2" href="/suporte/chamados/">Chamados</a></li>
+              <li><a class="dropdown-item py-2" href="/suporte/manuais/">Manuais</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="d-flex align-items-center gap-3 justify-content-end" style="min-width: 250px;">
+        <form class="position-relative d-none d-md-block m-0" action="/pesquisa/" method="GET">
+          <input type="text" name="q" class="form-control form-control-sm pe-4 ps-3 rounded" placeholder="Pesquisar..."
+            style="font-size: 0.85rem; width: 170px; height: 35px; border: 1px solid #194161; color: #194161; background-color: transparent;">
+          <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-2"
+            style="font-size: 0.8rem; color: #194161; pointer-events: none;"></i>
+        </form>
+
+        {% if user.is_authenticated %}
+        <span class="text-light"><i class="bi bi-person-circle me-1"></i> {{ user.first_name }}</span>
+        {% else %}
+        <a href="#" class="btn btn-sm fw-bold px-3 d-flex align-items-center justify-content-center bg-white"
+          style="font-size: 0.9rem; color: #194161; border: 2px solid #194161; letter-spacing: 0.6px; height: 35px;">
+          Entrar
+        </a>
+        {% endif %}
+      </div>
+
+    </div>
+  </nav>
+
+
+ <footer class="py-4 mt-auto w-100" style="background-color: #194161; border-top: 1px solid #e3e6f0;">
+  <div class="container-fluid px-5">
+    
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
+      
+      <div class="d-flex align-items-center flex-wrap gap-4">
+        <img src="{% static 'img/logo_sesp.png' %}" alt="Governo do Estado do Paraná - SESP" style="max-height: 70px; width: auto;" />
+        
+        <div style="border-left: 1px solid rgb(254, 255, 255); height: 70px;"></div>
+        
+        <div class="d-flex flex-column justify-content-center" style="font-size: 0.75rem; line-height: 1.5; color: #ffffff;">
+          <strong class="text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px; color: #ffffff;">
+            Secretaria da Segurança Pública
+          </strong>
+          <span style="color:#ffffff;">
+            Rua Coronel Dulcídio, 800 – Batel - 80420-170 - Curitiba - PR
+          </span>
+          <div class="mt-1" style="color: #ffffff;">
+            <i class="bi bi-telephone me-1" style="font-size: 0.75rem; color: #ffffff;"></i>
+            <strong style="letter-spacing: 0.5px;">(41) 3313-1638</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center" style="color: #ffffff;">
+        <div class="d-flex flex-column align-items-end" style="font-size: 0.7rem; line-height: 1.2;">
+          <span style="color: #f8f9fa; font-weight: 600; text-uppercase; letter-spacing: 1px;">Desenvolvido por</span>
+          <strong class="text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.8px; color: #ffffff;">CTIC / SESP</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-4 pt-3" style="border-top: 1px solid rgba(25, 65, 97, 0.1); background-color: #194161;">
+      <div class="col-12 text-center" style="font-size: 0.7rem; letter-spacing: 0.5px; color:#ffffff;">
+        &copy; Todos os direitos reservados. | V1.0
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
