@@ -52,7 +52,6 @@
         border-radius: 4px;
       }
 
-      /* Seta sutil nos submenus */
       .dropdown-toggle::after {
         vertical-align: middle;
         margin-left: 0.35em;
@@ -65,6 +64,14 @@
 
       main {
         flex: 1 0 auto;
+      }
+
+      .busca-scroll::-webkit-scrollbar {
+        width: 5px;
+      }
+      .busca-scroll::-webkit-scrollbar-thumb {
+        background-color: rgba(25, 65, 97, 0.2);
+        border-radius: 4px;
       }
     </style>
     {% block extra_css %}{% endblock %}
@@ -168,29 +175,50 @@
             class="position-relative d-none d-md-block m-0"
             action="/pesquisa/"
             method="GET"
+            onsubmit="return false;"
           >
             <input
               type="text"
+              id="inputBuscaRapida"
               name="q"
-              class="form-control form-control-sm pe-4 ps-3 rounded"
+              class="form-control form-control-sm pe-5 ps-3 rounded"
               placeholder="Pesquisar..."
+              autocomplete="off"
               style="
                 font-size: 0.85rem;
-                width: 170px;
+                width: 200px;
                 height: 35px;
                 border: 1px solid #194161;
                 color: #194161;
                 background-color: transparent;
               "
             />
-            <i
-              class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-2"
-              style="font-size: 0.8rem; color: #194161; pointer-events: none"
-            ></i>
+            <div
+              class="position-absolute top-50 end-0 translate-middle-y me-1 bg-transparent border-0 p-1"
+              style="z-index: 1010"
+            >
+              <i
+                class="bi bi-search"
+                style="font-size: 0.8rem; color: #194161"
+              ></i>
+            </div>
+
+            <div
+              id="painelBuscaFlutuante"
+              class="dropdown-menu position-absolute end-0 mt-2 p-2 shadow-lg busca-scroll"
+              style="
+                display: none;
+                width: 320px;
+                max-height: 350px;
+                overflow-y: auto;
+                z-index: 1100;
+                border: 1px solid rgba(0, 0, 0, 0.12);
+              "
+            ></div>
           </form>
 
           {% if user.is_authenticated %}
-          <span class="text-light"
+          <span class="text-dark fw-medium"
             ><i class="bi bi-person-circle me-1"></i> {{ user.first_name
             }}</span
           >
@@ -246,9 +274,10 @@
               >
                 Secretaria da Segurança Pública
               </strong>
-              <span style="color: #ffffff">
-                Rua Coronel Dulcídio, 800 – Batel - 80420-170 - Curitiba - PR
-              </span>
+              <span style="color: #ffffff"
+                >Rua Coronel Dulcídio, 800 – Batel - 80420-170 - Curitiba -
+                PR</span
+              >
               <div class="mt-1" style="color: #ffffff">
                 <i
                   class="bi bi-telephone me-1"
@@ -264,7 +293,7 @@
               style="font-size: 0.7rem; line-height: 1.2"
             >
               <span
-                style="color: #f8f9fa; font-weight: 600; text-uppercase; letter-spacing: 1px;"
+                style="color: #f8f9fa; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;"
                 >Desenvolvido por</span
               >
               <strong
@@ -299,3 +328,68 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
+
+<script>
+  document
+    .getElementById("inputBuscaRapida")
+    .addEventListener("input", function (e) {
+      const query = e.target.value.trim();
+      const painel = document.getElementById("painelBuscaFlutuante");
+
+      if (query.length < 2) {
+        painel.style.display = "none";
+        return;
+      }
+
+      fetch(`/pesquisa/?q=${encodeURIComponent(query)}&ajax=1`)
+        .then((response) => response.json())
+        .then((data) => {
+          let htmlConteudo = "";
+
+          if (data.resultados.length === 0) {
+            htmlConteudo = `
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-1 mb-2 px-2">
+                  <span class="text-secondary" style="font-size: 0.75rem; font-weight: 600;">Sem resultados</span>
+                  <button type="button" class="btn-close" style="font-size: 0.6rem;" onclick="document.getElementById('painelBuscaFlutuante').style.display='none'"></button>
+                </div>
+                <div class="text-muted text-center py-3 small">
+                  <i class="bi bi-exclamation-circle d-block mb-1 text-warning"></i>
+                  Nenhuma pasta encontrada.
+                </div>`;
+          } else {
+            htmlConteudo = `
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-1 mb-2 px-2">
+                  <span class="text-secondary" style="font-size: 0.75rem; font-weight: 600;">Resultados para "${query}"</span>
+                  <button type="button" class="btn-close" style="font-size: 0.6rem;" onclick="document.getElementById('painelBuscaFlutuante').style.display='none'"></button>
+                </div>`;
+
+            data.resultados.forEach((item) => {
+              htmlConteudo += `
+                  <a class="dropdown-item d-flex align-items-start py-2 rounded text-wrap mb-1" href="${item.url}">
+                    <i class="bi bi-folder2 text-primary me-2 mt-0.5" style="font-size: 0.95rem;"></i>
+                    <div>
+                      <div class="text-dark fw-medium" style="font-size: 0.85rem; line-height: 1.2;">${item.nome}</div>
+                      <small class="text-muted d-block" style="font-size: 0.7rem; margin-top: 1px;">${item.tipo}</small>
+                    </div>
+                  </a>`;
+            });
+          }
+
+          painel.innerHTML = htmlConteudo;
+          painel.style.display = "block";
+        })
+        .catch((error) => console.error("Erro no buscador rápido:", error));
+    });
+
+  document.addEventListener("click", function (e) {
+    const painel = document.getElementById("painelBuscaFlutuante");
+    const input = document.getElementById("inputBuscaRapida");
+    if (
+      e.target !== painel &&
+      e.target !== input &&
+      !painel.contains(e.target)
+    ) {
+      painel.style.display = "none";
+    }
+  });
+</script>
