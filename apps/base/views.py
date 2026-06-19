@@ -1,39 +1,38 @@
-# apps/base/views.py
-import requests
-from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from apps.base.core.models import ModuloSistema 
+from django.conf import settings
 
 def menu_principal(request):
-    return render(request, 'base_sesp/home_sesp.html')
+    pasta_apps = settings.BASE_DIR / "apps"
+    
+    pastas_ignoradas = ["base", "core", "usuarios", "organizacao", "acessos", "migrations"]
+    
+    modulos_para_front = []
 
-@csrf_exempt
-def gateway_base_roteador(request, nome_modulo, caminho_restante):
- 
-    try:
-        modulo = ModuloSistema.objects.get(slug=nome_modulo)
-        if not modulo.ativo:
-            return JsonResponse({"erro": f"O módulo '{modulo.nome}' está em manutenção."}, status=503)
+    if pasta_apps.exists():
+        for pasta_mod in pasta_apps.iterdir():
+            if pasta_mod.is_dir() and not pasta_mod.name.startswith("__") and pasta_mod.name not in pastas_ignoradas:
+                
+                nome_modulo_pasta = pasta_mod.name
+                nome_modulo_formatado = nome_modulo_pasta.replace("_", " ").title()
+                
+                submodulos_encontrados = []
+                
+                for pasta_sub in pasta_mod.iterdir():
+                    if pasta_sub.is_dir() and not pasta_sub.name.startswith("__") and pasta_sub.name not in pastas_ignoradas:
+                        submodulos_encontrados.append({
+                            "nome": pasta_sub.name.replace("_", " ").title(),
+                            "url": f"/{nome_modulo_pasta}/{pasta_sub.name}/" 
+                        })
+                
+                submodulos_encontrados = sorted(submodulos_encontrados, key=lambda x: x['nome'])
 
-        url_destino = f"{modulo.url_destino.rstrip('/')}/{caminho_restante}"
-        
-        try:
-            resposta = requests.request(
-                method=request.method,
-                url=url_destino,
-                params=request.GET,
-                data=request.body if request.body else None,
-                headers={'Content-Type': request.headers.get('Content-Type', 'application/json')},
-                timeout=10
-            )
-            return HttpResponse(
-                content=resposta.content, 
-                status=resposta.status_code, 
-                content_type=resposta.headers.get('Content-Type', 'application/json')
-            )
-        except requests.exceptions.RequestException:
-            return JsonResponse({"erro": f"O servidor do módulo '{modulo.nome}' está offline."}, status=502)
+                modulos_para_front.append({
+                    "nome": nome_modulo_formatado,
+                    "url_raiz": f"/{nome_modulo_pasta}/",
+                    "submodulos": submodulos_encontrados
+                })
 
-    except ModuloSistema.DoesNotExist:
-        return JsonResponse({"erro": f"Módulo '{nome_modulo}' não encontrado no banco dinâmico."}, status=404)
+    modulos_para_front = sorted(modulos_para_front, key=lambda x: x['nome'])
+
+
+    return render(request, "base_sesp/home_sesp.html", {"modulos": modulos_para_front})
