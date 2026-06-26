@@ -1,25 +1,26 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Planejamento - Dashboard{% endblock %}
-
-{% block extra_head %}
+{% extends 'base.html' %} {% load static %} {% block title %}Planejamento -
+Dashboard{% endblock %} {% block extra_head %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 
 <header class="topbar">
   <div class="search-box">
-    <input type="text" id="searchInputPlanejamento" class="form-control" placeholder="Buscar processo, descrição, observação ou unidade...">
+    <input
+      type="text"
+      id="searchInputPlanejamento"
+      class="form-control"
+      placeholder="Buscar processo, descrição, observação ou unidade..."
+    />
   </div>
   <div class="user-area"><span>{{ current_user.name }}</span></div>
-  <div class="logout"><button id="btnLogout" type="button">Sair</button></div>
 </header>
 
 <section class="page-header">
   <h1>Planejamento</h1>
-  <p>Visão estratégica do PCA e das demandas em planejamento, com foco em execução, risco e priorização.</p>
+  <p>
+    Visão estratégica do PCA e das demandas em planejamento, com foco em
+    execução, risco e priorização.
+  </p>
 </section>
 
 <section class="tabs-nav">
@@ -31,7 +32,9 @@
   <div class="col-xl-8">
     <div class="hero-card h-100">
       <h2 class="hero-title">Centro de inteligência do planejamento</h2>
-      <p class="hero-subtitle">Painel de execução, gargalos, risco e volume por unidade.</p>
+      <p class="hero-subtitle">
+        Painel de execução, gargalos, risco e volume por unidade.
+      </p>
 
       <div class="row g-3 mt-2">
         <div class="col-md-3">
@@ -61,10 +64,14 @@
       </div>
 
       <div class="mt-4">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div
+          class="d-flex justify-content-between align-items-center flex-wrap gap-2"
+        >
           <div>
             <div class="metric-label">Execução do planejamento</div>
-            <div class="text-muted" id="execucaoTexto">0% do total em execução ou concluído</div>
+            <div class="text-muted" id="execucaoTexto">
+              0% do total em execução ou concluído
+            </div>
           </div>
           <div class="d-flex gap-2 flex-wrap">
             <span class="badge text-bg-success">Concluído</span>
@@ -72,8 +79,8 @@
             <span class="badge text-bg-danger">Atrasado</span>
           </div>
         </div>
-        <div class="progress mt-2" style="height: 12px;">
-          <div class="progress-bar" id="execucaoBar" style="width: 0%;"></div>
+        <div class="progress mt-2" style="height: 12px">
+          <div class="progress-bar" id="execucaoBar" style="width: 0%"></div>
         </div>
       </div>
 
@@ -163,18 +170,26 @@
       <ul class="list-clean">
         <li>
           <div class="fw-semibold">PCA oficial</div>
-          <div class="text-muted">Visualizar, importar e auditar itens do PCA com Nº de Ordem e Tipo de Item fixos.</div>
+          <div class="text-muted">
+            Visualizar, importar e auditar itens do PCA com Nº de Ordem e Tipo
+            de Item fixos.
+          </div>
           <div class="mt-2">
             <a class="btn primary" href="/ui/planejamento/pca/">Abrir PCA</a>
           </div>
         </li>
         <li>
           <div class="fw-semibold">Uso gerencial</div>
-          <div class="text-muted">Essa área passa a apoiar decisão: atraso, concentração por unidade, pressão por modalidade e risco de execução.</div>
+          <div class="text-muted">
+            Essa área passa a apoiar decisão: atraso, concentração por unidade,
+            pressão por modalidade e risco de execução.
+          </div>
         </li>
         <li>
           <div class="fw-semibold">Ponto crítico</div>
-          <div class="text-muted">O foco é transformar dado em ação, não apenas manter cadastro.</div>
+          <div class="text-muted">
+            O foco é transformar dado em ação, não apenas manter cadastro.
+          </div>
         </li>
       </ul>
     </div>
@@ -186,7 +201,12 @@
   <div class="row g-3">
     <div class="col-md-4">
       <label class="field-label">Unidade</label>
-      <input type="text" id="fUnidade" class="form-control" placeholder="Ex: Londrina, Cascavel, Curitiba...">
+      <input
+        type="text"
+        id="fUnidade"
+        class="form-control"
+        placeholder="Ex: Londrina, Cascavel, Curitiba..."
+      />
     </div>
     <div class="col-md-4">
       <label class="field-label">Status</label>
@@ -200,7 +220,12 @@
     </div>
     <div class="col-md-4">
       <label class="field-label">Busca</label>
-      <input type="text" id="fBusca" class="form-control" placeholder="Processo, descrição, observação, modalidade...">
+      <input
+        type="text"
+        id="fBusca"
+        class="form-control"
+        placeholder="Processo, descrição, observação, modalidade..."
+      />
     </div>
   </div>
   <div class="form-actions mt-3">
@@ -211,7 +236,9 @@
 <p class="result-info" id="tblInfo">—</p>
 
 <section class="table-card">
-  <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+  <div
+    class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+  >
     <h2>Demandas em planejamento</h2>
     <span class="text-muted">Visão operacional resumida</span>
   </div>
@@ -231,155 +258,213 @@
         </tr>
       </thead>
       <tbody id="tblBody">
-        <tr><td colspan="8" class="text-center text-muted">Carregando...</td></tr>
+        <tr>
+          <td colspan="8" class="text-center text-muted">Carregando...</td>
+        </tr>
       </tbody>
     </table>
   </div>
 </section>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script>
-  const fmtBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+  const fmtBRL = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
   const pageSize = 20;
   let page = 0;
-  let chartStatus = null, chartUnidades = null, chartTipos = null, chartModalidade = null, chartFonte = null, chartMes = null;
+  let chartStatus = null,
+    chartUnidades = null,
+    chartTipos = null,
+    chartModalidade = null,
+    chartFonte = null,
+    chartMes = null;
 
   const chartOptionsBase = {
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
   };
 
-  async function apiGet(url){
-    const res = await fetch(url, { headers: { "Accept": "application/json" } });
+  async function apiGet(url) {
+    const res = await fetch(url, { headers: { Accept: "application/json" } });
     if (!res.ok) throw new Error(await res.text());
     return res.json();
   }
 
-  function fmt(v){ return (v === null || v === undefined || v === '') ? '—' : String(v); }
+  function fmt(v) {
+    return v === null || v === undefined || v === "" ? "—" : String(v);
+  }
 
-  function rebuildChart(prev, canvasId, config){
+  function rebuildChart(prev, canvasId, config) {
     if (prev) prev.destroy();
     config.options = {
       ...chartOptionsBase,
-      ...(config.options || {})
+      ...(config.options || {}),
     };
     return new Chart(document.getElementById(canvasId), config);
   }
 
-  function statusBadge(status){
-    const txt = {
-      planejado: 'Planejado',
-      em_execucao: 'Em execução',
-      concluido: 'Concluído',
-      atrasado: 'Atrasado'
-    }[status] || 'Planejado';
+  function statusBadge(status) {
+    const txt =
+      {
+        planejado: "Planejado",
+        em_execucao: "Em execução",
+        concluido: "Concluído",
+        atrasado: "Atrasado",
+      }[status] || "Planejado";
     return `<span class="status-badge status-${status}">${txt}</span>`;
   }
 
-  async function loadKPIs(){
-    const m = await apiGet('/api/planejamento/metrics');
+  async function loadKPIs() {
+    const m = await apiGet("/api/planejamento/metrics");
 
-    document.getElementById('kpiTotal').innerText = m.total_demandas ?? 0;
-    document.getElementById('kpiValor').innerText = fmtBRL.format(m.valor_planejado ?? 0);
-    document.getElementById('kpiPrior').innerText = m.demandas_prioritarias ?? 0;
-    document.getElementById('kpiEmenda').innerText = m.demandas_emenda ?? 0;
-    document.getElementById('kpiConcluidas').innerText = m.concluidos ?? 0;
-    document.getElementById('kpiExecucao').innerText = m.em_execucao ?? 0;
-    document.getElementById('kpiAtrasadas').innerText = m.atrasados ?? 0;
+    document.getElementById("kpiTotal").innerText = m.total_demandas ?? 0;
+    document.getElementById("kpiValor").innerText = fmtBRL.format(
+      m.valor_planejado ?? 0,
+    );
+    document.getElementById("kpiPrior").innerText =
+      m.demandas_prioritarias ?? 0;
+    document.getElementById("kpiEmenda").innerText = m.demandas_emenda ?? 0;
+    document.getElementById("kpiConcluidas").innerText = m.concluidos ?? 0;
+    document.getElementById("kpiExecucao").innerText = m.em_execucao ?? 0;
+    document.getElementById("kpiAtrasadas").innerText = m.atrasados ?? 0;
 
     const pct = Number(m.execucao_percentual ?? 0);
-    document.getElementById('execucaoTexto').innerText = `${pct}% do total em execução ou concluído`;
-    document.getElementById('execucaoBar').style.width = `${Math.max(0, Math.min(100, pct))}%`;
+    document.getElementById("execucaoTexto").innerText =
+      `${pct}% do total em execução ou concluído`;
+    document.getElementById("execucaoBar").style.width =
+      `${Math.max(0, Math.min(100, pct))}%`;
 
-    chartStatus = rebuildChart(chartStatus, 'chartStatus', {
-      type: 'doughnut',
+    chartStatus = rebuildChart(chartStatus, "chartStatus", {
+      type: "doughnut",
       data: {
-        labels: ['Planejado', 'Em execução', 'Concluído', 'Atrasado'],
-        datasets: [{ data: [m.planejados ?? 0, m.em_execucao ?? 0, m.concluidos ?? 0, m.atrasados ?? 0] }]
+        labels: ["Planejado", "Em execução", "Concluído", "Atrasado"],
+        datasets: [
+          {
+            data: [
+              m.planejados ?? 0,
+              m.em_execucao ?? 0,
+              m.concluidos ?? 0,
+              m.atrasados ?? 0,
+            ],
+          },
+        ],
       },
-      options: { plugins: { legend: { position: 'bottom' } } }
+      options: { plugins: { legend: { position: "bottom" } } },
     });
   }
 
-  async function loadCharts(){
+  async function loadCharts() {
     const [unidades, tipos, modalidades, fontes, meses] = await Promise.all([
-      apiGet('/api/planejamento/por_unidade?top=10'),
-      apiGet('/api/planejamento/top_tipos?top=8'),
-      apiGet('/api/planejamento/por_modalidade'),
-      apiGet('/api/planejamento/por_fonte_recurso'),
-      apiGet('/api/planejamento/por_mes')
+      apiGet("/api/planejamento/por_unidade?top=10"),
+      apiGet("/api/planejamento/top_tipos?top=8"),
+      apiGet("/api/planejamento/por_modalidade"),
+      apiGet("/api/planejamento/por_fonte_recurso"),
+      apiGet("/api/planejamento/por_mes"),
     ]);
 
-    chartUnidades = rebuildChart(chartUnidades, 'chartUnidades', {
-      type: 'bar',
-      data: { labels: unidades.map(x => x.unidade), datasets: [{ data: unidades.map(x => x.quantidade) }] },
-      options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+    chartUnidades = rebuildChart(chartUnidades, "chartUnidades", {
+      type: "bar",
+      data: {
+        labels: unidades.map((x) => x.unidade),
+        datasets: [{ data: unidades.map((x) => x.quantidade) }],
+      },
+      options: {
+        indexAxis: "y",
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, ticks: { precision: 0 } } },
+      },
     });
 
-    chartTipos = rebuildChart(chartTipos, 'chartTipos', {
-      type: 'bar',
-      data: { labels: tipos.map(x => x.tipo), datasets: [{ data: tipos.map(x => x.quantidade) }] },
-      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+    chartTipos = rebuildChart(chartTipos, "chartTipos", {
+      type: "bar",
+      data: {
+        labels: tipos.map((x) => x.tipo),
+        datasets: [{ data: tipos.map((x) => x.quantidade) }],
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+      },
     });
 
-    chartModalidade = rebuildChart(chartModalidade, 'chartModalidade', {
-      type: 'doughnut',
-      data: { labels: modalidades.map(x => x.modalidade), datasets: [{ data: modalidades.map(x => x.quantidade) }] },
-      options: { plugins: { legend: { position: 'bottom' } } }
+    chartModalidade = rebuildChart(chartModalidade, "chartModalidade", {
+      type: "doughnut",
+      data: {
+        labels: modalidades.map((x) => x.modalidade),
+        datasets: [{ data: modalidades.map((x) => x.quantidade) }],
+      },
+      options: { plugins: { legend: { position: "bottom" } } },
     });
 
-    chartFonte = rebuildChart(chartFonte, 'chartFonte', {
-      type: 'doughnut',
-      data: { labels: fontes.map(x => x.fonte_recurso), datasets: [{ data: fontes.map(x => x.quantidade) }] },
-      options: { plugins: { legend: { position: 'bottom' } } }
+    chartFonte = rebuildChart(chartFonte, "chartFonte", {
+      type: "doughnut",
+      data: {
+        labels: fontes.map((x) => x.fonte_recurso),
+        datasets: [{ data: fontes.map((x) => x.quantidade) }],
+      },
+      options: { plugins: { legend: { position: "bottom" } } },
     });
 
-    chartMes = rebuildChart(chartMes, 'chartMes', {
-      type: 'line',
-      data: { labels: meses.map(x => x.mes), datasets: [{ data: meses.map(x => x.quantidade), tension: 0.3, fill: false }] },
-      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+    chartMes = rebuildChart(chartMes, "chartMes", {
+      type: "line",
+      data: {
+        labels: meses.map((x) => x.mes),
+        datasets: [
+          { data: meses.map((x) => x.quantidade), tension: 0.3, fill: false },
+        ],
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+      },
     });
   }
 
-  async function loadAlertas(){
-    const data = await apiGet('/api/planejamento/alertas?limit=2');
-    const el = document.getElementById('listaAlertas');
+  async function loadAlertas() {
+    const data = await apiGet("/api/planejamento/alertas?limit=2");
+    const el = document.getElementById("listaAlertas");
 
-    if (!data.length){
-      el.innerHTML = '<li class="text-muted">Nenhum alerta relevante encontrado.</li>';
+    if (!data.length) {
+      el.innerHTML =
+        '<li class="text-muted">Nenhum alerta relevante encontrado.</li>';
       return;
     }
 
-    el.innerHTML = data.slice(0, 2).map(a => `
+    el.innerHTML = data
+      .slice(0, 2)
+      .map(
+        (a) => `
       <li>
         <div class="alert-item">
-          <span class="alert-dot ${a.tipo === 'atrasado' ? 'dot-red' : 'dot-yellow'}"></span>
+          <span class="alert-dot ${a.tipo === "atrasado" ? "dot-red" : "dot-yellow"}"></span>
           <div>
-            <div class="fw-semibold">${fmt(a.processo)} ${a.dias !== null && a.dias !== undefined ? `• ${a.dias} dias` : ''}</div>
+            <div class="fw-semibold">${fmt(a.processo)} ${a.dias !== null && a.dias !== undefined ? `• ${a.dias} dias` : ""}</div>
             <div>${fmt(a.mensagem)}</div>
             <div class="text-muted">${fmt(a.descricao)}</div>
           </div>
         </div>
       </li>
-    `).join('');
+    `,
+      )
+      .join("");
   }
 
-  function renderTable(data){
-    const body = document.getElementById('tblBody');
-    body.innerHTML = '';
+  function renderTable(data) {
+    const body = document.getElementById("tblBody");
+    body.innerHTML = "";
 
     const itens = data.itens || [];
 
-    if (!itens.length){
+    if (!itens.length) {
       body.innerHTML = `<tr><td colspan="8" class="text-center text-muted">Nenhum registro encontrado.</td></tr>`;
-      document.getElementById('tblInfo').innerText = `0 de ${data.total ?? 0}`;
+      document.getElementById("tblInfo").innerText = `0 de ${data.total ?? 0}`;
       return;
     }
 
-    itens.forEach(it => {
-      const tr = document.createElement('tr');
+    itens.forEach((it) => {
+      const tr = document.createElement("tr");
       tr.innerHTML = `
         <td class="fw-semibold">${fmt(it.numero_processo)}</td>
         <td>${fmt(it.descricao)}</td>
@@ -393,47 +478,51 @@
       body.appendChild(tr);
     });
 
-    const ini = (page * pageSize) + 1;
-    const fim = (page * pageSize) + itens.length;
-    document.getElementById('tblInfo').innerText = `${ini}-${fim} de ${data.total ?? 0}`;
+    const ini = page * pageSize + 1;
+    const fim = page * pageSize + itens.length;
+    document.getElementById("tblInfo").innerText =
+      `${ini}-${fim} de ${data.total ?? 0}`;
   }
 
-  async function loadTable(){
-    const unidade = document.getElementById('fUnidade').value.trim();
-    const busca = document.getElementById('fBusca').value.trim();
-    const status = document.getElementById('fStatus').value;
+  async function loadTable() {
+    const unidade = document.getElementById("fUnidade").value.trim();
+    const busca = document.getElementById("fBusca").value.trim();
+    const status = document.getElementById("fStatus").value;
 
     const params = new URLSearchParams();
-    params.set('skip', String(page * pageSize));
-    params.set('limit', String(pageSize));
+    params.set("skip", String(page * pageSize));
+    params.set("limit", String(pageSize));
 
-    if (unidade) params.set('unidade', unidade);
-    if (busca) params.set('busca', busca);
-    if (status) params.set('status', status);
+    if (unidade) params.set("unidade", unidade);
+    if (busca) params.set("busca", busca);
+    if (status) params.set("status", status);
 
-    const data = await apiGet('/api/planejamento/lista?' + params.toString());
+    const data = await apiGet("/api/planejamento/lista?" + params.toString());
     renderTable(data);
   }
 
-  document.getElementById('btnFiltrar').addEventListener('click', () => {
+  document.getElementById("btnFiltrar").addEventListener("click", () => {
     page = 0;
     loadTable();
   });
 
-  document.getElementById('searchInputPlanejamento').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      document.getElementById('fBusca').value = e.target.value || '';
-      page = 0;
-      loadTable();
-    }
-  });
+  document
+    .getElementById("searchInputPlanejamento")
+    .addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        document.getElementById("fBusca").value = e.target.value || "";
+        page = 0;
+        loadTable();
+      }
+    });
 
   (async () => {
     try {
       await Promise.all([loadKPIs(), loadCharts(), loadAlertas(), loadTable()]);
     } catch (e) {
       console.error(e);
-      document.getElementById('tblBody').innerHTML = `<tr><td colspan="8" class="text-center text-danger">Erro ao carregar: ${String(e)}</td></tr>`;
+      document.getElementById("tblBody").innerHTML =
+        `<tr><td colspan="8" class="text-center text-danger">Erro ao carregar: ${String(e)}</td></tr>`;
     }
   })();
 </script>

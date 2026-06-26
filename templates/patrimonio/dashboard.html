@@ -1,182 +1,182 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}GAA Patrimônio - Dashboard{% endblock %}
-
-{% block extra_head %}
+{% extends 'base.html' %} {% load static %} {% block title %}GAA Patrimônio -
+Dashboard{% endblock %} {% block extra_head %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 
 <header class="topbar">
-    <div class="search-box">
-        <input type="text" id="searchInputPatrimonio" class="form-control" placeholder="Buscar bem (tombamento, descrição, serial)...">
-    </div>
-    <div class="user-area">
-        <span>{{ current_user.name }}</span>
-    </div>
-    <div class="logout">
-        <button id="btnLogout" type="button">Sair</button>
-    </div>
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInputPatrimonio"
+      class="form-control"
+      placeholder="Buscar bem (tombamento, descrição, serial)..."
+    />
+  </div>
+  <div class="user-area">
+    <span>{{ current_user.name }}</span>
+  </div>
+  <div class="logout"></div>
 </header>
 
 <section class="page-header">
-    <h1>Dashboard de Patrimônio</h1>
-    <p>Visão geral dos bens patrimoniais, pendências e conformidade</p>
+  <h1>Dashboard de Patrimônio</h1>
+  <p>Visão geral dos bens patrimoniais, pendências e conformidade</p>
 </section>
 
 <section class="tabs-nav">
-    <a href="/ui/patrimonio/" class="tab-item active">Dashboard</a>
-    <a href="/ui/patrimonio/bens/" class="tab-item">Bens</a>
-    <a href="/ui/patrimonio/bens/novo/" class="tab-item">Novo Bem</a>
-    <a href="/ui/patrimonio/relatorios/" class="tab-item">Relatórios</a>
+  <a href="/ui/patrimonio/" class="tab-item active">Dashboard</a>
+  <a href="/ui/patrimonio/bens/" class="tab-item">Bens</a>
+  <a href="/ui/patrimonio/bens/novo/" class="tab-item">Novo Bem</a>
+  <a href="/ui/patrimonio/relatorios/" class="tab-item">Relatórios</a>
 </section>
 
 <div class="row g-4 mb-4">
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
-            <span class="metric-label">Total de Bens</span>
-            <span class="metric-value" id="metric-total-bens">0</span>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100">
+      <span class="metric-label">Total de Bens</span>
+      <span class="metric-value" id="metric-total-bens">0</span>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
-            <span class="metric-label">Ativos</span>
-            <span class="metric-value" id="metric-ativos">0</span>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100">
+      <span class="metric-label">Ativos</span>
+      <span class="metric-value" id="metric-ativos">0</span>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
-            <span class="metric-label">Sem Responsável</span>
-            <span class="metric-value" id="metric-sem-responsavel">0</span>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100">
+      <span class="metric-label">Sem Responsável</span>
+      <span class="metric-value" id="metric-sem-responsavel">0</span>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
-            <span class="metric-label">Sem Local</span>
-            <span class="metric-value" id="metric-sem-local">0</span>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100">
+      <span class="metric-label">Sem Local</span>
+      <span class="metric-value" id="metric-sem-local">0</span>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100">
-            <span class="metric-label">Em Manutenção</span>
-            <span class="metric-value" id="metric-manutencao">0</span>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100">
+      <span class="metric-label">Em Manutenção</span>
+      <span class="metric-value" id="metric-manutencao">0</span>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card warning h-100">
-            <span class="metric-label">Garantia ≤ 60 dias</span>
-            <span class="metric-value" id="metric-garantia">0</span>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card warning h-100">
+      <span class="metric-label">Garantia ≤ 60 dias</span>
+      <span class="metric-value" id="metric-garantia">0</span>
     </div>
+  </div>
 </div>
 
 <div class="row g-4 mb-4">
-    <div class="col-lg-6">
-        <div class="chart-card h-100">
-            <div class="chart-header">
-                <h2>Bens por Situação</h2>
-            </div>
-            <canvas id="chartSituacaoPatrimonio"></canvas>
-        </div>
+  <div class="col-lg-6">
+    <div class="chart-card h-100">
+      <div class="chart-header">
+        <h2>Bens por Situação</h2>
+      </div>
+      <canvas id="chartSituacaoPatrimonio"></canvas>
     </div>
+  </div>
 
-    <div class="col-lg-6">
-        <div class="chart-card h-100">
-            <div class="chart-header">
-                <h2>Bens por Unidade</h2>
-            </div>
-            <canvas id="chartUnidadePatrimonio"></canvas>
-        </div>
+  <div class="col-lg-6">
+    <div class="chart-card h-100">
+      <div class="chart-header">
+        <h2>Bens por Unidade</h2>
+      </div>
+      <canvas id="chartUnidadePatrimonio"></canvas>
     </div>
+  </div>
 </div>
 
 <section class="table-card">
-    <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <h2>Últimos Bens Cadastrados</h2>
-        <span class="text-muted">Registros mais recentes</span>
-    </div>
+  <div
+    class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+  >
+    <h2>Últimos Bens Cadastrados</h2>
+    <span class="text-muted">Registros mais recentes</span>
+  </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead>
-            <tr>
-                <th>Tombamento</th>
-                <th>Descrição</th>
-                <th>Unidade</th>
-                <th>Local</th>
-                <th>Responsável</th>
-                <th>Situação</th>
-            </tr>
-            </thead>
-            <tbody id="table-bens-recentes">
-            <tr>
-                <td colspan="6" class="text-center text-muted">Carregando...</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Tombamento</th>
+          <th>Descrição</th>
+          <th>Unidade</th>
+          <th>Local</th>
+          <th>Responsável</th>
+          <th>Situação</th>
+        </tr>
+      </thead>
+      <tbody id="table-bens-recentes">
+        <tr>
+          <td colspan="6" class="text-center text-muted">Carregando...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script>
-    function fmt(v) {
-        if (v === null || v === undefined) return "";
-        return String(v);
+  function fmt(v) {
+    if (v === null || v === undefined) return "";
+    return String(v);
+  }
+
+  function countBy(arr, key) {
+    const m = {};
+    for (const x of arr) {
+      const k = x && x[key] ? String(x[key]) : "Não informado";
+      m[k] = (m[k] || 0) + 1;
+    }
+    return m;
+  }
+
+  const chartOptionsBase = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
+  let chartSituacao = null;
+  let chartUnidade = null;
+
+  async function loadKPIs() {
+    const r = await fetch("/api/patrimonio/kpis");
+    const d = await r.json();
+
+    document.getElementById("metric-total-bens").innerText = d.total_bens ?? 0;
+    document.getElementById("metric-ativos").innerText = d.total_ativos ?? 0;
+    document.getElementById("metric-sem-responsavel").innerText =
+      d.sem_responsavel ?? 0;
+    document.getElementById("metric-sem-local").innerText = d.sem_local ?? 0;
+    document.getElementById("metric-manutencao").innerText =
+      d.em_manutencao ?? 0;
+    document.getElementById("metric-garantia").innerText =
+      d.garantia_ate_60d ?? 0;
+  }
+
+  async function loadRecent() {
+    const r = await fetch("/api/patrimonio/bens");
+    const bens = await r.json();
+
+    const rec = (bens || []).slice(-12).reverse();
+    const tb = document.getElementById("table-bens-recentes");
+    tb.innerHTML = "";
+
+    if (!rec.length) {
+      tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Nenhum bem cadastrado.</td></tr>`;
     }
 
-    function countBy(arr, key) {
-        const m = {};
-        for (const x of arr) {
-            const k = (x && x[key]) ? String(x[key]) : "Não informado";
-            m[k] = (m[k] || 0) + 1;
-        }
-        return m;
-    }
-
-    const chartOptionsBase = {
-        responsive: true,
-        maintainAspectRatio: false
-    };
-
-    let chartSituacao = null;
-    let chartUnidade = null;
-
-    async function loadKPIs() {
-        const r = await fetch("/api/patrimonio/kpis");
-        const d = await r.json();
-
-        document.getElementById("metric-total-bens").innerText = d.total_bens ?? 0;
-        document.getElementById("metric-ativos").innerText = d.total_ativos ?? 0;
-        document.getElementById("metric-sem-responsavel").innerText = d.sem_responsavel ?? 0;
-        document.getElementById("metric-sem-local").innerText = d.sem_local ?? 0;
-        document.getElementById("metric-manutencao").innerText = d.em_manutencao ?? 0;
-        document.getElementById("metric-garantia").innerText = d.garantia_ate_60d ?? 0;
-    }
-
-    async function loadRecent() {
-        const r = await fetch("/api/patrimonio/bens");
-        const bens = await r.json();
-
-        const rec = (bens || []).slice(-12).reverse();
-        const tb = document.getElementById("table-bens-recentes");
-        tb.innerHTML = "";
-
-        if (!rec.length) {
-            tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Nenhum bem cadastrado.</td></tr>`;
-        }
-
-        for (const b of rec) {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
+    for (const b of rec) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
                 <td><a href="/ui/patrimonio/bens/${fmt(b.tombamento)}/">${fmt(b.tombamento)}</a></td>
                 <td>${fmt(b.descricao)}</td>
                 <td>${fmt(b.unidade_atual)}</td>
@@ -184,66 +184,74 @@
                 <td>${fmt(b.responsavel_nome)}</td>
                 <td><span class="status-pill">${fmt(b.situacao)}</span></td>
             `;
-            tb.appendChild(tr);
-        }
-
-        const bySit = countBy(bens || [], "situacao");
-        const byUni = countBy(bens || [], "unidade_atual");
-
-        const sitLabels = Object.keys(bySit);
-        const sitData = sitLabels.map(k => bySit[k]);
-
-        const uniLabels = Object.keys(byUni).slice(0, 10);
-        const uniData = uniLabels.map(k => byUni[k]);
-
-        if (chartSituacao) chartSituacao.destroy();
-        if (chartUnidade) chartUnidade.destroy();
-
-        chartSituacao = new Chart(document.getElementById("chartSituacaoPatrimonio"), {
-            type: "doughnut",
-            data: {
-                labels: sitLabels,
-                datasets: [{ data: sitData }]
-            },
-            options: {
-                ...chartOptionsBase,
-                plugins: {
-                    legend: { position: "bottom" }
-                }
-            }
-        });
-
-        chartUnidade = new Chart(document.getElementById("chartUnidadePatrimonio"), {
-            type: "bar",
-            data: {
-                labels: uniLabels,
-                datasets: [{ data: uniData }]
-            },
-            options: {
-                ...chartOptionsBase,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { precision: 0 }
-                    }
-                }
-            }
-        });
+      tb.appendChild(tr);
     }
 
-    document.getElementById("searchInputPatrimonio").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            const q = encodeURIComponent(e.target.value || "");
-            window.location.href = `/ui/patrimonio/bens/?q=${q}`;
-        }
+    const bySit = countBy(bens || [], "situacao");
+    const byUni = countBy(bens || [], "unidade_atual");
+
+    const sitLabels = Object.keys(bySit);
+    const sitData = sitLabels.map((k) => bySit[k]);
+
+    const uniLabels = Object.keys(byUni).slice(0, 10);
+    const uniData = uniLabels.map((k) => byUni[k]);
+
+    if (chartSituacao) chartSituacao.destroy();
+    if (chartUnidade) chartUnidade.destroy();
+
+    chartSituacao = new Chart(
+      document.getElementById("chartSituacaoPatrimonio"),
+      {
+        type: "doughnut",
+        data: {
+          labels: sitLabels,
+          datasets: [{ data: sitData }],
+        },
+        options: {
+          ...chartOptionsBase,
+          plugins: {
+            legend: { position: "bottom" },
+          },
+        },
+      },
+    );
+
+    chartUnidade = new Chart(
+      document.getElementById("chartUnidadePatrimonio"),
+      {
+        type: "bar",
+        data: {
+          labels: uniLabels,
+          datasets: [{ data: uniData }],
+        },
+        options: {
+          ...chartOptionsBase,
+          plugins: {
+            legend: { display: false },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { precision: 0 },
+            },
+          },
+        },
+      },
+    );
+  }
+
+  document
+    .getElementById("searchInputPatrimonio")
+    .addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const q = encodeURIComponent(e.target.value || "");
+        window.location.href = `/ui/patrimonio/bens/?q=${q}`;
+      }
     });
 
-    (async () => {
-        await loadKPIs();
-        await loadRecent();
-    })();
+  (async () => {
+    await loadKPIs();
+    await loadRecent();
+  })();
 </script>
 {% endblock %}

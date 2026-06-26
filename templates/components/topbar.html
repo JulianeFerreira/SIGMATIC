@@ -1,29 +1,65 @@
 <header
-  class="topbar d-flex justify-content-between align-items-center mb-4 px-4 py-3 bg-white border-bottom shadow-sm"
+  class="topbar d-flex justify-content-between align-items-center mb-4 px-4 py-3 border-bottom shadow-sm"
+  style="
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1000;
+  "
 >
-  <div class="search-box">
+  <div class="search-box w-25">
     <input
       type="text"
       id="searchInput"
-      class="form-control"
+      class="form-control shadow-sm rounded-pill px-3"
       placeholder="Buscar processo..."
     />
   </div>
 
   <div class="user-area d-flex align-items-center gap-3">
-    <span class="text-muted fw-medium">{{ current_user.name }}</span>
-
-    <a href="/" class="btn btn-outline-primary btn-sm fw-bold">
-      &larr; Menu Principal
+    <a
+      href="/"
+      class="btn btn-light btn-sm fw-bold text-primary border shadow-sm d-flex align-items-center gap-2 rounded-pill px-3 transition-all"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        fill="currentColor"
+        class="bi bi-grid-fill"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"
+        />
+      </svg>
+      Menu Principal
     </a>
 
     <div class="logout">
       <button
         id="btnLogout"
         type="button"
-        class="btn btn-danger btn-sm fw-bold"
+        class="btn btn-danger btn-sm fw-bold rounded-pill px-3 shadow-sm d-flex align-items-center gap-2"
       >
         Sair
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          fill="currentColor"
+          class="bi bi-box-arrow-right"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
+          />
+          <path
+            fill-rule="evenodd"
+            d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+          />
+        </svg>
       </button>
     </div>
   </div>

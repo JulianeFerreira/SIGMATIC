@@ -7,7 +7,7 @@ urlpatterns = [
     path('pesquisa/', views.pesquisa, name='pesquisa'),
     
     # =======================================================
-    # 2. O SISTEMA Contratações
+    # 2. O SISTEMA CONTRATAÇÕES
     # =======================================================
     path('', include('apps.base.core.urls')),
     
