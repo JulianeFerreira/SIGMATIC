@@ -100,6 +100,7 @@ PG_PORT = os.getenv('DB_PORT', '5432')
 
 usar_postgres = False
 
+
 if PG_HOST and PG_NAME:
     try:
         print(f"Tentando conectar ao PostgreSQL em {PG_HOST}...")
