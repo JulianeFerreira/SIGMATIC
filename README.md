@@ -1,35 +1,28 @@
-```markdown
-# Sigmatic 📊
-> **Sistema de Governança e Gestão de CTIC - SESP/PR**
+# Sigmatic
+
+> **Sistema de Governança e Gestão de CTIC — SESP/PR**
+
+O **Sigmatic** é um sistema informatizado e estruturado de forma modular, desenvolvido para auxiliar os processos de governança e gestão da Coordenadoria de Tecnologia da Informação e Comunicação (CTIC). A plataforma permite o registro, o acompanhamento e a consolidação das informações relacionadas às ações e iniciativas da área de TIC no âmbito da **Secretaria da Segurança Pública do Paraná (SESP/PR)**.
 
 ---
 
-## 📋 Descrição do Projeto
-
-O **Sigmatic** é um sistema informatizado, estruturado de forma modular, desenvolvido para auxiliar os processos de governança e gestão da Coordenadoria de Tecnologia da Informação e Comunicação (CTIC). A plataforma permite o registro, o acompanhamento e a consolidação das informações relacionadas às ações e iniciativas da área de TIC no âmbito da **Secretaria da Segurança Pública do Paraná (SESP/PR)**.
-
----
-
-## 🛠️ Pré-requisitos
+### 📋 Pré-requisitos
 
 Antes de iniciar, certifique-se de ter instalado em sua máquina local:
 * **Python 3.11+**
-* **PostgreSQL** (Instância local ativa)
+* **PostgreSQL** (com instância local ativa)
 * **Git**
 
 ---
 
-## 🚀 Passo a Passo para Configuração Local
+### 🚀 Configuração Local
 
-Siga as instruções abaixo para clonar o projeto, configurar o banco de dados padronizado, instalar as dependências e rodar as migrações do Django.
+#### 1. Clonar o Repositório
+Abra o seu terminal e execute os comandos abaixo para baixar o projeto e entrar na pasta:
 
-### 1. Clonar o Repositório
-Abra o seu terminal e baixe a versão mais recente do código:
 ```bash
-git clone [https://github.com/Public-Brasil-Code/SIGMATIC](https://github.com/Public-Brasil-Code/SIGMATIC)
+git clone https://github.com/Public-Brasil-Code/SIGMATIC
 cd SIGMATIC
-
-```
 
 ### 2. Instalar as Dependências (Requirements)
 
