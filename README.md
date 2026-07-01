@@ -78,7 +78,7 @@ python manage.py migrate
 
 ---
 
-## 🏃‍♂️ Executando a Aplicação
+## Executando a Aplicação
 
 Após concluir a instalação das dependências, configuração do `.env` e execução do `migrate`, inicie o servidor de desenvolvimento do Django:
 
