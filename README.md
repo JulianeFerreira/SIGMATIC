@@ -15,7 +15,7 @@ Antes de iniciar, certifique-se de ter instalado em sua máquina local:
 
 ---
 
-### 🚀 Configuração Local
+### Configuração Local
 
 #### 1. Clonar o Repositório
 Abra o seu terminal e execute os comandos abaixo para baixar o projeto e entrar na pasta:
