@@ -101,5 +101,4 @@ O sistema estará disponível localmente no endereço: `http://127.0.0.1:8000/`
 ## 👥 Contribuição e Desenvolvimento
 
 * Sempre faça um `git pull origin <dev>` antes de iniciar uma nova feature para garantir que está com o esquema de banco padronizado atualizado.
-
-```
+''
