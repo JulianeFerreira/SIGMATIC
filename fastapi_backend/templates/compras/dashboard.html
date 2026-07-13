@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}GAA Compras - Dashboard{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<header class="topbar">
+    <div class="search-box">
+        <input type="text" id="searchInput" class="form-control" placeholder="Buscar processo...">
+    </div>
+
+    <div class="user-area">
+        <span>{{ current_user.name }}</span>
+    </div>
+
+    <div class="logout">
+        <button id="btnLogout" type="button">Sair</button>
+    </div>
+</header>
+
+<section class="page-header">
+    <h1>Dashboard de Compras</h1>
+    <p>Visão geral dos processos de compra e licitações.</p>
+</section>
+
+<section class="tabs-nav">
+    <a href="/" class="tab-item active">Dashboard</a>
+    <a href="/ui/processos/" class="tab-item">Processos</a>
+    <a href="/ui/processos/novo/" class="tab-item">Novo Processo</a>
+    <a href="/ui/relatorios/" class="tab-item">Relatórios</a>
+</section>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
+            <span class="metric-label">Total de Processos</span>
+            <span class="metric-value" id="metric-total">0</span>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
+            <span class="metric-label">Valor Total</span>
+            <span class="metric-value" id="metric-valor">R$ 0,00</span>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
+            <span class="metric-label">Finalizados</span>
+            <span class="metric-value" id="metric-finalizados">0</span>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
+            <span class="metric-label">Tramitando</span>
+            <span class="metric-value" id="metric-tramitando">0</span>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card h-100">
+            <span class="metric-label">Arquivados</span>
+            <span class="metric-value" id="metric-arquivados">0</span>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-2">
+        <div class="metric-card warning h-100">
+            <span class="metric-label">Atrasados</span>
+            <span class="metric-value" id="metric-atrasados">0</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="chart-card h-100">
+            <div class="chart-header">
+                <h2>Distribuição por Modalidade</h2>
+            </div>
+            <canvas id="chartModalidade"></canvas>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="chart-card h-100">
+            <div class="chart-header">
+                <h2>Processos por Situação</h2>
+            </div>
+            <canvas id="chartSituacao"></canvas>
+        </div>
+    </div>
+</div>
+
+<section class="table-card">
+    <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <h2>Lista de Processos</h2>
+        <span class="text-muted">Resumo dos processos cadastrados</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th>Processo</th>
+                <th>Descrição</th>
+                <th>Unidade</th>
+                <th>Valor</th>
+                <th>Modalidade</th>
+                <th>Situação</th>
+                <th>Data</th>
+            </tr>
+            </thead>
+            <tbody id="table-processos">
+            <tr>
+                <td colspan="7" class="text-center text-muted">Carregando...</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

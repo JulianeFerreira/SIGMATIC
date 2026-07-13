@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}GAA Patrimônio - Detalhes do Bem{% endblock %}
+
+{% block content %}
+
+<main data-tombamento="{{ tombamento }}">
+
+    <header class="topbar">
+        <div class="search-box">
+            <input type="text" class="form-control" placeholder="Buscar bem..." disabled>
+        </div>
+
+        <div class="topbar-actions">
+            <button class="btn secondary" id="btnVoltarBem">Voltar</button>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <h1 id="tituloBem">Bem {{ tombamento }}</h1>
+        <p id="subtituloBem">Carregando detalhes do bem...</p>
+    </section>
+
+    <section class="tabs-nav">
+        <a href="/ui/patrimonio/" class="tab-item">Dashboard</a>
+        <a href="/ui/patrimonio/bens/" class="tab-item active">Bens</a>
+        <a href="/ui/patrimonio/bens/novo/" class="tab-item">Novo Bem</a>
+        <a href="/ui/patrimonio/relatorios/" class="tab-item">Relatórios</a>
+    </section>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <h2>Identificação</h2>
+
+                <div class="detail-field">
+                    <span class="detail-label">Tombamento</span>
+                    <span class="detail-value" id="det-tombamento"></span>
+                </div>
+
+                <div class="detail-field">
+                    <span class="detail-label">Descrição</span>
+                    <span class="detail-value" id="det-descricao"></span>
+                </div>
+
+                <div class="detail-field">
+                    <span class="detail-label">Situação</span>
+                    <span class="detail-value">
+                        <span class="status-pill" id="det-situacao"></span>
+                    </span>
+                </div>
+
+                <div class="detail-field">
+                    <span class="detail-label">Categoria</span>
+                    <span class="detail-value" id="det-categoria"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <h2>Localização</h2>
+
+                <div class="detail-field">
+                    <span class="detail-label">Unidade Atual</span>
+                    <span class="detail-value" id="det-unidade"></span>
+                </div>
+
+                <div class="detail-field">
+                    <span class="detail-label">Local Físico</span>
+                    <span class="detail-value" id="det-local"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <h2>Responsável</h2>
+
+                <div class="detail-field">
+                    <span class="detail-label">Nome</span>
+                    <span class="detail-value" id="det-resp-nome"></span>
+                </div>
+
+                <div class="detail-field">
+                    <span class="detail-label">Matrícula</span>
+                    <span class="detail-value" id="det-resp-matricula"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="card mb-4">
+        <h2>Transferência</h2>
+
+        <div class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="field-label">Para unidade *</label>
+                <input class="form-control" id="para_unidade" placeholder="Ex: UETC Londrina">
+            </div>
+
+            <div class="col-md-5">
+                <label class="field-label">Motivo</label>
+                <input class="form-control" id="motivo" placeholder="Ex: Remanejamento / troca de setor">
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn primary w-100" id="btnTransferir" type="button">Transferir</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="table-card">
+        <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h2>Histórico de Movimentações</h2>
+            <span class="text-muted">Transferências e alterações vinculadas ao bem</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>De</th>
+                    <th>Para</th>
+                    <th>Motivo</th>
+                    <th>Usuário</th>
+                </tr>
+                </thead>
+                <tbody id="tabela-movimentacoes">
+                <tr>
+                    <td colspan="6" class="text-center text-muted">Carregando...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function fmt(v){
+        return (v === null || v === undefined) ? "" : String(v);
+    }
+
+    function setStatusPill(el, value){
+        el.innerText = value || "—";
+    }
+
+    const tombamento = document.querySelector("main").dataset.tombamento;
+
+    document.getElementById("btnVoltarBem").addEventListener("click", () => {
+        window.location.href = "/ui/patrimonio/bens/";
+    });
+
+    document.getElementById("btnTransferir").addEventListener("click", async () => {
+        const para_unidade = document.getElementById("para_unidade").value || "";
+        const motivo = document.getElementById("motivo").value || "";
+
+        if (!para_unidade.trim()){
+            alert("Informe a unidade de destino.");
+            return;
+        }
+
+        const r = await fetch(`/api/patrimonio/bens/${encodeURIComponent(tombamento)}/transferir`, {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                para_unidade,
+                motivo
+            })
+        });
+
+        if (!r.ok){
+            alert(await r.text());
+            return;
+        }
+
+        await load();
+
+        document.getElementById("para_unidade").value = "";
+        document.getElementById("motivo").value = "";
+    });
+
+    async function load(){
+        const r = await fetch(`/api/patrimonio/bens/${encodeURIComponent(tombamento)}`);
+
+        if (!r.ok){
+            document.getElementById("subtituloBem").innerText = "Não foi possível carregar este bem.";
+            return;
+        }
+
+        const d = await r.json();
+
+        document.getElementById("subtituloBem").innerText = fmt(d.descricao);
+
+        document.getElementById("det-tombamento").innerText = fmt(d.tombamento);
+        document.getElementById("det-descricao").innerText = fmt(d.descricao);
+
+        setStatusPill(document.getElementById("det-situacao"), d.situacao);
+
+        document.getElementById("det-categoria").innerText = fmt(d.categoria);
+        document.getElementById("det-unidade").innerText = fmt(d.unidade_atual);
+        document.getElementById("det-local").innerText = fmt(d.local_fisico);
+        document.getElementById("det-resp-nome").innerText = fmt(d.responsavel_nome);
+        document.getElementById("det-resp-matricula").innerText = fmt(d.responsavel_matricula);
+
+        const tb = document.getElementById("tabela-movimentacoes");
+        tb.innerHTML = "";
+
+        const movs = d.movimentacoes || [];
+
+        if (!movs.length) {
+            tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Nenhuma movimentação registrada.</td></tr>`;
+            return;
+        }
+
+        for (const m of movs){
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${fmt(m.data)}</td>
+                <td>${fmt(m.tipo)}</td>
+                <td>${fmt(m.de_unidade)}</td>
+                <td>${fmt(m.para_unidade)}</td>
+                <td>${fmt(m.motivo)}</td>
+                <td>${fmt(m.usuario)}</td>
+            `;
+            tb.appendChild(tr);
+        }
+    }
+
+    load();
+</script>
+{% endblock %}

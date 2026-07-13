@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aplicativo GAA - Configurações{% endblock %}
+
+{% block content %}
+
+<header class="topbar">
+    <div class="search-box">
+        <input type="text"
+               class="form-control"
+               placeholder="Buscar..."
+               disabled>
+    </div>
+
+    <div class="user-area">
+        <span>{{ current_user.name }}</span>
+    </div>
+</header>
+
+<section class="page-header">
+    <h1>Configurações</h1>
+    <p>Parâmetros gerais do Aplicativo GAA.</p>
+</section>
+
+<section class="card mb-4">
+    <div class="card-header-inline">
+        <h2>Preferências do Sistema</h2>
+    </div>
+
+    <p class="text-muted mb-0">
+        Aqui poderão ser configurados parâmetros globais do sistema, como unidades padrão,
+        prazos, notificações, permissões e demais regras administrativas.
+    </p>
+</section>
+
+<section class="card">
+    <div class="card-header-inline">
+        <h2>Módulos Ativos</h2>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="metric-card h-100">
+                <span class="metric-label">Compras</span>
+                <span class="metric-value" style="font-size: 16px;">Ativo</span>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="metric-card h-100">
+                <span class="metric-label">Contratos</span>
+                <span class="metric-value" style="font-size: 16px;">Ativo</span>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="metric-card h-100">
+                <span class="metric-label">Patrimônio</span>
+                <span class="metric-value" style="font-size: 16px;">Ativo</span>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="metric-card h-100">
+                <span class="metric-label">Planejamento</span>
+                <span class="metric-value" style="font-size: 16px;">Ativo</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

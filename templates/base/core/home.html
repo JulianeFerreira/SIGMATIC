@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Aplicativo GAA{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+    <h1>Aplicativo GAA</h1>
+    <p>Selecione um módulo para iniciar a navegação.</p>
+</section>
+
+<div class="row g-4">
+    <div class="col-md-6 col-xl-3">
+        <a href="/ui/processos/" class="text-decoration-none">
+            <div class="card h-100">
+                <h2>Compras</h2>
+                <p class="text-muted mb-0">Acompanhar processos, demandas, relatórios e indicadores de compras.</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <a href="/ui/contratos/" class="text-decoration-none">
+            <div class="card h-100">
+                <h2>Contratos</h2>
+                <p class="text-muted mb-0">Gerenciar contratos, vigências, responsáveis e relatórios contratuais.</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <a href="/ui/patrimonio/" class="text-decoration-none">
+            <div class="card h-100">
+                <h2>Patrimônio</h2>
+                <p class="text-muted mb-0">Controlar bens, tombamentos, movimentações e relatórios patrimoniais.</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <a href="/ui/planejamento/" class="text-decoration-none">
+            <div class="card h-100">
+                <h2>Planejamento</h2>
+                <p class="text-muted mb-0">Visualizar PCA, demandas planejadas, alertas e indicadores estratégicos.</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+

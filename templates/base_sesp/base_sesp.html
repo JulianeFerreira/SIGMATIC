@@ -1,0 +1,407 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>{% block title %}SIGMATIC{% endblock %}</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+
+    <style>
+      body {
+        background-color: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+      }
+
+      .bg-sistema-topo {
+        background-color: #f5f6f8 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .fw-bold {
+        font-size: 30px;
+      }
+
+      .navbar-dark .navbar-nav .nav-link {
+        color: #194161;
+        font-weight: 500;
+        font-size: 20px;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease-in-out;
+        text-transform: capitalize;
+      }
+
+      .navbar-dark .navbar-nav .nav-link:hover,
+      .navbar-dark .navbar-nav .nav-link.active {
+        color: #2373c2;
+        background-color: rgba(174, 174, 179, 0.1);
+        border-radius: 4px;
+      }
+
+      .dropdown-toggle::after {
+        vertical-align: middle;
+        margin-left: 0.35em;
+      }
+
+      .dropdown-menu {
+        border: none;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      main {
+        flex: 1 0 auto;
+      }
+
+      .busca-scroll::-webkit-scrollbar {
+        width: 5px;
+      }
+      .busca-scroll::-webkit-scrollbar-thumb {
+        background-color: rgba(25, 65, 97, 0.2);
+        border-radius: 4px;
+      }
+    </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+
+  <body id="page-top">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-sistema-topo py-0"
+      style="height: 125px"
+    >
+      <div
+        class="container-fluid px-4 h-100 d-flex align-items-center justify-content-between"
+      >
+        <div class="d-flex align-items-center" style="min-width: 250px">
+          <a
+            class="navbar-brand d-flex align-items-center text-decoration-none position-relative"
+            href="/"
+            style="height: 100%"
+          >
+            <img
+              src="{% static 'img/logo_sigmatic.jpg' %}"
+              alt="Logo CTIC"
+              class="me-2"
+              style="
+                height: 137px;
+                width: 100px;
+                position: absolute;
+                top: -70px;
+                z-index: 1000;
+              "
+            />
+            <div style="width: 100px"></div>
+          </a>
+        </div>
+
+        <button
+          class="navbar-collapse-toggle navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#menuSuperior"
+          aria-controls="menuSuperior"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-center h-100"
+          id="menuSuperior"
+        >
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center gap-3">
+            {% for modulo in modulos %}
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="drop{{ modulo.nome|slugify }}"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ modulo.nome }}
+              </a>
+
+              {% if modulo.submodulos %}
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="drop{{ modulo.nome|slugify }}"
+              >
+                {% for submodulo in modulo.submodulos %}
+                <li>
+                  <a class="dropdown-item py-2" href="{{ submodulo.url }}"
+                    >{{ submodulo.nome }}</a
+                  >
+                </li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="drop{{ modulo.nome|slugify }}"
+              >
+                <li>
+                  <span class="dropdown-item py-2 text-muted fst-italic"
+                    >Módulo em Criação</span
+                  >
+                </li>
+              </ul>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div
+          class="d-flex align-items-center gap-3 justify-content-end"
+          style="min-width: 250px"
+        >
+          <form
+            class="position-relative d-none d-md-block m-0"
+            action="/pesquisa/"
+            method="GET"
+            onsubmit="return false;"
+          >
+            <input
+              type="text"
+              id="inputBuscaRapida"
+              name="q"
+              class="form-control form-control-sm pe-5 ps-3 rounded"
+              placeholder="Pesquisar..."
+              autocomplete="off"
+              style="
+                font-size: 0.85rem;
+                width: 200px;
+                height: 35px;
+                border: 1px solid #194161;
+                color: #194161;
+                background-color: transparent;
+              "
+            />
+            <div
+              class="position-absolute top-50 end-0 translate-middle-y me-1 bg-transparent border-0 p-1"
+              style="z-index: 1010"
+            >
+              <i
+                class="bi bi-search"
+                style="font-size: 0.8rem; color: #194161"
+              ></i>
+            </div>
+
+            <div
+              id="painelBuscaFlutuante"
+              class="dropdown-menu position-absolute end-0 mt-2 p-2 shadow-lg busca-scroll"
+              style="
+                display: none;
+                width: 320px;
+                max-height: 350px;
+                overflow-y: auto;
+                z-index: 1100;
+                border: 1px solid rgba(0, 0, 0, 0.12);
+              "
+            ></div>
+          </form>
+
+          {% if user.is_authenticated %}
+          <span class="text-dark fw-medium"
+            ><i class="bi bi-person-circle me-1"></i> {{ user.first_name
+            }}</span
+          >
+          {% else %}
+          <a
+            href="#"
+            class="btn btn-sm fw-bold px-3 d-flex align-items-center justify-content-center bg-white"
+            style="
+              font-size: 0.9rem;
+              color: #194161;
+              border: 2px solid #194161;
+              letter-spacing: 0.6px;
+              height: 35px;
+            "
+          >
+            Entrar
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mt-4">{% block content %} {% endblock %}</main>
+
+    <footer
+      class="py-1 mt-auto w-100"
+      style="background-color: #194161; border-top: 1px solid #e3e6f0"
+    >
+      <div class="container-fluid px-5">
+        <div
+          class="d-flex align-items-center justify-content-between flex-wrap gap-4 mt-4"
+        >
+          <div class="d-flex align-items-center flex-wrap gap-4">
+            <img
+              src="{% static 'img/logo_sesp.png' %}"
+              alt="Governo do Estado do Paraná - SESP"
+              style="max-height: 70px; width: auto"
+            />
+            <div
+              style="border-left: 1px solid rgb(254, 255, 255); height: 70px"
+            ></div>
+            <div
+              class="d-flex flex-column justify-content-center"
+              style="font-size: 0.75rem; line-height: 1.5; color: #ffffff"
+            >
+              <strong
+                class="text-uppercase"
+                style="
+                  font-size: 0.85rem;
+                  letter-spacing: 0.5px;
+                  color: #ffffff;
+                "
+              >
+                Secretaria da Segurança Pública
+              </strong>
+              <span style="color: #ffffff">
+                Rua Coronel Dulcídio, 800 – Batel - 80420-170 - Curitiba -PR
+                <a href="" style="color: #ffffff; text-decoration:none ms-2;">
+                  <i class="bi bi-geo-alt me-1">MAPA</i>
+                </a>
+              </span>
+              <div class="mt-1" style="color: #ffffff">
+                <i
+                  class="bi bi-telephone me-1"
+                  style="font-size: 0.75rem; color: #ffffff"
+                ></i>
+                <strong style="letter-spacing: 0.5px">(41) 3313-1638</strong>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center" style="color: #ffffff">
+            <div
+              class="d-flex flex-column align-items-end"
+              style="font-size: 0.7rem; line-height: 1.2; padding-right: 5px;"
+            >
+              <span
+                style="
+                  color: #f8f9fa;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                "
+                >Desenvolvido por</span
+              >
+              <strong
+                class="text-uppercase"
+                style="
+                  font-size: 0.80rem;
+                  letter-spacing: 0.8px;
+                  color: #ffffff;
+                "
+                >CTIC / SESP</strong
+              >
+            </div>
+            <img
+              src="{% static 'img/logo.png' %}"
+              alt="Centro de tecnologia da informação e comunicação"
+              style="max-height: 100px; width: 100px"
+            />
+          </div>
+        </div>
+        <div
+          class="row mt-2"
+          style="
+            border-top: 1px solid rgba(25, 65, 97, 0.1);
+            background-color: #194161;
+          "
+        >
+          <div
+            class="col-12 text-center"
+            style="font-size: 0.7rem; letter-spacing: 0.5px; color: #ffffff"
+          >
+            &copy; Todos os direitos reservados. | V1.0
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+
+<script>
+  document
+    .getElementById("inputBuscaRapida")
+    .addEventListener("input", function (e) {
+      const query = e.target.value.trim();
+      const painel = document.getElementById("painelBuscaFlutuante");
+
+      if (query.length < 2) {
+        painel.style.display = "none";
+        return;
+      }
+
+      fetch(`/pesquisa/?q=${encodeURIComponent(query)}&ajax=1`)
+        .then((response) => response.json())
+        .then((data) => {
+          let htmlConteudo = "";
+
+          if (data.resultados.length === 0) {
+            htmlConteudo = `
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-1 mb-2 px-2">
+                  <span class="text-secondary" style="font-size: 0.75rem; font-weight: 600;">Sem resultados</span>
+                  <button type="button" class="btn-close" style="font-size: 0.6rem;" onclick="document.getElementById('painelBuscaFlutuante').style.display='none'"></button>
+                </div>
+                <div class="text-muted text-center py-3 small">
+                  <i class="bi bi-exclamation-circle d-block mb-1 text-warning"></i>
+                  Nenhum Módulo encontrado.
+                </div>`;
+          } else {
+            htmlConteudo = `
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-1 mb-2 px-2">
+                  <span class="text-secondary" style="font-size: 0.75rem; font-weight: 600;">Resultados para "${query}"</span>
+                  <button type="button" class="btn-close" style="font-size: 0.6rem;" onclick="document.getElementById('painelBuscaFlutuante').style.display='none'"></button>
+                </div>`;
+
+            data.resultados.forEach((item) => {
+              htmlConteudo += `
+                  <a class="dropdown-item d-flex align-items-start py-2 rounded text-wrap mb-1" href="${item.url}">
+                    <i class="bi bi-folder2 text-primary me-2 mt-0.5" style="font-size: 0.95rem;"></i>
+                    <div>
+                      <div class="text-dark fw-medium" style="font-size: 0.85rem; line-height: 1.2;">${item.nome}</div>
+                      <small class="text-muted d-block" style="font-size: 0.7rem; margin-top: 1px;">${item.tipo}</small>
+                    </div>
+                  </a>`;
+            });
+          }
+
+          painel.innerHTML = htmlConteudo;
+          painel.style.display = "block";
+        })
+        .catch((error) => console.error("Erro no buscador rápido:", error));
+    });
+
+  document.addEventListener("click", function (e) {
+    const painel = document.getElementById("painelBuscaFlutuante");
+    const input = document.getElementById("inputBuscaRapida");
+    if (
+      e.target !== painel &&
+      e.target !== input &&
+      !painel.contains(e.target)
+    ) {
+      painel.style.display = "none";
+    }
+  });
+</script>

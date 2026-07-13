@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">Início</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+
+    
+
+    <div class="p-3 mb-4 bg-white border rounded shadow-sm">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-shield-check text-primary me-3 fs-4"></i>
+            <div>
+                <strong>SIGMATIC</strong> – Sistema Estratégico de Governança e Monitoramento de TIC do CTIC.
+            </div>
+        </div>
+
+        <!-- Indicadores Estratégicos -->
+        <div class="row g-4 mb-5">
+
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3 text-center">
+                    <h6 class="text-muted">Ações PDTIC</h6>
+                    <h2 class="fw-bold text-primary">12</h2>
+                    <small class="text-success">+2 este mês</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3 text-center">
+                    <h6 class="text-muted">Contratações PCA</h6>
+                    <h2 class="fw-bold text-success">5</h2>
+                    <small class="text-warning">1 em análise</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3 text-center">
+                    <h6 class="text-muted">Bases Catalogadas</h6>
+                    <h2 class="fw-bold text-secondary">18</h2>
+                    <small class="text-muted">Atualizado hoje</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3 text-center">
+                    <h6 class="text-muted">Processos Mapeados</h6>
+                    <h2 class="fw-bold text-warning">9</h2>
+                    <small class="text-danger">2 pendentes</small>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Módulos -->
+        <h5 class="mb-3 fw-bold">Módulos do Sistema</h5>
+
+        <div class="row g-4">
+
+            <!-- PDTIC -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card card-module border-pdtic h-100 text-center p-4">
+                    <i class="bi bi-diagram-3-fill icon-module text-primary"></i>
+                    <h5>PDTIC</h5>
+                    <p class="text-muted small">
+                        Planejamento Estratégico de TIC.
+                    </p>
+                    <a href="#" class="btn btn-outline-primary btn-sm mt-2">Entrar</a>
+                </div>
+            </div>
+
+            <!-- PCA -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card card-module border-pca h-100 text-center p-4">
+                    <i class="bi bi-clipboard-data-fill icon-module text-success"></i>
+                    <h5>PCA</h5>
+                    <p class="text-muted small">
+                        Plano de Contratações Anual.
+                    </p>
+                    <a href="#" class="btn btn-outline-success btn-sm mt-2">Entrar</a>
+                </div>
+            </div>
+
+            <!-- Dados -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card card-module border-dados h-100 text-center p-4">
+                    <i class="bi bi-database-fill icon-module text-secondary"></i>
+                    <h5>Gestão de Dados</h5>
+                    <p class="text-muted small">
+                        Governança e qualidade de dados.
+                    </p>
+                    <a href="#" class="btn btn-outline-secondary btn-sm mt-2">Entrar</a>
+                </div>
+            </div>
+
+            <!-- Processos -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card card-module border-processos h-100 text-center p-4">
+                    <i class="bi bi-gear-fill icon-module text-warning"></i>
+                    <h5>Gestão de Processos</h5>
+                    <p class="text-muted small">
+                        Mapeamento e melhoria contínua.
+                    </p>
+                    <a href="#" class="btn btn-outline-warning btn-sm mt-2">Entrar</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
