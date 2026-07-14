@@ -52,9 +52,7 @@ O banco de dados do projeto foi totalmente padronizado para o ambiente de desenv
 Para que o Django se conecte ao seu banco local, você deve criar o arquivo de configuração de ambiente utilizando o modelo deixado no projeto:
 
 1. Na raiz do projeto, localize o arquivo `.env.exemplo`.
-2. Duplique ou renomeie o arquivo para **`.env`**:
-```bash
-cp .env.exemplo .env
+2. Duplique ou renomeie o arquivo para **`.env`**
 
 ```
 
