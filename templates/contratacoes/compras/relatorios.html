@@ -1,27 +1,39 @@
-{% extends 'base.html' %}
+{% extends 'base_sesp/base_sesp.html' %}
 {% load static %}
 
-{% block title %}GAA Compras - Relatórios{% endblock %}
+{% block title %}SIGMATIC -Compras/Relatórios{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
 
 {% block content %}
 
-<header class="topbar">
-    <div class="search-box">
-        <input type="text" class="form-control" placeholder="Buscar processo..." disabled>
-    </div>
-</header>
 
 <section class="page-header">
     <h1>Relatórios</h1>
     <p>Gere relatórios detalhados e análises dos processos.</p>
 </section>
 
-<section class="tabs-nav">
-    <a href="/" class="tab-item">Dashboard</a>
-    <a href="/ui/processos/" class="tab-item">Processos</a>
-    <a href="/ui/processos/novo/" class="tab-item">Novo Processo</a>
-    <a href="/ui/relatorios/" class="tab-item active">Relatórios</a>
-</section>
+ <div class="mb-4 pt-2">
+            
+      
+
+        <!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a href="/contratacoes/compras/" class="nav-link text-secondary">Dashboard</a>
+            </li>
+            <!-- Aba Ativa: Fundo branco, bordas laterais/superior e texto escuro -->
+            <li class="nav-item">
+                <a href="/ui/processos/" class="nav-link text-secondary">Processos</a>
+            </li>
+            <li class="nav-item">
+                <a href="/ui/processos/novo/" class="nav-link text-secondary">Novo Processo</a>
+            </li>
+            <li class="nav-item">
+                <a href="/ui/relatorios/" class="nav-link active text-secondary nav-link active text-secondary bg-primary text-white border-primary">Relatórios</a>
+            </li>
+        </ul>
 
 <div class="row g-4 mb-4">
     <div class="col-lg-6">
@@ -157,6 +169,7 @@
         </div>
     </div>
 </section>
+</div>
 
 {% endblock %}
 

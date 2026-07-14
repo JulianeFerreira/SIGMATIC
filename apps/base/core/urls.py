@@ -15,6 +15,7 @@ urlpatterns = [
     path('ui/configuracoes/', views.configuracoes, name='ui_configuracoes'),
 
     # Compras
+    path('ui/dashboard/', views.compras, name='compras_dashboard'),
     path('ui/processos/', views.compras_processos, name='processos_lista'),
     path('ui/processos/novo/', views.compras_processo_novo, name='processo_novo'),
     path('ui/processos/<str:processo_numero>/', views.compras_processo_detail, name='processo_detail'),
