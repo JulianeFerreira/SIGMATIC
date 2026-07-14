@@ -7,18 +7,22 @@ from django.http import Http404
 
 def obter_modulos_dinamicos(query=None):
     pasta_apps = settings.BASE_DIR / "apps"
-    pastas_ignoradas = ["base","organizacao", "acessos", "migrations"]
+    pastas_ignoradas = ["base", "organizacao", "acessos", "migrations"]
     
     modulos_para_front = []
     resultados_busca = []
 
     if not pasta_apps.exists():
         return modulos_para_front, resultados_busca
+        
+    if query:
+        query = query.lower()
 
     for pasta_mod in pasta_apps.iterdir():
         if pasta_mod.is_dir() and not pasta_mod.name.startswith("__") and pasta_mod.name not in pastas_ignoradas:
             nome_modulo_pasta = pasta_mod.name
-            nome_modulo_formatado = nome_modulo_pasta.replace("_", " ").title()
+            
+            nome_modulo_formatado = nome_modulo_pasta.replace("_", " ").upper()
             
             submodulos_encontrados = []
             
@@ -29,14 +33,13 @@ def obter_modulos_dinamicos(query=None):
                     "url": f"/{nome_modulo_pasta}/"
                 })
 
-
             for arquivo_app in pasta_mod.rglob("apps.py"):
                 pasta_sub = arquivo_app.parent 
                 
                 if pasta_sub.name not in pastas_ignoradas and not pasta_sub.name.startswith("__"):
-                    nome_sub_formatado = pasta_sub.name.replace("_", " ").title()
                     
-
+                    nome_sub_formatado = pasta_sub.name.replace("_", " ").upper()
+                    
                     partes_caminho = pasta_sub.relative_to(pasta_apps).parts
                     url_sub = "/" + "/".join(partes_caminho) + "/"
                     

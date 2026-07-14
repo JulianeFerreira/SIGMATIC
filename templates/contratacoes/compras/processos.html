@@ -1,104 +1,109 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}GAA Compras - Processos{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %}GAA Compras -
+Processos{% endblock %} {% block content %}
 
 <header class="topbar">
-    <div class="search-box">
-        <input type="text" id="searchInputProcessos" class="form-control" placeholder="Buscar processo...">
-    </div>
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInputProcessos"
+      class="form-control"
+      placeholder="Buscar processo..."
+    />
+  </div>
 
-    <div class="topbar-actions">
-        <button class="btn secondary" id="btnExportar">Exportar</button>
-        <button class="btn primary" id="btnNovoProcesso">Novo Processo</button>
-    </div>
+  <div class="topbar-actions">
+    <button class="btn secondary" id="btnExportar">Exportar</button>
+    <button class="btn primary" id="btnNovoProcesso">Novo Processo</button>
+  </div>
 </header>
 
 <section class="page-header">
-    <h1>Processos</h1>
-    <p>Gerencie todos os processos de compra e licitações.</p>
+  <h1>Processos</h1>
+  <p>Gerencie todos os processos de compra e licitações.</p>
 </section>
 
 <section class="tabs-nav">
-    <a href="/" class="tab-item">Dashboard</a>
-    <a href="/ui/processos/" class="tab-item active">Processos</a>
-    <a href="/ui/processos/novo/" class="tab-item">Novo Processo</a>
-    <a href="/ui/relatorios/" class="tab-item">Relatórios</a>
+  <a href="/ui/dashboard/" class="tab-item">Dashboard</a>
+  <a href="/ui/processos/" class="tab-item active">Processos</a>
+  <a href="/ui/processos/novo/" class="tab-item">Novo Processo</a>
+  <a href="/ui/relatorios/" class="tab-item">Relatórios</a>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Filtros</h2>
+  <div class="card-header-inline">
+    <h2>Filtros</h2>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="field-label">Buscar</label>
+      <input
+        type="text"
+        id="filtroBusca"
+        class="form-control"
+        placeholder="Número do processo, descrição, gestor, fiscal..."
+      />
     </div>
 
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label class="field-label">Buscar</label>
-            <input type="text" id="filtroBusca" class="form-control"
-                   placeholder="Número do processo, descrição, gestor, fiscal...">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label">Situação</label>
-            <select id="filtroSituacao" class="form-control">
-                <option value="">Todas</option>
-                <option value="TRAMITANDO">Tramitando</option>
-                <option value="FINALIZADO">Finalizado</option>
-                <option value="ARQUIVADO">Arquivado</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label">Modalidade</label>
-            <select id="filtroModalidade" class="form-control">
-                <option value="">Todas</option>
-                <option value="Licitação">Licitação</option>
-                <option value="Dispensa de Licitação">Dispensa de Licitação</option>
-                <option value="Inexigibilidade">Inexigibilidade</option>
-                <option value="SRP Estadual">SRP Estadual</option>
-                <option value="SRP Federal">SRP Federal</option>
-                <option value="SRP Estadual (Carona)">SRP Estadual (Carona)</option>
-                <option value="SRP Federal (Carona)">SRP Federal (Carona)</option>
-            </select>
-        </div>
+    <div class="col-md-3">
+      <label class="field-label">Situação</label>
+      <select id="filtroSituacao" class="form-control">
+        <option value="">Todas</option>
+        <option value="TRAMITANDO">Tramitando</option>
+        <option value="FINALIZADO">Finalizado</option>
+        <option value="ARQUIVADO">Arquivado</option>
+      </select>
     </div>
+
+    <div class="col-md-3">
+      <label class="field-label">Modalidade</label>
+      <select id="filtroModalidade" class="form-control">
+        <option value="">Todas</option>
+        <option value="Licitação">Licitação</option>
+        <option value="Dispensa de Licitação">Dispensa de Licitação</option>
+        <option value="Inexigibilidade">Inexigibilidade</option>
+        <option value="SRP Estadual">SRP Estadual</option>
+        <option value="SRP Federal">SRP Federal</option>
+        <option value="SRP Estadual (Carona)">SRP Estadual (Carona)</option>
+        <option value="SRP Federal (Carona)">SRP Federal (Carona)</option>
+      </select>
+    </div>
+  </div>
 </section>
 
 <p class="result-info" id="infoQuantidade">Mostrando 0 processos</p>
 
 <section class="table-card">
-    <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <h2>Lista de Processos</h2>
-        <span class="text-muted">Processos cadastrados no sistema</span>
-    </div>
+  <div
+    class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+  >
+    <h2>Lista de Processos</h2>
+    <span class="text-muted">Processos cadastrados no sistema</span>
+  </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead>
-            <tr>
-                <th>Processo</th>
-                <th>Descrição</th>
-                <th>Unidade</th>
-                <th>Valor</th>
-                <th>Modalidade</th>
-                <th>Situação</th>
-                <th>Data</th>
-                <th style="width:100px;">Ações</th>
-            </tr>
-            </thead>
-            <tbody id="table-processos-lista">
-            <tr>
-                <td colspan="8" class="text-center text-muted">Carregando...</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Processo</th>
+          <th>Descrição</th>
+          <th>Unidade</th>
+          <th>Valor</th>
+          <th>Modalidade</th>
+          <th>Situação</th>
+          <th>Data</th>
+          <th style="width: 100px">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="table-processos-lista">
+        <tr>
+          <td colspan="8" class="text-center text-muted">Carregando...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script src="{% static 'js/processos.js' %}"></script>
 {% endblock %}
