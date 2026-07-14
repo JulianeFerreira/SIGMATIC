@@ -614,7 +614,6 @@ def pca_detail(request, numero_ordem):
         return JsonResponse({'detail': 'Item não encontrado.'}, status=404)
     return JsonResponse(it)
 
-# Cole isso no FINAL do seu apps/base/core/views.py original (Mantenha o que já estava lá!)
 
 import requests
 from django.http import JsonResponse, HttpResponse
