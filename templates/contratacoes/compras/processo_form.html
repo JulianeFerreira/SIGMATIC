@@ -1,36 +1,30 @@
-{% extends 'base_sesp/base_sesp.html ' %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}SIGMATIC -Compras/Novo Processo{% endblock %}
-
-{% block extra_css %}
-{% endblock %}
+{% block title %}GAA Compras - Novo Processo{% endblock %}
 
 {% block content %}
 
+<header class="topbar">
+    <div class="search-box">
+        <input type="text"
+               class="form-control"
+               placeholder="Buscar processo..."
+               disabled>
+    </div>
+</header>
 
 <section class="page-header">
     <h1>Novo Processo</h1>
     <p>Cadastre e organize toda a tramitação documental do processo.</p>
 </section>
 
-<!-- Cabeçalho Interno da Página -->
-<div class="mb-4 pt-2">
-        <!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
-        <ul class="nav nav-tabs mb-4">
-            <li class="nav-item">
-                <a href="/contratacoes/compras/" class="nav-link text-secondary">Dashboard</a>
-            </li>
-            <!-- Aba Ativa: Fundo branco, bordas laterais/superior e texto escuro -->
-            <li class="nav-item">
-                <a href="/ui/processos/" class="nav-link text-secondary" aria-current="page">Processos</a>
-            </li>
-            <li class="nav-item">
-                <a href="/ui/processos/novo/" class="nav-link active text-secondary bg-primary text-white border-primary">Novo Processo</a>
-            </li>
-            <li class="nav-item">
-                <a href="/ui/relatorios/" class="nav-link text-secondary">Relatórios</a>
-            </li>
-        </ul>
+<section class="tabs-nav">
+    <a href="/" class="tab-item">Dashboard</a>
+    <a href="/ui/processos/" class="tab-item">Processos</a>
+    <a href="/ui/processos/novo/" class="tab-item active">Novo Processo</a>
+    <a href="/ui/relatorios/" class="tab-item">Relatórios</a>
+</section>
 
 <form id="processoForm">
 
@@ -316,8 +310,6 @@
     </div>
 
 </form>
-
-</div>
 
 {% endblock %}
 

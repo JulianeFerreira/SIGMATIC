@@ -46,13 +46,13 @@ templates = Jinja2Templates(directory="app/templates")
 # ROTAS DE INTERFACE - MÓDULO COMPRAS
 # ------------------------------------------------------------------
 
-@app.get("/ui/dashboard/", include_in_schema=False)
+@app.get("/", include_in_schema=False)
 async def compras_dashboard_page(
     request: Request,
     current_user=Depends(get_current_user),
 ):
     return templates.TemplateResponse(
-        "compras/dashboard.html",
+        "compras/contratos_dashboard.html",
         {"request": request, "current_user": current_user},
     )
 

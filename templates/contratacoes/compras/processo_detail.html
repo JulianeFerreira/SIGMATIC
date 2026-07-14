@@ -7,28 +7,27 @@
 
 <main data-processo-numero="{{ processo_numero }}">
 
-<!-- Cabeçalho Interno da Página -->
-        <div class="mb-4 pt-2">
-            <h1 class="text-dark fw-bold m-0" style="font-size: 32px;">Processos</h1>
-            <p class="text-muted small mb-0">Gerencie todos os processos de compra e licitações.</p>
+    <header class="topbar">
+        <div class="search-box">
+            <input type="text" class="form-control" placeholder="Buscar processo..." disabled>
         </div>
 
-        <!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
-        <ul class="nav nav-tabs mb-4">
-            <li class="nav-item">
-                <a href="/" class="nav-link text-secondary">Dashboard</a>
-            </li>
-            <!-- Aba Ativa: Fundo branco, bordas laterais/superior e texto escuro -->
-            <li class="nav-item">
-                <a href="/ui/processos/" class="nav-link text-secondary">Processos</a>
-            </li>
-            <li class="nav-item">
-                <a href="/ui/processos/novo/" class="nav-link active fw-bold text-dark" aria-current="page">Novo Processo</a>
-            </li>
-            <li class="nav-item">
-                <a href="/ui/relatorios/" class="nav-link text-secondary">Relatórios</a>
-            </li>
-        </ul>
+        <div class="topbar-actions">
+            <button class="btn secondary" id="btnVoltar">Voltar</button>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <h1 id="tituloProcesso">Processo {{ processo_numero }}</h1>
+        <p id="subtituloProcesso">Carregando detalhes do processo...</p>
+    </section>
+
+    <section class="tabs-nav">
+        <a href="/" class="tab-item">Dashboard</a>
+        <a href="/ui/processos/" class="tab-item active">Processos</a>
+        <a href="/ui/processos/novo/" class="tab-item">Novo Processo</a>
+        <a href="/ui/relatorios/" class="tab-item">Relatórios</a>
+    </section>
 
     <div class="row g-4 mb-4">
         <div class="col-lg-4">
