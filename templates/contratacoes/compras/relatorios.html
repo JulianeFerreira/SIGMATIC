@@ -1,168 +1,173 @@
-{% extends 'base.html' %} {% load static %} {% block title %}GAA Compras -
-Relatórios{% endblock %} {% block content %}
+{% extends 'base_sesp/base_sesp.html' %}
+{% load static %}
 
-<header class="topbar">
-  <div class="search-box">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Buscar processo..."
-      disabled
-    />
-  </div>
-</header>
+{% block title %}SIGMATIC -Compras/Relatórios{% endblock %}
 
-<section class="page-header">
-  <h1>Relatórios</h1>
-  <p>Gere relatórios detalhados e análises dos processos.</p>
-</section>
+{% block extra_css %}
+{% endblock %}
 
-<section class="tabs-nav">
-  <a href="/ui/dashboard/" class="tab-item">Dashboard</a>
-  <a href="/ui/processos/" class="tab-item">Processos</a>
-  <a href="/ui/processos/novo/" class="tab-item">Novo Processo</a>
-  <a href="/ui/relatorios/" class="tab-item active">Relatórios</a>
-</section>
+{% block content %}
+
+ <div class="mb-4 pt-2">
+            <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161;">Relatórios</h1>
+            <p class="text-muted small mb-0">Gere relatórios detalhados e análises dos processos.</p>
+        </div>
+ <div class="mb-4 pt-2">
+        <!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a href="/contratacoes/compras/" class="nav-link text-secondary">Dashboard</a>
+            </li>
+            <!-- Aba Ativa: Fundo branco, bordas laterais/superior e texto escuro -->
+            <li class="nav-item">
+                <a href="/ui/processos/" class="nav-link text-secondary">Processos</a>
+            </li>
+            <li class="nav-item">
+                <a href="/ui/processos/novo/" class="nav-link text-secondary">Novo Processo</a>
+            </li>
+            <li class="nav-item">
+                <a href="/ui/relatorios/" class="nav-link active text-secondary nav-link active text-secondary bg-primary text-white border-primary">Relatórios</a>
+            </li>
+        </ul>
 
 <div class="row g-4 mb-4">
-  <div class="col-lg-6">
-    <div class="report-card h-100">
-      <div>
-        <h2>Relatório Geral de Processos</h2>
-        <p>Relatório completo com todos os processos cadastrados.</p>
-      </div>
-      <button class="btn primary" id="btnRelGeral">Gerar Relatório</button>
+    <div class="col-lg-6">
+        <div class="report-card shadow-sm h-100 border-0 bg-white p-4">
+            <div>
+                <h4>Relatório Geral de Processos</h4>
+                <p>Relatório completo com todos os processos cadastrados.</p>
+            </div>
+            <button class="btn primary" id="btnRelGeral">Gerar Relatório</button>
+        </div>
     </div>
-  </div>
 
-  <div class="col-lg-6">
-    <div class="report-card h-100">
-      <div>
-        <h2>Processos em Atraso</h2>
-        <p>Lista de processos com prazo de entrega vencido.</p>
-      </div>
-      <button class="btn primary" id="btnRelAtraso">Gerar Relatório</button>
+    <div class="col-lg-6">
+        <div class="report-card shadow-sm h-100 border-0 bg-white p-4">
+            <div>
+                <h4>Processos em Atraso</h4>
+                <p>Lista de processos com prazo de entrega vencido.</p>
+            </div>
+            <button class="btn primary" id="btnRelAtraso">Gerar Relatório</button>
+        </div>
     </div>
-  </div>
 
-  <div class="col-lg-6">
-    <div class="report-card h-100">
-      <div>
-        <h2>Relatório Financeiro</h2>
-        <p>Análise dos valores por modalidade e período.</p>
-      </div>
-      <button class="btn primary" id="btnRelFinanceiro">Gerar Relatório</button>
+    <div class="col-lg-6">
+        <div class="report-card shadow-sm h-100 border-0 bg-white p-4">
+            <div>
+                <h4>Relatório Financeiro</h4>
+                <p>Análise dos valores por modalidade e período.</p>
+            </div>
+            <button class="btn primary" id="btnRelFinanceiro">Gerar Relatório</button>
+        </div>
     </div>
-  </div>
 
-  <div class="col-lg-6">
-    <div class="report-card h-100">
-      <div>
-        <h2>Performance por Gestor</h2>
-        <p>Desempenho dos gestores responsáveis.</p>
-      </div>
-      <button class="btn primary" id="btnRelGestor">Gerar Relatório</button>
+    <div class="col-lg-6">
+        <div class="report-card shadow-sm h-100 border-0 bg-white p-4">
+            <div>
+                <h4>Performance por Gestor</h4>
+                <p>Desempenho dos gestores responsáveis.</p>
+            </div>
+            <button class="btn primary" id="btnRelGestor">Gerar Relatório</button>
+        </div>
     </div>
-  </div>
 </div>
 
-<section class="card mb-4">
-  <h2>Filtros Avançados</h2>
+<section class="card mb-4 p-4">
+    <h2>Filtros Avançados</h2>
 
-  <div class="row g-3 mb-3">
-    <div class="col-md-4">
-      <label class="field-label">Período - Início</label>
-      <input type="date" id="filtroPeriodoInicio" class="form-control" />
+    <div class="row g-3 mb-3">
+        <div class="col-md-4">
+            <label class="field-label">Período - Início</label>
+            <input type="date" id="filtroPeriodoInicio" class="form-control">
+        </div>
+
+        <div class="col-md-4">
+            <label class="field-label">Período - Fim</label>
+            <input type="date" id="filtroPeriodoFim" class="form-control">
+        </div>
+
+        <div class="col-md-4">
+            <label class="field-label">Situação</label>
+            <select id="filtroRelSituacao" class="form-control">
+                <option value="">Todas</option>
+                <option value="TRAMITANDO">Tramitando</option>
+                <option value="FINALIZADO">Finalizado</option>
+                <option value="ARQUIVADO">Arquivado</option>
+            </select>
+        </div>
     </div>
 
-    <div class="col-md-4">
-      <label class="field-label">Período - Fim</label>
-      <input type="date" id="filtroPeriodoFim" class="form-control" />
-    </div>
+    <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <label class="field-label">Modalidade</label>
+            <select id="filtroRelModalidade" class="form-control">
+                <option value="">Todas</option>
+                <option value="Licitação">Licitação</option>
+                <option value="Dispensa de Licitação">Dispensa de Licitação</option>
+                <option value="Inexigibilidade">Inexigibilidade</option>
+                <option value="SRP Estadual">SRP Estadual</option>
+                <option value="SRP Federal">SRP Federal</option>
+                <option value="SRP Estadual (Carona)">SRP Estadual (Carona)</option>
+                <option value="SRP Federal (Carona)">SRP Federal (Carona)</option>
+            </select>
+        </div>
 
-    <div class="col-md-4">
-      <label class="field-label">Situação</label>
-      <select id="filtroRelSituacao" class="form-control">
-        <option value="">Todas</option>
-        <option value="TRAMITANDO">Tramitando</option>
-        <option value="FINALIZADO">Finalizado</option>
-        <option value="ARQUIVADO">Arquivado</option>
-      </select>
-    </div>
-  </div>
+        <div class="col-md-4">
+            <label class="field-label">Unidade</label>
+            <input id="filtroRelUnidade" class="form-control" placeholder="Nome da unidade">
+        </div>
 
-  <div class="row g-3 align-items-end">
-    <div class="col-md-4">
-      <label class="field-label">Modalidade</label>
-      <select id="filtroRelModalidade" class="form-control">
-        <option value="">Todas</option>
-        <option value="Licitação">Licitação</option>
-        <option value="Dispensa de Licitação">Dispensa de Licitação</option>
-        <option value="Inexigibilidade">Inexigibilidade</option>
-        <option value="SRP Estadual">SRP Estadual</option>
-        <option value="SRP Federal">SRP Federal</option>
-        <option value="SRP Estadual (Carona)">SRP Estadual (Carona)</option>
-        <option value="SRP Federal (Carona)">SRP Federal (Carona)</option>
-      </select>
-    </div>
+        <div class="col-md-2">
+            <label class="field-label">Formato</label>
+            <select id="filtroRelFormato" class="form-control">
+                <option value="excel">Excel</option>
+                <option value="csv">CSV</option>
+            </select>
+        </div>
 
-    <div class="col-md-4">
-      <label class="field-label">Unidade</label>
-      <input
-        id="filtroRelUnidade"
-        class="form-control"
-        placeholder="Nome da unidade"
-      />
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" id="btnRelPersonalizado">Gerar</button>
+        </div>
     </div>
-
-    <div class="col-md-2">
-      <label class="field-label">Formato</label>
-      <select id="filtroRelFormato" class="form-control">
-        <option value="excel">Excel</option>
-        <option value="csv">CSV</option>
-      </select>
-    </div>
-
-    <div class="col-md-2">
-      <button class="btn primary w-100" id="btnRelPersonalizado">Gerar</button>
-    </div>
-  </div>
 </section>
 
 <section class="card">
-  <h2>Estatísticas Rápidas</h2>
+    <h2>Estatísticas Rápidas</h2>
 
-  <div class="row g-4 mt-1">
-    <div class="col-md-3">
-      <div class="quick-stat">
-        <span class="quick-value" id="qs-total">0</span>
-        <span class="quick-label">Total de Processos</span>
-      </div>
-    </div>
+    <div class="row g-4 mt-1">
+        <div class="col-md-3">
+            <div class="quick-stat">
+                <span class="quick-value" id="qs-total">0</span>
+                <span class="quick-label">Total de Processos</span>
+            </div>
+        </div>
 
-    <div class="col-md-3">
-      <div class="quick-stat">
-        <span class="quick-value success" id="qs-finalizados">0</span>
-        <span class="quick-label">Finalizados</span>
-      </div>
-    </div>
+        <div class="col-md-3">
+            <div class="quick-stat">
+                <span class="quick-value success" id="qs-finalizados">0</span>
+                <span class="quick-label">Finalizados</span>
+            </div>
+        </div>
 
-    <div class="col-md-3">
-      <div class="quick-stat">
-        <span class="quick-value warning" id="qs-tramitando">0</span>
-        <span class="quick-label">Em Tramitação</span>
-      </div>
-    </div>
+        <div class="col-md-3">
+            <div class="quick-stat">
+                <span class="quick-value warning" id="qs-tramitando">0</span>
+                <span class="quick-label">Em Tramitação</span>
+            </div>
+        </div>
 
-    <div class="col-md-3">
-      <div class="quick-stat">
-        <span class="quick-value danger" id="qs-atrasados">0</span>
-        <span class="quick-label">Atrasados</span>
-      </div>
+        <div class="col-md-3">
+            <div class="quick-stat">
+                <span class="quick-value danger" id="qs-atrasados">0</span>
+                <span class="quick-label">Atrasados</span>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
+</div>
 
-{% endblock %} {% block extra_scripts %}
+{% endblock %}
+
+{% block extra_scripts %}
 <script src="{% static 'js/relatorios.js' %}"></script>
 {% endblock %}

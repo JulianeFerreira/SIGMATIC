@@ -1,113 +1,142 @@
-{% extends 'base.html' %} {% load static %} {% block title %}GAA Compras -
-Dashboard{% endblock %} {% block extra_head %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% endblock %} {% block content %}
-<section class="page-header">
-  <h1>Dashboard de Compras</h1>
-  <p>Visão geral dos processos de compra e licitações.</p>
-</section>
+{% extends 'base_sesp/base_sesp.html' %}
 
-<section class="tabs-nav">
-  <a href="/ui/dashboard/" class="tab-item active">Dashboard</a>
-  <a href="/ui/processos/" class="tab-item">Processos</a>
-  <a href="/ui/processos/novo/" class="tab-item">Novo Processo</a>
-  <a href="/ui/relatorios/" class="tab-item">Relatórios</a>
-</section>
+{% block title %}SIGMATIC - Dashboard{% endblock %}
 
-<div class="row g-4 mb-4">
-  <div class="col-md-4 col-xl-2">
-    <div class="metric-card h-100">
-      <span class="metric-label">Total de Processos</span>
-      <span class="metric-value" id="metric-total">0</span>
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+        <div class="mb-4 pt-2">
+            <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161;">Dashboard de Compras</h1>
+            <p class="text-muted small mb-0">Visão geral dos processos de compra e licitações.</p>
+        </div>
+
+        <!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a href="/ui/dashboard/" class="nav-link active text-secondary bg-primary text-white border-primary">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a href="/ui/processos/" class="nav-link text-secondary">Processos</a>
+            </li>
+            <li class="nav-item">
+                <a href="/ui/processos/novo/" class="nav-link text-secondary">Novo Processo</a>
+            </li>
+            <li class="nav-item">
+                <a href="/ui/relatorios/" class="nav-link text-secondary">Relatórios</a>
+            </li>
+        </ul>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4 col-xl-2">
+            <div class="card h-100 shadow-sm border-0 border-start border-primary border-4 bg-white">
+                <div class="card-body p-3">
+                    <span class="text-muted fw-semibold d-block fs-6">Total de Processos</span>
+                    <span class="text-muted small d-block fs-3" id="metric-valor" id="metric-total">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-2">
+            <div class="card h-100 shadow-sm border-0 border-start border-success border-4 bg-white">
+                <div class="card-body p-3">
+                    <span class="text-muted fw-semibold d-block fs-5">Valor Total</span>
+                    <span class="text-muted small fw-semibold d-block fs-4" id="metric-valor">R$ 0,00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-2">
+            <div class="card h-100 shadow-sm border-0 border-start border-info border-4 bg-white">
+                <div class="card-body p-3">
+                    <span class="text-muted fw-semibold d-block fs-5">Finalizados</span>
+                    <span class="text-dark d-block mt-1 fs-4" id="metric-finalizados">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-2">
+            <div class="card h-100 shadow-sm border-0 border-start border-warning border-4 bg-white">
+                <div class="card-body p-3">
+                    <span class="text-muted fw-semibold d-block fs-5">Tramitando</span>
+                    <span class="fs-3 text-dark d-block mt-1" id="metric-tramitando">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-2">
+            <div class="card h-100 shadow-sm border-0 border-start border-secondary border-4 bg-white">
+                <div class="card-body p-3">
+                    <span class="text-muted fw-semibold d-block fs-5">Arquivados</span>
+                    <span class="fs-3 text-dark d-block mt-1" id="metric-arquivados">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-2">
+            <div class="card h-100 shadow-sm border-0 border-start border-danger border-4  bg-opacity-10">
+                <div class="card-body p-3">
+                    <span class="text-muted fw-semibold d-block fs-5">Atrasados</span>
+                    <span class="fs-3 text-danger d-block mt-1" id="metric-atrasados">0</span>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="col-md-4 col-xl-2">
-    <div class="metric-card h-100">
-      <span class="metric-label">Valor Total</span>
-      <span class="metric-value" id="metric-valor">R$ 0,00</span>
-    </div>
-  </div>
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm border-0 bg-white">
+                <div class="card-header bg-transparent border-0 pt-3">
+                    <h5 class="text-dark mb-0">Distribuição por Modalidade</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartModalidade"></canvas>
+                </div>
+            </div>
+        </div>
 
-  <div class="col-md-4 col-xl-2">
-    <div class="metric-card h-100">
-      <span class="metric-label">Finalizados</span>
-      <span class="metric-value" id="metric-finalizados">0</span>
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm border-0 bg-white">
+                <div class="card-header bg-transparent border-0 pt-3">
+                    <h5 class="text-dark mb-0">Processos por Situação</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartSituacao"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="col-md-4 col-xl-2">
-    <div class="metric-card h-100">
-      <span class="metric-label">Tramitando</span>
-      <span class="metric-value" id="metric-tramitando">0</span>
+    <div class="card shadow-sm border-0 bg-white">
+        <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center flex-wrap pt-3">
+            <h5 class="m-0" style="font-size: 25px; color: #194161; margin-bottom: 0;">Lista de Processos</h5>
+            <span class="small text-muted">Resumo dos processos cadastrados</span>
+        </div>
+        <div class="card-body p-0 mt-2">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-secondary">
+                        <tr>
+                            <th class="ps-3">Processo</th>
+                            <th>Descrição</th>
+                            <th>Unidade</th>
+                            <th>Valor</th>
+                            <th>Modalidade</th>
+                            <th>Situação</th>
+                            <th class="pe-3">Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-processos">
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="col-md-4 col-xl-2">
-    <div class="metric-card h-100">
-      <span class="metric-label">Arquivados</span>
-      <span class="metric-value" id="metric-arquivados">0</span>
-    </div>
-  </div>
-
-  <div class="col-md-4 col-xl-2">
-    <div class="metric-card warning h-100">
-      <span class="metric-label">Atrasados</span>
-      <span class="metric-value" id="metric-atrasados">0</span>
-    </div>
-  </div>
 </div>
-
-<div class="row g-4 mb-4">
-  <div class="col-lg-6">
-    <div class="chart-card h-100">
-      <div class="chart-header">
-        <h2>Distribuição por Modalidade</h2>
-      </div>
-      <canvas id="chartModalidade"></canvas>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="chart-card h-100">
-      <div class="chart-header">
-        <h2>Processos por Situação</h2>
-      </div>
-      <canvas id="chartSituacao"></canvas>
-    </div>
-  </div>
-</div>
-
-<section class="table-card">
-  <div
-    class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2"
-  >
-    <h2>Lista de Processos</h2>
-    <span class="text-muted">Resumo dos processos cadastrados</span>
-  </div>
-
-  <div class="table-responsive">
-    <table class="table table-hover align-middle">
-      <thead>
-        <tr>
-          <th>Processo</th>
-          <th>Descrição</th>
-          <th>Unidade</th>
-          <th>Valor</th>
-          <th>Modalidade</th>
-          <th>Situação</th>
-          <th>Data</th>
-        </tr>
-      </thead>
-      <tbody id="table-processos">
-        <tr>
-          <td colspan="7" class="text-center text-muted">Carregando...</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-{% endblock %} {% block extra_scripts %}
-<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
