@@ -1,0 +1,8 @@
+{
+    "python.analysis.extraPaths": [
+        "./fastapi_backend"
+    ],
+    "python.autoComplete.extraPaths": [
+        "./fastapi_backend"
+    ]
+}
