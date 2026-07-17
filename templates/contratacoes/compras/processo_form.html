@@ -7,7 +7,6 @@
 
 {% block content %}
 
-
  <div class="mb-4 pt-2">
     <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161;">Novo Processo</h1>
     <p class="text-muted small mb-0">Cadastre e organize toda a tramitação documental do processo.</p>
@@ -32,20 +31,17 @@
             </li>
         </ul>
 
-<form id="processoForm">
+<form class="mb-4 pt-2" id="processoForm">
 
     <!-- ========================================= -->
     <!-- INFORMAÇÕES GERAIS -->
     <!-- ========================================= -->
 
-    <section class="card mb-4 shadow-sm border-0">
-
-        <div class="card-body">
-
-            <h2 class="mb-4">
+    <section class="p-4"  style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
+        <div class="card-body mb-4">
+            <h5 class="mb-3" style="font-size: 25px; color: #194161;">
                 Informações Gerais
-            </h2>
-
+            </h5>
             <div class="row g-3 mb-3">
 
                 <div class="col-md-4">
@@ -192,26 +188,23 @@
                            class="form-control"
                            placeholder="Servidor responsável">
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
     <!-- ========================================= -->
     <!-- PROGRESSO -->
     <!-- ========================================= -->
 
-    <section class="card mb-4 shadow-sm border-0">
+    <section class="p-4"  style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
 
         <div class="card-body">
 
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex justify-content-between align-items-center">
 
-                <h2 class="mb-0">
+                <h5 class="mb-3" style="font-size: 25px; color: #194161;">
                     Tramitação Documental
-                </h2>
+                </h5>
 
                 <span id="percentualTexto"
                       class="fw-bold text-primary">
@@ -252,13 +245,13 @@
     <!-- CHECKLIST -->
     <!-- ========================================= -->
 
-    <section class="card mb-4 shadow-sm border-0">
+    <section class="p-4"  style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
 
         <div class="card-body">
 
-            <h2 class="mb-4">
+            <h5 class="mb-3" style="font-size: 25px; color: #194161; margin-bottom: 0;">
                 Checklist da Modalidade
-            </h2>
+            </h5>
 
             <div id="checklistContainer">
 
@@ -276,27 +269,22 @@
     <!-- OBSERVAÇÕES -->
     <!-- ========================================= -->
 
-    <section class="card mb-4 shadow-sm border-0">
-
+    <section class="p-4"  style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
         <div class="card-body">
-
-            <h2 class="mb-4">
+            <h5 class="mb-3" style="font-size: 25px; color: #194161;">
                 Observações Gerais
-            </h2>
-
+            </h5>
             <textarea class="form-control"
                       rows="5"
                       placeholder="Observações adicionais do processo..."></textarea>
-
         </div>
-
     </section>
 
     <!-- ========================================= -->
     <!-- BOTÕES -->
     <!-- ========================================= -->
 
-    <div class="d-flex justify-content-end gap-2 mb-5">
+    <div class="d-flex justify-content-end gap-2 mt-3">
 
         <button type="button"
                 class="btn btn-outline-secondary"
