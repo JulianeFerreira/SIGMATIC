@@ -134,32 +134,36 @@
 </div>
 
     <div class="row g-4 mb-4">
-        <div class="col-lg-6">
-            <div class="card h-100 shadow-sm border-0 bg-white">
-                <div class="card-header bg-transparent border-0 pt-3">
-                    <h5 class="text-dark mb-0">Distribuição por Modalidade</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="chartModalidade"></canvas>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-lg-6">
-            <div class="card h-100 shadow-sm border-0 bg-white">
-                <div class="card-header bg-transparent border-0 pt-3">
-                    <h5 class="text-dark mb-0">Processos por Situação</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="chartSituacao"></canvas>
-                </div>
+    <!-- Card 1: Distribuição por Modalidade -->
+    <div class="col-lg-6">
+        <div class="bg-white h-100 p-3" style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240);">
+            <div class="card-header bg-transparent border-0 pt-3">
+                <h5 class="text-dark mb-0">Distribuição por Modalidade</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="chartModalidade"></canvas>
             </div>
         </div>
     </div>
 
+    <!-- Card 2: Processos por Situação -->
+    <div class="col-lg-6">
+        <div class="bg-white h-100 p-3" style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240);">
+            <div class="card-header bg-transparent border-0 pt-3">
+                <h5 class="text-dark mb-0">Processos por Situação</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="chartSituacao"></canvas>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
     <div class="card shadow-sm border-0 bg-white">
         <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center flex-wrap pt-3">
-            <h5 class="m-0" style="font-size: 25px; color: #194161; margin-bottom: 0;">Lista de Processos</h5>
+            <h5 class="m-0" style="font-size: 25px; color: #194161;">Lista de Processos</h5>
             <span class="small text-muted">Resumo dos processos cadastrados</span>
         </div>
         <div class="card-body p-0 mt-2">
