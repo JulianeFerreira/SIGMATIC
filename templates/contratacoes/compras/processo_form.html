@@ -15,21 +15,40 @@
 <!-- Cabeçalho Interno da Página -->
 <div class="mb-4 pt-2">
         <!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
-        <ul class="nav nav-tabs mb-4">
-            <li class="nav-item">
-                <a href="/contratacoes/compras/" class="nav-link text-secondary">Dashboard</a>
-            </li>
-            <!-- Aba Ativa: Fundo branco, bordas laterais/superior e texto escuro -->
-            <li class="nav-item">
-                <a href="/ui/processos/" class="nav-link text-secondary" aria-current="page">Processos</a>
-            </li>
-            <li class="nav-item">
-                <a href="/ui/processos/novo/" class="nav-link active text-secondary bg-primary text-white border-primary">Novo Processo</a>
-            </li>
-            <li class="nav-item">
-                <a href="/ui/relatorios/" class="nav-link text-secondary">Relatórios</a>
-            </li>
-        </ul>
+<!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
+<ul class="nav nav-tabs mb-4">
+    <!-- Aba Dashboard -->
+    <li class="nav-item">
+        <a href="/contratacoes/compras/dashboard/" 
+           class="nav-link {% if '/compras/dashboard/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Dashboard
+        </a>
+    </li>
+    
+    <!-- Aba Processos -->
+    <li class="nav-item">
+        <a href="/contratacoes/compras/processos/" 
+           class="nav-link {% if '/compras/processos/' in request.path and not '/processos_form/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Processos
+        </a>
+    </li>
+    
+    <!-- Aba Novo Processo -->
+    <li class="nav-item">
+        <a href="/contratacoes/compras/processo_form/" 
+           class="nav-link {% if '/processo_form/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Novo Processo
+        </a>
+    </li>
+    
+    <!-- Aba Relatórios -->
+    <li class="nav-item">
+        <a href="/contratacoes/compras/relatorios/" 
+           class="nav-link {% if '/compras/relatorios/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Relatórios
+        </a>
+    </li>
+</ul>
 
 <form class="mb-4 pt-2" id="processoForm">
 
