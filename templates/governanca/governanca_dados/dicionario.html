@@ -1,0 +1,38 @@
+{% extends 'base_sesp/base_sesp.html' %} {% block title %}SIGMATIC - Dicionário
+de Dados{% endblock %} {% block content %}
+<div class="container-fluid py-4">
+  <!-- Cabeçalho -->
+  <div class="mb-4 pt-2">
+    <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161">
+      Governança de Dados
+    </h1>
+    <p class="text-muted small mb-0">Dicionário e metadados.</p>
+  </div>
+
+  <!-- Abas de Navegação (AGORA COM OS LINKS REAIS) -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a href="/governanca/dados/" class="nav-link text-secondary"
+        >Visão Geral</a
+      >
+    </li>
+    <li class="nav-item">
+      <!-- ABA ATIVA AQUI -->
+      <a
+        href="/governanca/dados/dicionario/"
+        class="nav-link active text-secondary bg-primary text-white border-primary"
+        >Dicionário de Dados</a
+      >
+    </li>
+  </ul>
+
+  <!-- Conteúdo Específico da Aba -->
+  <div class="card shadow-sm border-0 bg-white p-4">
+    <h3 class="text-dark">Página do Dicionário de Dados</h3>
+    <p class="text-muted">
+      Se você está vendo esta tela, a navegação entre abas funcionou
+      perfeitamente!
+    </p>
+  </div>
+</div>
+{% endblock %}
