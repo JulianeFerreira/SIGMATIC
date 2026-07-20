@@ -6,14 +6,13 @@ urlpatterns = [
     path('', views.menu_principal, name='menu_principal'),
     path('pesquisa/', views.pesquisa, name='pesquisa'),
     
-    # =======================================================
-    # 2. O SISTEMA CONTRATAÇÕES
+# =======================================================
+    # 2. O SISTEMA CONTRATAÇÕES (Mantemos por causa das APIs)
     # =======================================================
     path('', include('apps.base.core.urls')),
     
     # =======================================================
-    # 3. ROTAS DINÂMICAS
+    # 3. ROTA UNIVERSAL (Cega para níveis de pasta)
     # =======================================================
-    path('<str:modulo>/<str:submodulo>/', views.carrega_submodulo_dinamico, name='carrega_submodulo_dinamico'),
-    path('<str:modulo>/<str:nivel2>/<str:submodulo>/', views.carrega_submodulo_dinamico_profundo, name='carrega_submodulo_dinamico_profundo'),
+    path('<path:caminho>/', views.carregar_template_dinamico, name='carregar_template_dinamico'),
 ]

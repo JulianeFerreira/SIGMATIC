@@ -36,6 +36,19 @@
         font-size: 30px;
       }
 
+
+      .btn-entrar-custom {
+    color: #194161 !important;
+    border: 2px solid #194161 !important;
+    transition: all 0.3s ease; /* Deixa a transição de cor suave */
+}
+
+.btn-entrar-custom:hover {
+    color: #ffffff !important;
+    background-color: #194161 !important; /* Inverte o fundo com a cor do texto */
+    border-color: #194161 !important;
+}
+
       .navbar-dark .navbar-nav .nav-link {
         color: #194161;
         font-weight: 500;
@@ -168,7 +181,7 @@
         </div>
 
         <div
-          class="d-flex align-items-center gap-3 justify-content-end"
+          class="btn_entrar d-flex align-items-center gap-3 justify-content-end"
           style="min-width: 250px"
         >
           <form
@@ -222,21 +235,12 @@
             ><i class="bi bi-person-circle me-1"></i> {{ user.first_name
             }}</span
           >
-          {% else %}
-          <a
-            href="#"
-            class="btn btn-sm fw-bold px-3 d-flex align-items-center justify-content-center bg-white"
-            style="
-              font-size: 0.9rem;
-              color: #194161;
-              border: 2px solid #194161;
-              letter-spacing: 0.6px;
-              height: 35px;
-            "
-          >
-            Entrar
-          </a>
-          {% endif %}
+        {% else %}
+        <a href="#" class="btn btn-sm fw-bold px-3 d-flex align-items-center justify-content-center bg-white btn-entrar-custom"
+          style="font-size: 0.9rem; letter-spacing: 0.6px; height: 35px;">
+          Entrar
+        </a>
+        {% endif %}
         </div>
       </div>
     </nav>
