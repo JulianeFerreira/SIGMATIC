@@ -1,5 +1,7 @@
-{% extends 'base_sesp/base_sesp.html' %} {% block title %}SIGMATIC - Governança
-de Dados{% endblock %} {% block content %}
+{% extends 'base_sesp/base_sesp.html' %} 
+{% load static %}
+{% block title %}SIGMATIC - Governança de Dados{% endblock %} 
+{% block content %}
 
 <div class="container-fluid py-4">
   <div class="mb-4 pt-2">
@@ -121,97 +123,104 @@ de Dados{% endblock %} {% block content %}
     </div>
 </div>
 
-<!-- Seção de Gráficos Analíticos -->
-<div class="row g-3 mb-4">
-        <!-- Gráfico 1: Acessos por Origem (Unificação SESP, CELEPAR, Externos) -->
-        <div class="col-12 col-lg-5">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white py-3 fw-bold border-0">
-                    <i class="bi bi-pie-chart text-primary me-2"></i>Distribuição por Origem (Base Unificada)
-                </div>
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <div style="width: 100%; max-width: 280px;">
-                        <canvas id="chartOrigem"></canvas>
-                    </div>
-                </div>
-            </div>
+<div class="container-fluid py-4">
+
+<!-- Card do Gráfico Anual -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3 border-0 d-flex align-items-center">
+            <h5 class="card-title m-0 fw-bold text-dark">
+                <i class="bi bi-graph-up-arrow text-primary me-2"></i>
+                Solicitações Criadas x Aprovadas (Visão Anual)
+            </h5>
         </div>
-        <!-- Gráfico 2: Evolução Mensal de Solicitações -->
-        <div class="col-12 col-lg-7">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white py-3 fw-bold border-0">
-                    <i class="bi bi-graph-up-arrow text-primary me-2"></i>Solicitações Criadas x Aprovadas (Últimos 6 meses)
-                </div>
-                <div class="card-body">
-                    <canvas id="chartEvolucao" style="height: 250px; width: 100%;"></canvas>
-                </div>
+        <div class="card-body">
+            <div style="position: relative; width: 100%; height: 320px;">
+                <canvas id="graficoSolicitacoesAnual"></canvas>
             </div>
         </div>
     </div>
-
+</div>
 </div>
 
-<!-- CDN do Chart.js para Renderização dos Gráficos -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- Carregamento do Chart.js com tratamento para Proxy/CDN -->
+<script src="{% static 'js/chart.umd.js' %} "></script>
+
+<!-- 2. Inicialização do Gráfico -->
 <script>
-    // 1. Gráfico de Rosca (Origem do Usuário)
-    const ctxOrigem = document.getElementById('chartOrigem').getContext('2d');
-    new Chart(ctxOrigem, {
-        type: 'doughnut',
-        data: {
-            labels: ['SESP', 'CELEPAR', 'Externo / Universidades'],
-            datasets: [{
-                data: [82, 38, 22],
-                backgroundColor: ['#0d6efd', '#6f42c1', '#fd7e14'],
-                borderWidth: 2,
-                borderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'bottom' }
-            },
-            cutout: '70%'
-        }
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvasElement = document.getElementById('graficoSolicitacoesAnual');
+        if (!canvasElement) return;
 
-    // 2. Gráfico de Linhas (Evolução de Solicitações)
-    const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
-    new Chart(ctxEvolucao, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            datasets: [
-                {
-                    label: 'Solicitadas',
-                    data: [12, 19, 15, 22, 18, 25],
-                    borderColor: '#ffc107',
-                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                    fill: true,
-                    tension: 0.3
-                },
-                {
-                    label: 'Aprovadas',
-                    data: [10, 16, 14, 20, 16, 22],
-                    borderColor: '#198754',
-                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
-                    fill: true,
-                    tension: 0.3
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'top' }
-            },
-            scales: {
-                y: { beginAtZero: true }
-            }
+        const ctx = canvasElement.getContext('2d');
+
+        // 1. Dados Padrão (Garantia de exibição visual)
+        let labelsMeses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+        let dadosSolicitadas = [12, 19, 15, 22, 18, 25, 30, 10, 5, 20, 15, 8];
+        let dadosAprovadas = [10, 16, 14, 20, 16, 22, 28, 8, 4, 18, 12, 7];
+
+        // 2. Se o Django enviar valores, sobrescrevemos os dados padrão
+        const djangoLabels = '{{ labels_meses_json|escapejs }}';
+        const djangoSolicitadas = '{{ solicitadas_json|escapejs }}';
+        const djangoAprovadas = '{{ aprovadas_json|escapejs }}';
+
+        if (djangoLabels && djangoLabels !== 'None' && djangoLabels !== '') {
+            labelsMeses = JSON.parse(djangoLabels);
         }
+        if (djangoSolicitadas && djangoSolicitadas !== 'None' && djangoSolicitadas !== '') {
+            dadosSolicitadas = JSON.parse(djangoSolicitadas);
+        }
+        if (djangoAprovadas && djangoAprovadas !== 'None' && djangoAprovadas !== '') {
+            dadosAprovadas = JSON.parse(djangoAprovadas);
+        }
+
+        // 3. Renderiza o Chart
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labelsMeses,
+                datasets: [
+                    {
+                        label: 'Solicitadas',
+                        data: dadosSolicitadas,
+                        borderColor: '#ffc107',
+                        backgroundColor: 'rgba(255, 193, 7, 0.15)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.35
+                    },
+                    {
+                        label: 'Aprovadas',
+                        data: dadosAprovadas,
+                        borderColor: '#198754',
+                        backgroundColor: 'rgba(25, 135, 84, 0.15)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.35
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { stepSize: 5 }
+                    },
+                    x: { grid: { display: false } }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { usePointStyle: true }
+                    }
+                }
+            }
+        });
     });
 </script>
 
