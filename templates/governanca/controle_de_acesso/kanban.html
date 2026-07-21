@@ -1,0 +1,43 @@
+{% extends 'base_sesp/base_sesp.html' %} {% block title %}SIGMATIC - Dicionário
+de Dados{% endblock %} {% block content %}
+<div class="container-fluid py-4">
+  <!-- Cabeçalho -->
+  <div class="mb-4 pt-2">
+    <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161">
+      Governança de Dados
+    </h1>
+    <p class="text-muted small mb-0">Dicionário e metadados.</p>
+  </div>
+
+  <!-- Abas de Navegação (AGORA COM OS LINKS REAIS) -->
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/dashboard/" 
+           class="nav-link {% if '/dashboard/' in request.path or request.path == '/governancacontrole_de_acesso/' %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Dashboard
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/kanban/" 
+           class="nav-link {% if '/kanban/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Kanban
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/nova_solicitacao/" 
+           class="nav-link {% if '/nova_solicitacao/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Nova solicitação
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/lista/"
+           class="nav-link {% if '/lista/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Lista
+        </a>
+    </li>
+</ul>
+
+{% endblock %}
