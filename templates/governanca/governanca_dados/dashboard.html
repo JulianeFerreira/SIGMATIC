@@ -9,31 +9,53 @@ de Dados{% endblock %} {% block content %}
     <p class="text-muted small mb-0">Painel de teste de roteamento dinâmico.</p>
   </div>
 
-<ul class="nav nav-tabs mb-4">
+  <ul class="nav nav-tabs mb-4">
     <!-- Aba Dashboard -->
     <li class="nav-item">
-        <a href="/governanca/governanca_dados/dashboard/" 
-           class="nav-link {% if '/dashboard/' in request.path or request.path == '/governanca/governanca_dados/' %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Dashboard
-        </a>
+      <a
+        href="/governanca/governanca_dados/dashboard/"
+        class="nav-link {% if '/dashboard/' in request.path or request.path == '/governanca/governanca_dados/' %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
+      >
+        Dashboard
+      </a>
     </li>
 
     <!-- Aba Dicionário de Dados -->
     <li class="nav-item">
-        <a href="/governanca/governanca_dados/dicionario/" 
-           class="nav-link {% if '/dicionario/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Dicionário de Dados
-        </a>
+      <a
+        href="/governanca/governanca_dados/dicionario/"
+        class="nav-link {% if '/dicionario/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
+      >
+        Dicionário de Dados
+      </a>
     </li>
 
     <!-- Aba Qualidade -->
     <li class="nav-item">
-        <a href="/governanca/governanca_dados/qualidade_dados/" 
-           class="nav-link {% if '/qualidade_dados/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Qualidade
-        </a>
+      <a
+        href="/governanca/governanca_dados/qualidade_dados/"
+        class="nav-link {% if '/qualidade_dados/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
+      >
+        Qualidade
+      </a>
     </li>
-</ul>
+    <li class="nav-item">
+      <a
+        href="/governanca/governanca_dados/nova_solicitacao/"
+        class="nav-link {% if '/nova_solicitacao/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
+      >
+        Nova Solicitação
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        href="/governanca/governanca_dados/painel_solicitacoes/"
+        class="nav-link {% if '/painel_solicitacoes/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
+      >
+        Solicitação
+      </a>
+    </li>
+  </ul>
 
   <!-- Cards de Indicadores -->
   <div class="row g-3 mb-4">

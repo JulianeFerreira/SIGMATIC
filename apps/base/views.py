@@ -113,29 +113,33 @@ def pesquisa(request):
     }
     return render(request, "base_sesp/home_sesp.html", contexto)
 
+from django.shortcuts import render
+from django.http import JsonResponse, Http404
+from django.conf import settings
+from django.template.loader import get_template
+from django.template import TemplateDoesNotExist
+from django.contrib import messages
+
 def carregar_template_dinamico(request, caminho):
     caminho_limpo = caminho.strip('/')
     ultima_parte = caminho_limpo.split('/')[-1]
     
-    arquivos_para_tentar = [
-        f"{caminho_limpo}.html",
-        f"{caminho_limpo}/dashboard.html",
-        f"{caminho_limpo}/{ultima_parte}.html",
-    ]
-    
     modulos, _ = obter_modulos_dinamicos()
     
     partes_caminho = caminho_limpo.split('/')
-    if len(partes_caminho) >= 2:
-        base_url = f"/{partes_caminho[0]}/{partes_caminho[1]}"
-    else:
-        base_url = f"/{caminho_limpo}"
+    base_url = f"/{partes_caminho[0]}/{partes_caminho[1]}" if len(partes_caminho) >= 2 else f"/{caminho_limpo}"
 
     contexto = {
         "modulos": modulos,
         "base_url": base_url,
         "url_atual": request.path
     }
+    
+    arquivos_para_tentar = [
+        f"{caminho_limpo}.html",
+        f"{caminho_limpo}/dashboard.html",
+        f"{caminho_limpo}/{ultima_parte}.html",
+    ]
     
     for template_path in arquivos_para_tentar:
         try:
@@ -144,7 +148,7 @@ def carregar_template_dinamico(request, caminho):
         except TemplateDoesNotExist:
             continue
             
-    raise Http404(f"O sistema procurou, mas não encontrou nenhum arquivo HTML para o caminho: {caminho_limpo}")
+    raise Http404(f"Arquivo HTML não encontrado: {caminho_limpo}")
 
 def carrega_submodulo_dinamico_profundo(request, modulo, nivel2, submodulo):
     caminho_tpl = f"{modulo}/{nivel2}/{submodulo}/dashboard.html"
