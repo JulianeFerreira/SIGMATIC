@@ -25,6 +25,10 @@ services:
 
   web:
     build: .
+    # A imagem (Dockerfile) sobe com gunicorn, voltado para produção.
+    # Em dev, sobrescrevemos para manage.py runserver: aplica as migrações
+    # pendentes e sobe com autoreload a cada `docker compose up`.
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     env_file:
@@ -35,6 +39,11 @@ services:
       DB_HOST: db
       SMTP_HOST: mailhog
       SMTP_PORT: 1025
+    volumes:
+      # Bind mount do código para refletir mudanças sem rebuild da imagem.
+      # As dependências ficam instaladas no site-packages da imagem, então
+      # não são afetadas por este mount.
+      - .:/app
     depends_on:
       db:
         condition: service_healthy
