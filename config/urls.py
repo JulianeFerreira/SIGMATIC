@@ -3,12 +3,17 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.base.urls')),
     
-    # Redireciona tudo que começa com 'governanca/' para as urls do app governança
+    # Rota Base (Telas iniciais/Login) - Apenas uma vez!
+    path('', include('apps.base.urls')),
+
+    # Módulo de Governança
     path('governanca/', include('apps.governanca.urls')),
-    path('governanca/governanca_dados/', include('apps.governanca.governanca_dados.urls')),
-    path('planejamento/pdtic/', include('apps.planejamento.pdtic.urls')),
-    path('', include('apps.base.urls')),
+    path('governanca/controle_de_acesso/', include('apps.governanca.controle_de_acesso.urls')), # <- Sua pasta
     
+    # 🚨 Comentado temporariamente para evitar o erro, até o colega criar o arquivo
+    path('governanca/governanca_dados/', include('apps.governanca.governanca_dados.urls')),
+    
+    # Módulo de Planejamento
+    path('planejamento/pdtic/', include('apps.planejamento.pdtic.urls')),
 ]
