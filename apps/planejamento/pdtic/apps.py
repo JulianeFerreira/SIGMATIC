@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
-
-class CoreConfig(AppConfig):
+class PdticConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.planejamento.pdtic'
+    verbose_name = 'PDTIC - Plano Diretor de TIC'

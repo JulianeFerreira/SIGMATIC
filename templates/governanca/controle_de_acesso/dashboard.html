@@ -123,24 +123,49 @@
     </div>
 </div>
 
-<div class="container-fluid py-4">
-
-<!-- Card do Gráfico Anual -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-white py-3 border-0 d-flex align-items-center">
-            <h5 class="card-title m-0 fw-bold text-dark">
-                <i class="bi bi-graph-up-arrow text-primary me-2"></i>
-                Solicitações Criadas x Aprovadas (Visão Anual)
-            </h5>
+<div class="row mt-4">
+    <!-- GRÁFICO 1: Linha / Tendência (Visão Anual) -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white py-3 border-0 d-flex align-items-center">
+                <h5 class="card-title m-0 fw-bold text-dark">
+                    <i class="bi bi-graph-up-arrow text-primary me-2"></i>
+                    Solicitações (Visão Anual)
+                </h5>
+            </div>
+            <div class="card-body">
+                <div style="position: relative; width: 100%; height: 320px;">
+                    <!-- ID correto para o gráfico de linha -->
+                    <canvas id="graficoSolicitacoesAnual"></canvas>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <div style="position: relative; width: 100%; height: 320px;">
-                <canvas id="graficoSolicitacoesAnual"></canvas>
+    </div>
+
+    <!-- GRÁFICO 2: Rosca (Origens) -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white py-3 border-0 d-flex align-items-center">
+                <h5 class="card-title m-0 fw-bold text-dark">
+                    <i class="bi bi-pie-chart text-primary me-2"></i>
+                    Origem das Solicitações
+                </h5>
+            </div>
+            <div class="card-body d-flex justify-content-center">
+                <div style="position: relative; width: 100%; height: 320px;">
+                    <!-- ID correto para o gráfico de rosca -->
+                    <canvas id="graficoOrigens"></canvas>
+                </div>
             </div>
         </div>
     </div>
 </div>
 </div>
+
+
+
+
+
 
 
 <!-- Carregamento do Chart.js com tratamento para Proxy/CDN -->
@@ -149,78 +174,135 @@
 <!-- 2. Inicialização do Gráfico -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const canvasElement = document.getElementById('graficoSolicitacoesAnual');
-        if (!canvasElement) return;
+        
+        // ========================================================
+        // GRÁFICO 1: Visão Anual (Solicitadas x Aprovadas)
+        // ========================================================
+        const canvasAnual = document.getElementById('graficoSolicitacoesAnual');
+        
+        // Só tenta renderizar se o canvas existir no HTML
+        if (canvasAnual) {
+            const ctxAnual = canvasAnual.getContext('2d');
 
-        const ctx = canvasElement.getContext('2d');
+            // 1. Dados Padrão (Garantia de exibição visual)
+            let labelsMeses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            let dadosSolicitadas = [12, 19, 15, 22, 18, 25, 30, 10, 5, 20, 15, 8];
+            let dadosAprovadas = [10, 16, 14, 20, 16, 22, 28, 8, 4, 18, 12, 7];
 
-        // 1. Dados Padrão (Garantia de exibição visual)
-        let labelsMeses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-        let dadosSolicitadas = [12, 19, 15, 22, 18, 25, 30, 10, 5, 20, 15, 8];
-        let dadosAprovadas = [10, 16, 14, 20, 16, 22, 28, 8, 4, 18, 12, 7];
+            // 2. Se o Django enviar valores, sobrescrevemos os dados padrão
+            const djangoLabels = '{{ labels_meses_json|escapejs }}';
+            const djangoSolicitadas = '{{ solicitadas_json|escapejs }}';
+            const djangoAprovadas = '{{ aprovadas_json|escapejs }}';
 
-        // 2. Se o Django enviar valores, sobrescrevemos os dados padrão
-        const djangoLabels = '{{ labels_meses_json|escapejs }}';
-        const djangoSolicitadas = '{{ solicitadas_json|escapejs }}';
-        const djangoAprovadas = '{{ aprovadas_json|escapejs }}';
+            if (djangoLabels && djangoLabels !== 'None' && djangoLabels !== '') {
+                labelsMeses = JSON.parse(djangoLabels);
+            }
+            if (djangoSolicitadas && djangoSolicitadas !== 'None' && djangoSolicitadas !== '') {
+                dadosSolicitadas = JSON.parse(djangoSolicitadas);
+            }
+            if (djangoAprovadas && djangoAprovadas !== 'None' && djangoAprovadas !== '') {
+                dadosAprovadas = JSON.parse(djangoAprovadas);
+            }
 
-        if (djangoLabels && djangoLabels !== 'None' && djangoLabels !== '') {
-            labelsMeses = JSON.parse(djangoLabels);
-        }
-        if (djangoSolicitadas && djangoSolicitadas !== 'None' && djangoSolicitadas !== '') {
-            dadosSolicitadas = JSON.parse(djangoSolicitadas);
-        }
-        if (djangoAprovadas && djangoAprovadas !== 'None' && djangoAprovadas !== '') {
-            dadosAprovadas = JSON.parse(djangoAprovadas);
-        }
-
-        // 3. Renderiza o Chart
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labelsMeses,
-                datasets: [
-                    {
-                        label: 'Solicitadas',
-                        data: dadosSolicitadas,
-                        borderColor: '#ffc107',
-                        backgroundColor: 'rgba(255, 193, 7, 0.15)',
-                        borderWidth: 2,
-                        pointRadius: 4,
-                        fill: true,
-                        tension: 0.35
-                    },
-                    {
-                        label: 'Aprovadas',
-                        data: dadosAprovadas,
-                        borderColor: '#198754',
-                        backgroundColor: 'rgba(25, 135, 84, 0.15)',
-                        borderWidth: 2,
-                        pointRadius: 4,
-                        fill: true,
-                        tension: 0.35
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { 
-                        beginAtZero: true,
-                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                        ticks: { stepSize: 5 }
-                    },
-                    x: { grid: { display: false } }
+            // 3. Renderiza o Chart Anual
+            new Chart(ctxAnual, {
+                type: 'line',
+                data: {
+                    labels: labelsMeses,
+                    datasets: [
+                        {
+                            label: 'Solicitadas',
+                            data: dadosSolicitadas,
+                            borderColor: '#ffc107',
+                            backgroundColor: 'rgba(255, 193, 7, 0.15)',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            fill: true,
+                            tension: 0.35
+                        },
+                        {
+                            label: 'Aprovadas',
+                            data: dadosAprovadas,
+                            borderColor: '#198754',
+                            backgroundColor: 'rgba(25, 135, 84, 0.15)',
+                            borderWidth: 2,
+                            pointRadius: 4,
+                            fill: true,
+                            tension: 0.35
+                        }
+                    ]
                 },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: { usePointStyle: true }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            ticks: { stepSize: 5 }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { usePointStyle: true }
+                        }
                     }
                 }
+            });
+        }
+
+        // ========================================================
+        // GRÁFICO 2: Origem das Solicitações (SESP, CELEPAR, EXTERNA)
+        // ========================================================
+        const canvasOrigem = document.getElementById('graficoOrigens');
+        
+        // Só tenta renderizar se o canvas existir no HTML
+        if (canvasOrigem) {
+            const ctxOrigem = canvasOrigem.getContext('2d');
+
+            // 1. Dados Padrão (Garantia de exibição visual)
+            let labelsOrigens = ['SESP', 'CELEPAR', 'EXTERNA'];
+            let dadosOrigens = [150, 85, 40];
+
+            // 2. Se o Django enviar valores, sobrescrevemos
+            const djangoLabelsOrigens = '{{ origens_json|escapejs }}';
+            const djangoDadosOrigens = '{{ acessos_origem_json|escapejs }}';
+
+            if (djangoLabelsOrigens && djangoLabelsOrigens !== 'None' && djangoLabelsOrigens !== '') {
+                labelsOrigens = JSON.parse(djangoLabelsOrigens);
             }
-        });
+            if (djangoDadosOrigens && djangoDadosOrigens !== 'None' && djangoDadosOrigens !== '') {
+                dadosOrigens = JSON.parse(djangoDadosOrigens);
+            }
+
+            // 3. Renderiza o Chart de Rosca
+            new Chart(ctxOrigem, {
+                type: 'doughnut',
+                data: {
+                    labels: labelsOrigens,
+                    datasets: [{
+                        data: dadosOrigens,
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.7)',  // Azul (SESP)
+                            'rgba(75, 192, 192, 0.7)',  // Verde (CELEPAR)
+                            'rgba(255, 159, 64, 0.7)'   // Laranja (EXTERNA)
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'right' 
+                        }
+                    }
+                }
+            });
+        }
     });
 </script>
 
