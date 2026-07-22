@@ -16,6 +16,13 @@ services:
       timeout: 5s
       retries: 5
 
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "1025:1025" # servidor SMTP — aponte SMTP_HOST/SMTP_PORT para cá
+      - "8025:8025" # UI web para visualizar os e-mails capturados
+    restart: always
+
   web:
     build: .
     ports:
@@ -26,9 +33,13 @@ services:
       # Overrides do .env para que o app fale com os serviços do Docker
       # (nomes dos serviços) em vez de localhost.
       DB_HOST: db
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
     depends_on:
       db:
         condition: service_healthy
+      mailhog:
+        condition: service_started
     restart: always
 
 volumes:
