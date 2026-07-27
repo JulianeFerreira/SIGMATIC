@@ -1,156 +1,198 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}GAA Patrimônio - Novo Bem{% endblock %}
-
-{% block content %}
+{% extends 'base/base.html' %} {% load static %} {% block title %}GAA Patrimônio
+- Novo Bem{% endblock %} {% block content %}
 
 <header class="topbar">
-    <div class="search-box">
-        <input type="text" class="form-control" placeholder="Buscar bem..." disabled>
-    </div>
+  <div class="search-box">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar bem..."
+      disabled
+    />
+  </div>
 </header>
 
 <section class="page-header">
-    <h1>Novo Bem</h1>
-    <p>Cadastre um novo bem patrimonial no sistema de controle do GAA.</p>
+  <h1>Novo Bem</h1>
+  <p>Cadastre um novo bem patrimonial no sistema de controle do GAA.</p>
 </section>
 
 <section class="tabs-nav">
-    <a href="/ui/patrimonio/" class="tab-item">Dashboard</a>
-    <a href="/ui/patrimonio/bens/" class="tab-item">Bens</a>
-    <a href="/ui/patrimonio/bens/novo/" class="tab-item active">Novo Bem</a>
-    <a href="/ui/patrimonio/relatorios/" class="tab-item">Relatórios</a>
+  <a href="/ui/patrimonio/" class="tab-item">Dashboard</a>
+  <a href="/ui/patrimonio/bens/" class="tab-item">Bens</a>
+  <a href="/ui/patrimonio/bens/novo/" class="tab-item active">Novo Bem</a>
+  <a href="/ui/patrimonio/relatorios/" class="tab-item">Relatórios</a>
 </section>
 
 <form id="bemForm">
+  <section class="card mb-4">
+    <h2>Identificação</h2>
 
-    <section class="card mb-4">
-        <h2>Identificação</h2>
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="field-label">Tombamento *</label>
+        <input
+          name="tombamento"
+          class="form-control"
+          placeholder="Ex: PCP-000123"
+          required
+        />
+      </div>
 
-        <div class="row g-3 mb-3">
-            <div class="col-md-6">
-                <label class="field-label">Tombamento *</label>
-                <input name="tombamento" class="form-control" placeholder="Ex: PCP-000123" required>
-            </div>
-
-            <div class="col-md-6">
-                <label class="field-label">Situação *</label>
-                <select name="situacao" class="form-control" required>
-                    <option value="em_uso">Em uso</option>
-                    <option value="ocioso">Ocioso</option>
-                    <option value="manutencao">Manutenção</option>
-                    <option value="extraviado">Extraviado</option>
-                    <option value="baixado">Baixado</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label class="field-label">Descrição *</label>
-            <textarea name="descricao" class="form-control" rows="4"
-                      placeholder="Descreva o bem. Ex: Notebook Dell i5 16GB 512GB..." required></textarea>
-        </div>
-
-        <div class="row g-3 mb-3">
-            <div class="col-md-4">
-                <label class="field-label">Categoria</label>
-                <input name="categoria" class="form-control" placeholder="Ex: TI, Mobiliário, Laboratório">
-            </div>
-
-            <div class="col-md-4">
-                <label class="field-label">Marca</label>
-                <input name="marca" class="form-control" placeholder="Ex: Dell">
-            </div>
-
-            <div class="col-md-4">
-                <label class="field-label">Modelo</label>
-                <input name="modelo" class="form-control" placeholder="Ex: Latitude 5420">
-            </div>
-        </div>
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="field-label">Serial</label>
-                <input name="serial" class="form-control" placeholder="Nº de série do equipamento">
-            </div>
-
-            <div class="col-md-6">
-                <label class="field-label">Garantia até</label>
-                <input type="date" name="garantia_fim" class="form-control">
-            </div>
-        </div>
-    </section>
-
-    <section class="card mb-4">
-        <h2>Localização e Responsável</h2>
-
-        <div class="row g-3 mb-3">
-            <div class="col-md-6">
-                <label class="field-label">Unidade atual</label>
-                <input name="unidade_atual" class="form-control" placeholder="Ex: UETC Curitiba Centro">
-            </div>
-
-            <div class="col-md-6">
-                <label class="field-label">Local físico</label>
-                <input name="local_fisico" class="form-control" placeholder="Ex: Sala 12 / Necropsia / Almoxarifado">
-            </div>
-        </div>
-
-        <div class="row g-3 mb-3">
-            <div class="col-md-6">
-                <label class="field-label">Responsável - Nome</label>
-                <input name="responsavel_nome" class="form-control" placeholder="Nome do responsável pela carga">
-            </div>
-
-            <div class="col-md-6">
-                <label class="field-label">Responsável - Matrícula</label>
-                <input name="responsavel_matricula" class="form-control" placeholder="Matrícula do servidor">
-            </div>
-        </div>
-
-        <div>
-            <label class="field-label">Observações</label>
-            <textarea name="observacoes" class="form-control" rows="4" placeholder="Observações gerais do bem..."></textarea>
-        </div>
-    </section>
-
-    <div class="form-actions">
-        <button type="button" class="btn secondary" id="btnCancelarBem">Cancelar</button>
-        <button type="submit" class="btn primary">Salvar Bem</button>
+      <div class="col-md-6">
+        <label class="field-label">Situação *</label>
+        <select name="situacao" class="form-control" required>
+          <option value="em_uso">Em uso</option>
+          <option value="ocioso">Ocioso</option>
+          <option value="manutencao">Manutenção</option>
+          <option value="extraviado">Extraviado</option>
+          <option value="baixado">Baixado</option>
+        </select>
+      </div>
     </div>
 
+    <div class="mb-3">
+      <label class="field-label">Descrição *</label>
+      <textarea
+        name="descricao"
+        class="form-control"
+        rows="4"
+        placeholder="Descreva o bem. Ex: Notebook Dell i5 16GB 512GB..."
+        required
+      ></textarea>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <label class="field-label">Categoria</label>
+        <input
+          name="categoria"
+          class="form-control"
+          placeholder="Ex: TI, Mobiliário, Laboratório"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="field-label">Marca</label>
+        <input name="marca" class="form-control" placeholder="Ex: Dell" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="field-label">Modelo</label>
+        <input
+          name="modelo"
+          class="form-control"
+          placeholder="Ex: Latitude 5420"
+        />
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="field-label">Serial</label>
+        <input
+          name="serial"
+          class="form-control"
+          placeholder="Nº de série do equipamento"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="field-label">Garantia até</label>
+        <input type="date" name="garantia_fim" class="form-control" />
+      </div>
+    </div>
+  </section>
+
+  <section class="card mb-4">
+    <h2>Localização e Responsável</h2>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="field-label">Unidade atual</label>
+        <input
+          name="unidade_atual"
+          class="form-control"
+          placeholder="Ex: UETC Curitiba Centro"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="field-label">Local físico</label>
+        <input
+          name="local_fisico"
+          class="form-control"
+          placeholder="Ex: Sala 12 / Necropsia / Almoxarifado"
+        />
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="field-label">Responsável - Nome</label>
+        <input
+          name="responsavel_nome"
+          class="form-control"
+          placeholder="Nome do responsável pela carga"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="field-label">Responsável - Matrícula</label>
+        <input
+          name="responsavel_matricula"
+          class="form-control"
+          placeholder="Matrícula do servidor"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label class="field-label">Observações</label>
+      <textarea
+        name="observacoes"
+        class="form-control"
+        rows="4"
+        placeholder="Observações gerais do bem..."
+      ></textarea>
+    </div>
+  </section>
+
+  <div class="form-actions">
+    <button type="button" class="btn secondary" id="btnCancelarBem">
+      Cancelar
+    </button>
+    <button type="submit" class="btn primary">Salvar Bem</button>
+  </div>
 </form>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script>
-    document.getElementById("btnCancelarBem").addEventListener("click", () => {
-        window.location.href = "/ui/patrimonio/bens/";
+  document.getElementById("btnCancelarBem").addEventListener("click", () => {
+    window.location.href = "/ui/patrimonio/bens/";
+  });
+
+  document.getElementById("bemForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const payload = Object.fromEntries(new FormData(form).entries());
+
+    const r = await fetch("/api/patrimonio/bens", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     });
 
-    document.getElementById("bemForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
+    if (!r.ok) {
+      alert(await r.text());
+      return;
+    }
 
-        const form = e.target;
-        const payload = Object.fromEntries(new FormData(form).entries());
-
-        const r = await fetch("/api/patrimonio/bens", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
-
-        if (!r.ok) {
-            alert(await r.text());
-            return;
-        }
-
-        const d = await r.json();
-        window.location.href = `/ui/patrimonio/bens/${encodeURIComponent(d.tombamento)}/`;
-    });
+    const d = await r.json();
+    window.location.href = `/ui/patrimonio/bens/${encodeURIComponent(d.tombamento)}/`;
+  });
 </script>
 {% endblock %}

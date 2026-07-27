@@ -1,360 +1,384 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Aplicativo GAA - Dashboard de Contratos{% endblock %}
-
-{% block extra_head %}
+{% extends 'base/base.html' %} {% load static %} {% block title %}Aplicativo GAA
+- Dashboard de Contratos{% endblock %} {% block extra_head %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-    .dashboard-compact-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 18px;
-        height: 100%;
-        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
-    }
+  .dashboard-compact-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 18px;
+    height: 100%;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+  }
 
-    .dashboard-section-title {
-        font-size: 1rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 14px;
-    }
+  .dashboard-section-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 14px;
+  }
 
-    .metric-card small {
-        font-size: .78rem;
-    }
+  .metric-card small {
+    font-size: 0.78rem;
+  }
 
-    .alert-mini-item {
-        padding: 10px 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
+  .alert-mini-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
 
-    .alert-mini-item:last-child {
-        border-bottom: none;
-    }
+  .alert-mini-item:last-child {
+    border-bottom: none;
+  }
 
-    .contract-card-mini {
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        padding: 14px;
-        background: #fff;
-        height: 100%;
-    }
+  .contract-card-mini {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 14px;
+    background: #fff;
+    height: 100%;
+  }
 
-    .contract-card-title {
-        font-weight: 800;
-        color: #0f172a;
-        font-size: .95rem;
-    }
+  .contract-card-title {
+    font-weight: 800;
+    color: #0f172a;
+    font-size: 0.95rem;
+  }
 
-    .contract-card-subtitle {
-        color: #64748b;
-        font-size: .8rem;
-    }
+  .contract-card-subtitle {
+    color: #64748b;
+    font-size: 0.8rem;
+  }
 
-    .status-badge {
-        border-radius: 999px;
-        padding: 5px 9px;
-        font-size: .72rem;
-        font-weight: 800;
-        white-space: nowrap;
-    }
+  .status-badge {
+    border-radius: 999px;
+    padding: 5px 9px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
 
-    .status-red { background: #fee2e2; color: #dc2626; }
-    .status-green { background: #dcfce7; color: #16a34a; }
-    .status-yellow { background: #fef3c7; color: #d97706; }
-    .status-blue { background: #dbeafe; color: #2563eb; }
-    .status-purple { background: #ede9fe; color: #7c3aed; }
-    .status-gray { background: #f1f5f9; color: #475569; }
+  .status-red {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+  .status-green {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+  .status-yellow {
+    background: #fef3c7;
+    color: #d97706;
+  }
+  .status-blue {
+    background: #dbeafe;
+    color: #2563eb;
+  }
+  .status-purple {
+    background: #ede9fe;
+    color: #7c3aed;
+  }
+  .status-gray {
+    background: #f1f5f9;
+    color: #475569;
+  }
 
-    .progress-thin {
-        height: 6px;
-        border-radius: 999px;
-    }
+  .progress-thin {
+    height: 6px;
+    border-radius: 999px;
+  }
 
-    .empty-state {
-        min-height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #94a3b8;
-        text-align: center;
-        font-size: .9rem;
-    }
+  .empty-state {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    text-align: center;
+    font-size: 0.9rem;
+  }
 
-    .chart-compact {
-        height: 210px;
-        position: relative;
-    }
+  .chart-compact {
+    height: 210px;
+    position: relative;
+  }
 
-    .info-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        border-bottom: 1px solid #f1f5f9;
-        padding: 9px 0;
-        font-size: .9rem;
-    }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 9px 0;
+    font-size: 0.9rem;
+  }
 
-    .info-row:last-child {
-        border-bottom: none;
-    }
+  .info-row:last-child {
+    border-bottom: none;
+  }
 </style>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 
 <header class="topbar">
-    <div class="search-box">
-        <input type="text" class="form-control" placeholder="Buscar contrato...">
-    </div>
+  <div class="search-box">
+    <input type="text" class="form-control" placeholder="Buscar contrato..." />
+  </div>
 
-    <div class="user-area">
-        <span>{{ current_user.name }}</span>
-    </div>
+  <div class="user-area">
+    <span>{{ current_user.name }}</span>
+  </div>
 </header>
 
 <section class="page-header">
-    <h1>Dashboard de Contratos</h1>
-    <p>Visão gerencial dos contratos, vigências, alertas, fiscais e fornecedores.</p>
+  <h1>Dashboard de Contratos</h1>
+  <p>
+    Visão gerencial dos contratos, vigências, alertas, fiscais e fornecedores.
+  </p>
 </section>
 
 <section class="tabs-nav">
-    <a href="/ui/contratos/" class="tab-item active">Dashboard</a>
-    <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
-    <a href="/ui/contratos/novo/" class="tab-item">Novo Contrato</a>
-    <a href="/ui/contratos/relatorios/" class="tab-item">Relatórios</a>
+  <a href="/ui/contratos/" class="tab-item active">Dashboard</a>
+  <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
+  <a href="/ui/contratos/novo/" class="tab-item">Novo Contrato</a>
+  <a href="/ui/contratos/relatorios/" class="tab-item">Relatórios</a>
 </section>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100 border-start border-primary border-4">
-            <span class="metric-label">Total</span>
-            <span class="metric-value" id="metric-total-contratos">0</span>
-            <small class="text-muted">Contratos cadastrados</small>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100 border-start border-primary border-4">
+      <span class="metric-label">Total</span>
+      <span class="metric-value" id="metric-total-contratos">0</span>
+      <small class="text-muted">Contratos cadastrados</small>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100 border-start border-success border-4">
-            <span class="metric-label">Vigentes</span>
-            <span class="metric-value" id="metric-vigentes">0</span>
-            <small class="text-success">Situação regular</small>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100 border-start border-success border-4">
+      <span class="metric-label">Vigentes</span>
+      <span class="metric-value" id="metric-vigentes">0</span>
+      <small class="text-success">Situação regular</small>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100 border-start border-warning border-4">
-            <span class="metric-label">Vencendo 90d</span>
-            <span class="metric-value" id="metric-vencendo-90">0</span>
-            <small class="text-warning">Atenção</small>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100 border-start border-warning border-4">
+      <span class="metric-label">Vencendo 90d</span>
+      <span class="metric-value" id="metric-vencendo-90">0</span>
+      <small class="text-warning">Atenção</small>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100 border-start border-danger border-4">
-            <span class="metric-label">Vencidos</span>
-            <span class="metric-value" id="metric-vencidos">0</span>
-            <small class="text-danger">Crítico</small>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100 border-start border-danger border-4">
+      <span class="metric-label">Vencidos</span>
+      <span class="metric-value" id="metric-vencidos">0</span>
+      <small class="text-danger">Crítico</small>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100 border-start border-info border-4">
-            <span class="metric-label">Prorrogações</span>
-            <span class="metric-value" id="metric-prorrogacoes">0</span>
-            <small class="text-info">Pendentes</small>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100 border-start border-info border-4">
+      <span class="metric-label">Prorrogações</span>
+      <span class="metric-value" id="metric-prorrogacoes">0</span>
+      <small class="text-info">Pendentes</small>
     </div>
+  </div>
 
-    <div class="col-md-4 col-xl-2">
-        <div class="metric-card h-100 border-start border-secondary border-4">
-            <span class="metric-label">Reajustes</span>
-            <span class="metric-value" id="metric-reajustes">0</span>
-            <small class="text-muted">Pendentes</small>
-        </div>
+  <div class="col-md-4 col-xl-2">
+    <div class="metric-card h-100 border-start border-secondary border-4">
+      <span class="metric-label">Reajustes</span>
+      <span class="metric-value" id="metric-reajustes">0</span>
+      <small class="text-muted">Pendentes</small>
     </div>
+  </div>
 </div>
 
 <div class="row g-4 mb-4">
-    <div class="col-xl-8">
-        <div class="dashboard-compact-card">
+  <div class="col-xl-8">
+    <div class="dashboard-compact-card">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="dashboard-section-title mb-0">Alertas e Pendências</h2>
+        <span class="badge bg-danger" id="badge-alertas-geral">0</span>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6 col-xl-3">
+          <div class="border rounded-3 p-3 h-100">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <h2 class="dashboard-section-title mb-0">Alertas e Pendências</h2>
-                <span class="badge bg-danger" id="badge-alertas-geral">0</span>
+              <strong>Vencendo 30d</strong>
+              <span class="status-badge status-yellow" id="count-vencendo-30"
+                >0</span
+              >
             </div>
-
-            <div class="row g-3">
-                <div class="col-md-6 col-xl-3">
-                    <div class="border rounded-3 p-3 h-100">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <strong>Vencendo 30d</strong>
-                            <span class="status-badge status-yellow" id="count-vencendo-30">0</span>
-                        </div>
-                        <div id="lista-vencendo-30"></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-xl-3">
-                    <div class="border rounded-3 p-3 h-100">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <strong>Vencidos</strong>
-                            <span class="status-badge status-red" id="count-vencidos-lista">0</span>
-                        </div>
-                        <div id="lista-vencidos"></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-xl-3">
-                    <div class="border rounded-3 p-3 h-100">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <strong>Tramitações</strong>
-                            <span class="status-badge status-purple" id="count-tramitacoes">0</span>
-                        </div>
-                        <div id="lista-tramitacoes"></div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-xl-3">
-                    <div class="border rounded-3 p-3 h-100">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <strong>Garantias/Reaj.</strong>
-                            <span class="status-badge status-blue" id="count-garantias">0</span>
-                        </div>
-                        <div id="lista-garantias"></div>
-                    </div>
-                </div>
-            </div>
+            <div id="lista-vencendo-30"></div>
+          </div>
         </div>
-    </div>
 
-    <div class="col-xl-4">
-        <div class="dashboard-compact-card">
-            <h2 class="dashboard-section-title">Valor Contratual</h2>
-
-            <div class="info-row">
-                <span>Total contratado</span>
-                <strong class="text-primary" id="valor-total-contratado">R$ 0,00</strong>
+        <div class="col-md-6 col-xl-3">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <strong>Vencidos</strong>
+              <span class="status-badge status-red" id="count-vencidos-lista"
+                >0</span
+              >
             </div>
-
-            <div class="info-row">
-                <span>Vigente</span>
-                <strong class="text-success" id="valor-vigente">R$ 0,00</strong>
-            </div>
-
-            <div class="info-row">
-                <span>Vencido</span>
-                <strong class="text-danger" id="valor-vencido">R$ 0,00</strong>
-            </div>
-
-            <div class="info-row">
-                <span>Prorrogado/Aditivo</span>
-                <strong class="text-info" id="valor-prorrogado">R$ 0,00</strong>
-            </div>
-
-            <div class="mt-3">
-                <h3 class="dashboard-section-title mb-2">Vencimentos</h3>
-                <div id="vencimentos-periodo"></div>
-            </div>
+            <div id="lista-vencidos"></div>
+          </div>
         </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <strong>Tramitações</strong>
+              <span class="status-badge status-purple" id="count-tramitacoes"
+                >0</span
+              >
+            </div>
+            <div id="lista-tramitacoes"></div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <strong>Garantias/Reaj.</strong>
+              <span class="status-badge status-blue" id="count-garantias"
+                >0</span
+              >
+            </div>
+            <div id="lista-garantias"></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="col-xl-4">
+    <div class="dashboard-compact-card">
+      <h2 class="dashboard-section-title">Valor Contratual</h2>
+
+      <div class="info-row">
+        <span>Total contratado</span>
+        <strong class="text-primary" id="valor-total-contratado"
+          >R$ 0,00</strong
+        >
+      </div>
+
+      <div class="info-row">
+        <span>Vigente</span>
+        <strong class="text-success" id="valor-vigente">R$ 0,00</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Vencido</span>
+        <strong class="text-danger" id="valor-vencido">R$ 0,00</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Prorrogado/Aditivo</span>
+        <strong class="text-info" id="valor-prorrogado">R$ 0,00</strong>
+      </div>
+
+      <div class="mt-3">
+        <h3 class="dashboard-section-title mb-2">Vencimentos</h3>
+        <div id="vencimentos-periodo"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="row g-4 mb-4">
-    <div class="col-xl-4">
-        <div class="dashboard-compact-card">
-            <h2 class="dashboard-section-title">Situação Geral</h2>
-            <div class="chart-compact">
-                <canvas id="chartSituacaoContratos"></canvas>
-            </div>
-        </div>
+  <div class="col-xl-4">
+    <div class="dashboard-compact-card">
+      <h2 class="dashboard-section-title">Situação Geral</h2>
+      <div class="chart-compact">
+        <canvas id="chartSituacaoContratos"></canvas>
+      </div>
     </div>
+  </div>
 
-    <div class="col-xl-8">
-        <div class="dashboard-compact-card">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <h2 class="dashboard-section-title mb-0">Contratos Recentes</h2>
-                <a href="/ui/contratos/lista/" class="text-decoration-none fw-semibold">
-                    Ver todos →
-                </a>
-            </div>
+  <div class="col-xl-8">
+    <div class="dashboard-compact-card">
+      <div
+        class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3"
+      >
+        <h2 class="dashboard-section-title mb-0">Contratos Recentes</h2>
+        <a href="/ui/contratos/lista/" class="text-decoration-none fw-semibold">
+          Ver todos →
+        </a>
+      </div>
 
-            <div class="row g-3" id="contratos-recentes-cards">
-                <div class="col-12 text-muted">Carregando contratos...</div>
-            </div>
-        </div>
+      <div class="row g-3" id="contratos-recentes-cards">
+        <div class="col-12 text-muted">Carregando contratos...</div>
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="row g-4 mb-4">
-    <div class="col-xl-4">
-        <div class="dashboard-compact-card">
-            <h2 class="dashboard-section-title">Top Fiscais</h2>
-            <div id="top-fiscais"></div>
-        </div>
+  <div class="col-xl-4">
+    <div class="dashboard-compact-card">
+      <h2 class="dashboard-section-title">Top Fiscais</h2>
+      <div id="top-fiscais"></div>
     </div>
+  </div>
 
-    <div class="col-xl-4">
-        <div class="dashboard-compact-card">
-            <h2 class="dashboard-section-title">Fornecedores por Valor</h2>
-            <div id="top-fornecedores-valor"></div>
-        </div>
+  <div class="col-xl-4">
+    <div class="dashboard-compact-card">
+      <h2 class="dashboard-section-title">Fornecedores por Valor</h2>
+      <div id="top-fornecedores-valor"></div>
     </div>
+  </div>
 
-    <div class="col-xl-4">
-        <div class="dashboard-compact-card">
-            <h2 class="dashboard-section-title">Fornecedores por Quantidade</h2>
-            <div id="top-fornecedores-quantidade"></div>
-        </div>
+  <div class="col-xl-4">
+    <div class="dashboard-compact-card">
+      <h2 class="dashboard-section-title">Fornecedores por Quantidade</h2>
+      <div id="top-fornecedores-quantidade"></div>
     </div>
+  </div>
 </div>
 
 <section class="dashboard-compact-card mb-4">
-    <h2 class="dashboard-section-title">Indicadores de Governança</h2>
+  <h2 class="dashboard-section-title">Indicadores de Governança</h2>
 
-    <div class="row g-3">
-        <div class="col-md-6 col-xl">
-            <div class="metric-card h-100">
-                <span class="metric-label">Sem Fiscal</span>
-                <span class="metric-value" id="ind-sem-fiscal">0</span>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-xl">
-            <div class="metric-card h-100">
-                <span class="metric-label">Sem Gestor</span>
-                <span class="metric-value" id="ind-sem-gestor">0</span>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-xl">
-            <div class="metric-card h-100">
-                <span class="metric-label">Sem Garantia</span>
-                <span class="metric-value" id="ind-sem-garantia">0</span>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-xl">
-            <div class="metric-card h-100">
-                <span class="metric-label">Reajustes Atrasados</span>
-                <span class="metric-value" id="ind-reajustes-atrasados">0</span>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-xl">
-            <div class="metric-card h-100">
-                <span class="metric-label">Prorrogações Não Iniciadas</span>
-                <span class="metric-value" id="ind-prorrogacoes-nao-iniciadas">0</span>
-            </div>
-        </div>
+  <div class="row g-3">
+    <div class="col-md-6 col-xl">
+      <div class="metric-card h-100">
+        <span class="metric-label">Sem Fiscal</span>
+        <span class="metric-value" id="ind-sem-fiscal">0</span>
+      </div>
     </div>
+
+    <div class="col-md-6 col-xl">
+      <div class="metric-card h-100">
+        <span class="metric-label">Sem Gestor</span>
+        <span class="metric-value" id="ind-sem-gestor">0</span>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl">
+      <div class="metric-card h-100">
+        <span class="metric-label">Sem Garantia</span>
+        <span class="metric-value" id="ind-sem-garantia">0</span>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl">
+      <div class="metric-card h-100">
+        <span class="metric-label">Reajustes Atrasados</span>
+        <span class="metric-value" id="ind-reajustes-atrasados">0</span>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl">
+      <div class="metric-card h-100">
+        <span class="metric-label">Prorrogações Não Iniciadas</span>
+        <span class="metric-value" id="ind-prorrogacoes-nao-iniciadas">0</span>
+      </div>
+    </div>
+  </div>
 </section>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script src="{% static 'js/contratos/contratos_dashboard.js' %}"></script>
 {% endblock %}
