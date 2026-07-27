@@ -42,7 +42,7 @@ class SolicitacaoAcesso(models.Model):
     ]
 
     # 1. DADOS DO SOLICITANTE
-    solicitante_sistema = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    solicitante_sistema = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitacoes_controle')
     nome_completo = models.CharField(max_length=200, default='', verbose_name="Nome Completo")
     cpf = models.CharField(max_length=14, default='', verbose_name="CPF")
     cargo = models.CharField(max_length=100, default='', verbose_name="Cargo")
