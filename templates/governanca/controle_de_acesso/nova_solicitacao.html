@@ -1,15 +1,16 @@
-{% extends 'base_sesp/base_sesp.html' %} {% block title %}SIGMATIC - Dicionário
-de Dados{% endblock %} {% block content %}
+{% extends 'base_sesp/base_sesp.html' %} 
+{% load static %}
+{% block title %}SIGMATIC - Governança de Dados{% endblock %} 
+{% block content %}
+
 <div class="container-fluid py-4">
-  <!-- Cabeçalho -->
   <div class="mb-4 pt-2">
     <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161">
-      Governança de Dados
+      Controle de Acesso
     </h1>
-    <p class="text-muted small mb-0">Dicionário e metadados.</p>
+    <p class="text-muted small mb-0">Acompanhamento de solicitações de acesso aos dados SESP.</p>
   </div>
 
-  <!-- Abas de Navegação (AGORA COM OS LINKS REAIS) -->
 <ul class="nav nav-tabs mb-4">
     <li class="nav-item">
         <a href="/governanca/controle_de_acesso/dashboard/" 
@@ -19,24 +20,435 @@ de Dados{% endblock %} {% block content %}
     </li>
 
     <li class="nav-item">
-        <a href="/governanca/controle_de_acesso/kanban/" 
-           class="nav-link {% if '/kanban/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Kanban
-        </a>
-    </li>
-
-    <li class="nav-item">
         <a href="/governanca/controle_de_acesso/nova_solicitacao/" 
            class="nav-link {% if '/nova_solicitacao/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Nova solicitação
+           Solicitar acesso
         </a>
     </li>
 
     <li class="nav-item">
         <a href="/governanca/controle_de_acesso/lista/"
            class="nav-link {% if '/lista/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Lista
+           Lista de Usuários
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/dicionario/"
+           class="nav-link {% if '/dicionario/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Dicionário
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/painel_solicitacoes/"
+           class="nav-link {% if '/painel_solicitacoes/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Painel de Solicitações
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/qualidade_dados/"
+           class="nav-link {% if '/qualidade_dados/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Qualidade dos Dados
         </a>
     </li>
 </ul>
+</div>
+
+  <!-- MENSAGENS DE SUCESSO / ERRO -->
+  {% if messages %} {% for message in messages %}
+  <div
+    class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show shadow-sm"
+    role="alert"
+  >
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %}
+
+  <!-- CARD DO FORMULÁRIO -->
+  <div class="card shadow-sm border-0 bg-white">
+    <div class="card-header bg-transparent border-bottom pt-3 pb-2">
+      <h5 class="m-0 fw-bold" style="font-size: 20px; color: #194161">
+        Formulário Único de Solicitação de Acesso
+      </h5>
+      <small class="text-muted"
+        >Preencha os dados abaixo para submeter o pedido à avaliação do DPO e
+        CTIC.</small
+      >
+    </div>
+
+    <div class="card-body p-4">
+      <form method="POST" action="">
+        {% csrf_token %}
+
+        <!-- SEÇÃO 1: DADOS DO SOLICITANTE / CHEFE DE DEPARTAMENTO -->
+        <div class="mb-4">
+          <h6
+            class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3"
+            style="font-size: 13px; letter-spacing: 0.5px"
+          >
+            1. Identificação do Solicitante / Usuário
+          </h6>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold"
+                >Nome Completo <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="nome_completo"
+                class="form-control"
+                placeholder="Ex: João da Silva"
+                required
+              />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label fw-bold"
+                >CPF <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="cpf"
+                class="form-control"
+                placeholder="000.000.000-00"
+                required
+              />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label fw-bold"
+                >Origem / Vínculo <span class="text-danger">*</span></label
+              >
+              <select name="origem" class="form-select" required>
+                <option value="SESP" selected>SESP (Servidor Interno)</option>
+                <option value="CELEPAR">CELEPAR</option>
+                <option value="EXTERNO">Órgão Externo / Universidade</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold"
+                >Cargo / Função <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="cargo"
+                class="form-control"
+                placeholder="Ex: Analista de Sistemas"
+                required
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold"
+                >Lotação / Departamento
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="lotacao"
+                class="form-control"
+                placeholder="Ex: CTIC / Coordenação X"
+                required
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold"
+                >E-mail Institucional <span class="text-danger">*</span></label
+              >
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                placeholder="joao@sesp.pr.gov.br"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- SEÇÃO 2: TIPO DE SOLICITAÇÃO -->
+        <div class="mb-4">
+          <h6
+            class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3"
+            style="font-size: 13px; letter-spacing: 0.5px"
+          >
+            2. Perfil e Tipo de Acesso Pretendido
+          </h6>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold"
+              >Selecione a Modalidade <span class="text-danger">*</span></label
+            >
+            <select
+              name="tipo_acesso"
+              id="tipo_acesso_select"
+              class="form-select form-select-lg"
+              required
+              onchange="mudarFormulario()"
+            >
+              <option value="">-- Clique aqui para escolher o perfil --</option>
+              <option value="ANALISTA">
+                Solicitar Acesso Direto para Analista de Dados (Pessoa)
+              </option>
+              <option value="APLICACAO">
+                Solicitar Criação de Usuário de Aplicação (Conta Técnica /
+                Sistema)
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- BLOCO DINÂMICO 1: DADOS PARA ANALISTA DE DADOS -->
+        <div
+          id="bloco_analista"
+          class="p-4 mb-4 border rounded bg-light shadow-sm"
+          style="display: none; border-left: 5px solid #0d6efd !important"
+        >
+          <h6 class="fw-bold text-primary mb-3">
+            <i class="bi bi-person-badge"></i> Detalhes do Acesso Direto
+            (Analista de Dados)
+          </h6>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold"
+                >Nome do Banco de Dados
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="analista_banco_dados"
+                class="form-control"
+                placeholder="Ex: PostgreSQL RH / DW_SESP"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold"
+                >Nome do Usuário Pretendido
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="analista_nome_usuario"
+                class="form-control"
+                placeholder="Ex: joao.silva (ou sigla do usuário)"
+              />
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label fw-bold"
+                >IP(s) de Origem Autorizados
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="analista_ip_origem"
+                class="form-control"
+                placeholder="Ex: 10.15.20.100 (Endereço IP da máquina institucional)"
+              />
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label fw-bold"
+                >Justificativa do Acesso
+                <span class="text-danger">*</span></label
+              >
+              <textarea
+                name="analista_justificativa"
+                class="form-control"
+                rows="3"
+                placeholder="Descreva a necessidade institucional do acesso a esses dados..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOCO DINÂMICO 2: DADOS PARA APLICAÇÃO / CONTA TÉCNICA -->
+        <div
+          id="bloco_aplicacao"
+          class="p-4 mb-4 border rounded bg-light shadow-sm"
+          style="display: none; border-left: 5px solid #198754 !important"
+        >
+          <h6 class="fw-bold text-success mb-3">
+            <i class="bi bi-cpu"></i> Detalhes da Conta Técnica (Aplicação /
+            Sistema)
+          </h6>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold"
+                >Nome do Sistema / Aplicação
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="app_nome_sistema"
+                class="form-control"
+                placeholder="Ex: Sistema de Gestão X"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold"
+                >Banco de Dados Destino
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="app_banco_dados"
+                class="form-control"
+                placeholder="Ex: Oracle / PostgreSQL"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold"
+                >Forma de Acesso <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="app_forma_acesso"
+                class="form-control"
+                placeholder="Ex: API REST, Conexão JDBC, Servidor S23"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold"
+                >IP(s) de Origem da Aplicação
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="app_ip_origem"
+                class="form-control"
+                placeholder="Ex: 192.168.10.5, 10.0.0.12"
+              />
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label fw-bold"
+                >Tabelas e Campos Acessados
+                <span class="text-danger">*</span></label
+              >
+              <textarea
+                name="app_tabelas_campos"
+                class="form-control"
+                rows="2"
+                placeholder="Liste as tabelas e colunas que a aplicação precisará consultar/alterar..."
+              ></textarea>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label fw-bold"
+                >Finalidade e Justificativa Técnica
+                <span class="text-danger">*</span></label
+              >
+              <textarea
+                name="app_justificativa"
+                class="form-control"
+                rows="3"
+                placeholder="Explique o objetivo da integração e o motivo de uso da conta técnica..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEÇÃO 3: TERMOS LEGAIS E LGPD -->
+        <div class="mb-4">
+          <h6
+            class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3"
+            style="font-size: 13px; letter-spacing: 0.5px"
+          >
+            3. Termos de Responsabilidade e LGPD
+          </h6>
+
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="termo_confidencialidade"
+              id="termo_confidencialidade"
+              required
+            />
+            <label
+              class="form-check-label fw-bold"
+              for="termo_confidencialidade"
+            >
+              Declaro ciência dos Termos de Confidencialidade e Segurança da
+              Informação da SESP/PR. <span class="text-danger">*</span>
+            </label>
+          </div>
+
+          <div class="form-check mb-4">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="termo_lgpd"
+              id="termo_lgpd"
+              required
+            />
+            <label class="form-check-label fw-bold" for="termo_lgpd">
+              Comprometo-me com o tratamento adequado dos dados conforme as
+              diretrizes da Lei Geral de Proteção de Dados (LGPD).
+              <span class="text-danger">*</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- BOTÃO DE ENVIO -->
+        <div class="pt-2 border-top">
+          <button type="submit" class="btn btn-primary btn-lg px-5">
+            Encaminhar Solicitação ao DPO
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function mudarFormulario() {
+    const escolha = document.getElementById("tipo_acesso_select").value;
+    const divAnalista = document.getElementById("bloco_analista");
+    const divAplicacao = document.getElementById("bloco_aplicacao");
+
+    // Esconde e desabilita ambos os blocos por padrão
+    divAnalista.style.display = "none";
+    divAplicacao.style.display = "none";
+
+    desabilitarCampos(divAnalista, true);
+    desabilitarCampos(divAplicacao, true);
+
+    // Ativa apenas o bloco escolhido e marca seus inputs como obrigatórios
+    if (escolha === "ANALISTA") {
+      divAnalista.style.display = "block";
+      desabilitarCampos(divAnalista, false);
+    } else if (escolha === "APLICACAO") {
+      divAplicacao.style.display = "block";
+      desabilitarCampos(divAplicacao, false);
+    }
+  }
+
+  function desabilitarCampos(container, estado) {
+    const inputs = container.querySelectorAll("input, textarea");
+    inputs.forEach((input) => {
+      input.disabled = estado;
+      if (estado) {
+        input.removeAttribute("required");
+      } else {
+        input.setAttribute("required", "required");
+      }
+    });
+  }
+</script>
 {% endblock %}

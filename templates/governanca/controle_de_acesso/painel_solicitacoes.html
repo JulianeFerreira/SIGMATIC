@@ -1,65 +1,59 @@
-{% extends 'base_sesp/base_sesp.html' %} {% block title %}SIGMATIC - Painel de
-Governança{% endblock %} {% block content %}
+{% extends 'base_sesp/base_sesp.html' %} 
+{% load static %}
+{% block title %}SIGMATIC - Governança de Dados{% endblock %} 
+{% block content %}
+
 <div class="container-fluid py-4">
   <div class="mb-4 pt-2">
     <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161">
-      Painel de Governança & CTIC
+      Controle de Acesso
     </h1>
-    <p class="text-muted small mb-0">
-      Gestão e Fluxo de Autorização de Acesso aos Dados
-    </p>
+    <p class="text-muted small mb-0">Acompanhamento de solicitações de acesso aos dados SESP.</p>
   </div>
 
-  <!-- ABAS DE NAVEGAÇÃO -->
-  <ul class="nav nav-tabs mb-4">
-    <!-- Aba Dashboard -->
+<ul class="nav nav-tabs mb-4">
     <li class="nav-item">
-      <a
-        href="/governanca/governanca_dados/dashboard/"
-        class="nav-link {% if '/dashboard/' in request.path or request.path == '/governanca/governanca_dados/' %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
-      >
-        Dashboard
-      </a>
+        <a href="/governanca/controle_de_acesso/dashboard/" 
+           class="nav-link {% if '/dashboard/' in request.path or request.path == '/governancacontrole_de_acesso/' %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Dashboard
+        </a>
     </li>
 
-    <!-- Aba Dicionário de Dados -->
     <li class="nav-item">
-      <a
-        href="/governanca/governanca_dados/dicionario/"
-        class="nav-link {% if '/dicionario/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
-      >
-        Dicionário de Dados
-      </a>
+        <a href="/governanca/controle_de_acesso/nova_solicitacao/" 
+           class="nav-link {% if '/nova_solicitacao/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Solicitar acesso
+        </a>
     </li>
 
-    <!-- Aba Qualidade -->
     <li class="nav-item">
-      <a
-        href="/governanca/governanca_dados/qualidade_dados/"
-        class="nav-link {% if '/qualidade_dados/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
-      >
-        Qualidade
-      </a>
+        <a href="/governanca/controle_de_acesso/lista/"
+           class="nav-link {% if '/lista/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Lista de Usuários
+        </a>
     </li>
     <li class="nav-item">
-      <a
-        href="/governanca/governanca_dados/nova_solicitacao/"
-        class="nav-link {% if '/nova_solicitacao/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
-      >
-        Nova Solicitação
-      </a>
+        <a href="/governanca/controle_de_acesso/dicionario/"
+           class="nav-link {% if '/dicionario/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Dicionário
+        </a>
     </li>
     <li class="nav-item">
-      <a
-        href="/governanca/governanca_dados/painel_solicitacoes/"
-        class="nav-link {% if '/painel_solicitacoes/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
-      >
-        Solicitação
-      </a>
+        <a href="/governanca/controle_de_acesso/painel_solicitacoes/"
+           class="nav-link {% if '/painel_solicitacoes/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Painel de Solicitações
+        </a>
     </li>
-  </ul>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/qualidade_dados/"
+           class="nav-link {% if '/qualidade_dados/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Qualidade dos Dados
+        </a>
+    </li>
+</ul>
+</div>
 
-  <!-- MENSAGENS -->
+<!-- MENSAGENS -->
   {% if messages %} {% for message in messages %}
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ message }}
@@ -173,5 +167,5 @@ Governança{% endblock %} {% block content %}
       </div>
     </div>
   </div>
-</div>
+
 {% endblock %}

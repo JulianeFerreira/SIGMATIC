@@ -11,9 +11,6 @@ urlpatterns = [
     path('governanca/', include('apps.governanca.urls')),
     path('governanca/controle_de_acesso/', include('apps.governanca.controle_de_acesso.urls')), # <- Sua pasta
     
-    # 🚨 Comentado temporariamente para evitar o erro, até o colega criar o arquivo
-    path('governanca/governanca_dados/', include('apps.governanca.governanca_dados.urls')),
-    
     # Módulo de Planejamento
     path('planejamento/pdtic/', include('apps.planejamento.pdtic.urls')),
 ]

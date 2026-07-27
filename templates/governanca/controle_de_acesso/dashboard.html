@@ -20,23 +20,34 @@
     </li>
 
     <li class="nav-item">
-        <a href="/governanca/controle_de_acesso/kanban/" 
-           class="nav-link {% if '/kanban/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Kanban
-        </a>
-    </li>
-
-    <li class="nav-item">
         <a href="/governanca/controle_de_acesso/nova_solicitacao/" 
            class="nav-link {% if '/nova_solicitacao/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Nova solicitação
+           Solicitar acesso
         </a>
     </li>
 
     <li class="nav-item">
         <a href="/governanca/controle_de_acesso/lista/"
            class="nav-link {% if '/lista/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Lista
+           Lista de Usuários
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/dicionario/"
+           class="nav-link {% if '/dicionario/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Dicionário
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/painel_solicitacoes/"
+           class="nav-link {% if '/painel_solicitacoes/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Painel de Solicitações
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/qualidade_dados/"
+           class="nav-link {% if '/qualidade_dados/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Qualidade dos Dados
         </a>
     </li>
 </ul>

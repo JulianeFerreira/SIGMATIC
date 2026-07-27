@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'apps.governanca.plano_gestao_riscos',
     'apps.governanca.ripds',
     'apps.governanca.controle_de_acesso',
-    'apps.governanca.governanca_dados',
     'apps.governanca.relatorios',
 
     'apps.suporte.documentos',
