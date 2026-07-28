@@ -47,9 +47,9 @@ INSTALLED_APPS = [
     'apps.contratacoes.licitacoes',
     'apps.contratacoes.contratos',
 
-    'apps.governanca.governanca_dados',
     'apps.governanca.plano_gestao_riscos',
     'apps.governanca.ripds',
+    'apps.governanca.controle_de_acesso',
     'apps.governanca.relatorios',
 
     'apps.suporte.documentos',
