@@ -1,4 +1,4 @@
-import uuid  
+import uuid  # <-- ADICIONE ESTE IMPORT NO TOPO
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -16,7 +16,9 @@ class Instituicao(models.Model):
         return f"{self.sigla} - {self.nome}"
 
 
+# MODEL DE SOLICITAÇÃO DE ACESSO
 class SolicitacaoAcesso(models.Model):
+    # CHAVE PRIMÁRIA MANTIDA COMO UUID (Evita o erro de conversão no Postgres)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     TIPO_ACESSO_CHOICES = [

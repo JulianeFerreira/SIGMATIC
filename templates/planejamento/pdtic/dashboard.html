@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %} {% block content %}
+{% extends 'base_sesp/base_sesp.html' %} {% block content %}
 <div class="container-fluid py-4">
   <!-- BANNER DE TESTE DA LÓGICA PYTHON -->
   {% if status_python %}
@@ -11,7 +11,26 @@
   </div>
   {% endif %}
 
-  <!-- MENSAGENS DE SUCESSO/ERRO -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a
+        href="/planejamento/pdtic/dashboard/"
+        class="nav-link {% if '/dashboard/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
+      >
+        Dashboard
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a
+        href="/planejamento/pdtic/cadastrar_plano/"
+        class="nav-link {% if '/cadastrar_plano/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}"
+      >
+        Cadastrar Plano
+      </a>
+    </li>
+  </ul>
+
   {% if messages %} {% for message in messages %}
   <div
     class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show"
@@ -27,8 +46,7 @@
   </div>
   {% endfor %} {% endif %}
 
-  <!-- CORPO DA PÁGINA (FORMULÁRIO E TABELA) -->
-  <div class="row g-4 mt-1">
+  <div class="row g-4">
     <div class="col-md-5">
       <div class="card shadow-sm border-0 bg-white">
         <div class="card-header bg-transparent border-0 pt-3">
