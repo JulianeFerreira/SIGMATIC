@@ -2,19 +2,33 @@ import json
 import math
 import re
 from typing import Optional, Dict, Any
-
 import pandas as pd
+
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count
 
+# Importações dos seus apps
+from apps.base.views import obter_modulos_dinamicos
 from .models import PCAItem
 
+# ---------------------------
+# VIEW DA TELA (HTML)
+# ---------------------------
+def painel_pca_view(request):
+    """Renderiza a página principal do PCA"""
+    modulos, _ = obter_modulos_dinamicos()
+    contexto = {
+        'modulos': modulos,
+        'base_url': '/planejamento/pca',
+        'url_atual': request.path,
+    }
+    return render(request, "planejamento/pca/pca.html", contexto)
 
 # ---------------------------
-# Helpers (iguais ao seu)
+# HELPERS
 # ---------------------------
-
 def _clean_str(v):
     if v is None:
         return None
@@ -23,7 +37,6 @@ def _clean_str(v):
     s = str(v).strip()
     return s if s and s.lower() != "nan" else None
 
-
 _MONEY_RX = re.compile(r"[^\d,.\-]")
 
 def _money_to_float(v):
@@ -31,7 +44,6 @@ def _money_to_float(v):
     if not s:
         return 0.0
     s = _MONEY_RX.sub("", s)
-
     if "," in s and "." in s:
         if s.rfind(",") > s.rfind("."):
             s = s.replace(".", "").replace(",", ".")
@@ -39,26 +51,22 @@ def _money_to_float(v):
             s = s.replace(",", "")
     elif "," in s:
         s = s.replace(",", ".")
-
     try:
         return float(s)
     except:
         return 0.0
 
-
 def _read_excel(file):
     return pd.read_excel(file, sheet_name="PCA", header=5)
 
-
 # ---------------------------
-# IMPORTAÇÃO
+# API: IMPORTAÇÃO
 # ---------------------------
-
 @csrf_exempt
 def import_pca(request):
     if request.method != "POST":
         return JsonResponse({"erro": "Método não permitido"}, status=405)
-
+    
     file = request.FILES.get("file")
     if not file:
         return JsonResponse({"erro": "Arquivo não enviado"}, status=400)
@@ -99,14 +107,11 @@ def import_pca(request):
         "total": int(df.shape[0])
     })
 
-
 # ---------------------------
-# METRICS
+# API: METRICS
 # ---------------------------
-
 def pca_metrics(request):
     total = PCAItem.objects.count()
-
     soma = 0.0
     for v in PCAItem.objects.values_list("valor_total", flat=True):
         soma += _money_to_float(v)
@@ -123,14 +128,11 @@ def pca_metrics(request):
         "top_tipos": list(top)
     })
 
-
 # ---------------------------
-# LISTA
+# API: LISTA
 # ---------------------------
-
 def pca_lista(request):
     itens = PCAItem.objects.all().order_by("numero_ordem")[:50]
-
     data = []
     for i in itens:
         data.append({
@@ -139,14 +141,11 @@ def pca_lista(request):
             "descricao_objeto": i.descricao_objeto,
             "valor_total": i.valor_total,
         })
-
     return JsonResponse({"itens": data})
 
-
 # ---------------------------
-# DETAIL
+# API: DETAIL
 # ---------------------------
-
 def pca_detail(request, numero_ordem):
     try:
         it = PCAItem.objects.get(numero_ordem=numero_ordem)

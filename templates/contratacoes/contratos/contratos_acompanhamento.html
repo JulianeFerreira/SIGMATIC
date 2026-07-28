@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aplicativo SIGMATIC - Acompanhamento de Contratos{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Reaproveitando os estilos padrão do seu sistema */
+    .dashboard-compact-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 18px;
+        height: 100%;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+    }
+
+    .dashboard-section-title {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 14px;
+    }
+
+    .status-badge {
+        border-radius: 999px;
+        padding: 5px 9px;
+        font-size: .72rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .status-red { background: #fee2e2; color: #dc2626; }
+    .status-green { background: #dcfce7; color: #16a34a; }
+    .status-yellow { background: #fef3c7; color: #d97706; }
+    .status-blue { background: #dbeafe; color: #2563eb; }
+    .status-gray { background: #f1f5f9; color: #475569; }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 9px 0;
+        font-size: .9rem;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<header class="topbar">
+    <!-- O formulário de busca agora reaproveita a classe exata do seu dashboard -->
+    <form method="GET" action="" class="search-box m-0">
+        <input type="text" name="q" class="form-control" placeholder="Buscar por número do contrato ou GMS..." value="{{ query_original|default:'' }}">
+    </form>
+
+    <div class="user-area">
+        <span>{{ current_user.name }}</span>
+    </div>
+</header>
+
+<section class="page-header">
+    <h1>Acompanhamento de Contratos</h1>
+    <p>Visualização unificada e controle operacional focado no tipo de objeto.</p>
+</section>
+
+<section class="tabs-nav">
+    <a href="/ui/contratos/" class="tab-item">Dashboard</a>
+    <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
+    <a href="/ui/contratos/novo/" class="tab-item">Novo Contrato</a>
+    <a href="/ui/contratos/acompanhamento/" class="tab-item active">Acompanhamento do Contrato</a>
+    <a href="/ui/contratos/relatorios/" class="tab-item">Relatórios</a>
+</section>
+
+<!-- SE O DJANGO ENCONTRAR UM CONTRATO APÓS A BUSCA -->
+{% if contrato %}
+<div class="row g-4 mb-4">
+    <!-- Bloco de Informações Principais -->
+    <div class="col-xl-8">
+        <div class="dashboard-compact-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="dashboard-section-title mb-0">Contrato nº {{ contrato.numero }}</h2>
+                <div>
+                    <span class="status-badge {% if contrato.status == 'Vigente' %}status-green{% else %}status-yellow{% endif %}">
+                        {{ contrato.status|default:"Em Execução" }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-3 h-100 bg-light">
+                        <small class="text-muted d-block mb-1">Empresa Contratada</small>
+                        <strong class="text-dark">{{ contrato.empresa }}</strong>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-3 h-100 bg-light">
+                        <small class="text-muted d-block mb-1">Fiscal Designado</small>
+                        <strong class="text-dark">{{ contrato.fiscal|default:"Não designado" }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Itens do Contrato -->
+            <div class="mt-4">
+                <h3 class="dashboard-section-title">Itens e Detalhes do Objeto</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Descrição</th>
+                                <th class="text-center">Qtd</th>
+                                <th class="text-end">Vl. Unitário</th>
+                                <th class="text-end">Vl. Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in itens %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><strong>{{ item.categoria }}</strong> - {{ item.descricao }}</td>
+                                <td class="text-center">{{ item.quantidade }}</td>
+                                <td class="text-end">R$ {{ item.valor }}</td>
+                                <td class="text-end fw-bold">R$ {{ item.total_item }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-3">Nenhum item vinculado a este contrato.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bloco de Resumo Financeiro / Datas (Coluna Lateral) -->
+    <div class="col-xl-4">
+        <div class="dashboard-compact-card">
+            <h2 class="dashboard-section-title">Resumo Financeiro e Prazos</h2>
+
+            <div class="info-row">
+                <span>Valor Global</span>
+                <strong class="text-primary">R$ {{ contrato.valor_total }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Identificador GMS</span>
+                <span class="status-badge status-gray fw-bold">{{ contrato.gms|default:"-" }}</span>
+            </div>
+
+            <div class="info-row">
+                <span>Início da Vigência</span>
+                <strong class="text-dark">{{ contrato.data_inicio|date:"d/m/Y"|default:"-" }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Fim da Vigência</span>
+                <strong class="text-danger">{{ contrato.data_fim|date:"d/m/Y"|default:"-" }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Tipo de Objeto</span>
+                <span class="status-badge status-blue">{{ contrato.tipo_objeto|default:"Serviços" }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SE NÃO HOUVER BUSCA OU O CONTRATO NÃO FOR ENCONTRADO -->
+{% else %}
+<div class="dashboard-compact-card py-5 text-center">
+    <div class="py-4">
+        {% if query_original %}
+            <h5 class="text-danger fw-bold">Contrato ou GMS "{{ query_original }}" não encontrado.</h5>
+            <p class="text-muted mb-0">Verifique os dados digitados e certifique-se de que o contrato existe no banco de dados.</p>
+        {% else %}
+            <h5 class="fw-bold text-secondary">Aguardando Consulta</h5>
+            <p class="text-muted mb-0">Digite o número de um contrato ou código GMS na barra de busca superior para acompanhar os saldos.</p>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aplicativo SIGMATIC - Acompanhamento de Contratos{% endblock %}
+
+{% block extra_head %}
+<style>
+    .dashboard-compact-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 18px;
+        height: 100%;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+    }
+
+    .dashboard-section-title {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 14px;
+    }
+
+    .status-badge {
+        border-radius: 999px;
+        padding: 5px 9px;
+        font-size: .72rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .status-red { background: #fee2e2; color: #dc2626; }
+    .status-green { background: #dcfce7; color: #16a34a; }
+    .status-yellow { background: #fef3c7; color: #d97706; }
+    .status-blue { background: #dbeafe; color: #2563eb; }
+    .status-gray { background: #f1f5f9; color: #475569; }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 9px 0;
+        font-size: .9rem;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<header class="topbar">
+    <div class="search-box m-0" style="flex: 1; max-width: 500px;">
+        <input type="text" id="filtroAcompanhamentoContrato" class="form-control" placeholder="Buscar por número do contrato ou GMS e aperte Enter...">
+    </div>
+
+    <div class="user-area">
+        <span>{{ current_user.name }}</span>
+    </div>
+</header>
+
+<section class="page-header">
+    <h1>Acompanhamento de Contratos</h1>
+    <p>Visualização unificada e controle operacional focado no tipo de objeto.</p>
+</section>
+
+<section class="tabs-nav">
+    <a href="/ui/contratos/" class="tab-item">Dashboard</a>
+    <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
+    <a href="/ui/contratos/novo/" class="tab-item">Novo Contrato</a>
+    <a href="/ui/contratos/acompanhamento/" class="tab-item active">Acompanhamento do Contrato</a>
+    <a href="/ui/contratos/relatorios/" class="tab-item">Relatórios</a>
+</section>
+
+<div class="row g-4 mb-4">
+    <div class="col-xl-8">
+        <div class="dashboard-compact-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="dashboard-section-title mb-0" id="resumoTitulo">Aguardando Consulta</h2>
+                <div>
+                    <span id="resumoDiasBadge" class="badge d-none"></span>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-3 h-100 bg-light">
+                        <small class="text-muted d-block mb-1">Empresa Contratada</small>
+                        <strong class="text-dark" id="resumoEmpresa">-</strong>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-3 h-100 bg-light">
+                        <small class="text-muted d-block mb-1">Fiscal Designado</small>
+                        <strong class="text-dark" id="resumoFiscal">-</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h3 class="dashboard-section-title">Itens e Detalhes do Objeto</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Descrição</th>
+                                <th>Qtd Contratada</th>
+                                <th>Qtd Entregue</th>
+                                <th>Saldo Disponível</th>
+                                <th>Vl. Unitário</th>
+                                <th>Vl. Total</th>
+                                <th style="width: 120px;">Consumo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-itens-contrato">
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">Digite o número de um contrato ou código GMS na barra de busca superior.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 d-flex flex-column gap-4">
+        <div class="dashboard-compact-card">
+            <h2 class="dashboard-section-title">Resumo Financeiro e Prazos</h2>
+
+            <div class="info-row">
+                <span>Valor Global</span>
+                <strong class="text-primary" id="resumoValor">R$ 0,00</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Identificador GMS</span>
+                <span class="status-badge status-gray fw-bold" id="resumoGmsVisualizador">-</span>
+            </div>
+
+            <div class="info-row">
+                <span>Fim da Vigência</span>
+                <strong class="text-danger" id="resumoDias">-</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Tipo de Objeto</span>
+                <span class="status-badge status-blue" id="resumoCategoriaObjeto">Serviços</span>
+            </div>
+
+            <div class="mt-3">
+                <span>Progresso do Tempo</span>
+                <div class="progress mt-1" style="height: 8px;">
+                    <div id="barraProgressoTempo" class="progress-bar" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <div class="d-flex justify-content-between font-small mb-1">
+                    <span id="resumoSaldoRestante" class="text-muted" style="font-size: 0.85rem;">Saldo Restante: R$ 0,00</span>
+                    <span id="percExecFinanceira" class="fw-bold text-primary" style="font-size: 0.85rem;">0% Pago</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                    <div id="barraProgressoFinanceiro" class="progress-bar bg-success" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-compact-card">
+            <h2 class="dashboard-section-title">Medição Física & Financeira</h2>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between font-small mb-1">
+                    <span style="font-size: 0.85rem;">Execução Física</span>
+                    <span id="percExecFisica" class="fw-bold text-dark" style="font-size: 0.85rem;">0% Concluído</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                    <div id="barraExecFisica" class="progress-bar bg-info" style="width: 0%"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-1 text-muted extra-small" style="font-size: 0.75rem;">
+                    <span>Entregue: <strong id="execFisMedida">0 un</strong></span>
+                    <span>Restante: <strong id="execFisRestante">0 un</strong></span>
+                </div>
+            </div>
+
+            <div>
+                <div class="d-flex justify-content-between font-small mb-1">
+                    <span style="font-size: 0.85rem;">Execução Financeira</span>
+                    <span id="percExecFinanceira" class="fw-bold text-dark" style="font-size: 0.85rem;">0% Pago</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                    <div id="barraExecFinanceira" class="progress-bar bg-success" style="width: 0%"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-1 text-muted extra-small" style="font-size: 0.75rem;">
+                    <span>Pago: <strong id="execFinPaga">R$ 0,00</strong></span>
+                    <span>Saldo: <strong id="execFinSaldo">R$ 0,00</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/contratos_acompanhamento.js' %}"></script>
+{% endblock %}

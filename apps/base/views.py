@@ -1,11 +1,52 @@
+from pathlib import Path
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.conf import settings
 from django.template.loader import get_template
 from django.template import TemplateDoesNotExist
-from django.http import Http404
+
+# ==============================================================================
+# 1. HELPER DE INFRAESTRUTURA
+# ==============================================================================
+
+def _encontrar_template_dinamico(caminho_relativo):
+
+    caminho_limpo = caminho_relativo.strip('/')
+    partes = caminho_limpo.split('/')
+    ultima_parte = partes[-1].lower() if partes else ""
+
+    template_direto = f"{caminho_limpo}.html"
+    try:
+        get_template(template_direto)
+        return template_direto
+    except TemplateDoesNotExist:
+        pass
+
+    pasta_templates = settings.BASE_DIR / "templates"
+    diretorio_alvo = pasta_templates.joinpath(*partes)
+
+    if diretorio_alvo.is_dir():
+        arquivos_html = list(diretorio_alvo.glob("*.html"))
+        if arquivos_html:
+            mapa_html = {f.stem.lower(): f for f in arquivos_html}
+            prioridades = ['index', 'dashboard', ultima_parte]
+            
+            for nome_prioritario in prioridades:
+                if nome_prioritario in mapa_html:
+                    arquivo = mapa_html[nome_prioritario]
+                    return str(arquivo.relative_to(pasta_templates))
+
+            return str(arquivos_html[0].relative_to(pasta_templates))
+
+    return None
+
+
+# ==============================================================================
+# 2. MOTOR DE BUSCA E DESCOBERTA DE MÓDULOS
+# ==============================================================================
 
 def obter_modulos_dinamicos(query=None):
+
     pasta_apps = settings.BASE_DIR / "apps"
     pasta_templates = settings.BASE_DIR / "templates"
     pastas_ignoradas = ["base", "organizacao", "acessos", "migrations"]
@@ -55,9 +96,6 @@ def obter_modulos_dinamicos(query=None):
                             "url": url_sub
                         })
                         
-                    # =========================================================
-                    # 3. BUSCA PROFUNDA: PROCURA ABAS/TELAS
-                    # =========================================================
                     if query:
                         caminho_tpl_sub = pasta_templates.joinpath(*partes_caminho)
                         
@@ -65,14 +103,14 @@ def obter_modulos_dinamicos(query=None):
                             for arquivo_html in caminho_tpl_sub.glob("*.html"):
                                 nome_arquivo = arquivo_html.stem
                                 
-                                if nome_arquivo in ['dashboard', 'index', 'base']:
+                                if nome_arquivo.lower() in ['base', 'layout', '_partial']:
                                     continue
                                 
                                 nome_tela = nome_arquivo.replace("_", " ").title()
                                 
                                 if query in nome_tela.lower():
                                     resultados_busca.append({
-                                        "tipo": f"Aba/Tela em {nome_sub_formatado}",
+                                        "tipo": f"Submodulo/De {nome_sub_formatado}",
                                         "nome": nome_tela,
                                         "url": f"{url_sub}{nome_arquivo}/"
                                     })
@@ -88,19 +126,19 @@ def obter_modulos_dinamicos(query=None):
     modulos_para_front = sorted(modulos_para_front, key=lambda x: x['nome'])
     return modulos_para_front, resultados_busca
 
-# ==========================================
-# AS VIEWS REAIS QUE RESPONDEM AO NAVEGADOR
-# ==========================================
+
+# ==============================================================================
+# 3. CONTROLADORAS DE EXIBIÇÃO E ROTEAMENTO
+# ==============================================================================
 
 def menu_principal(request):
-
     modulos, _ = obter_modulos_dinamicos()
     return render(request, "base_sesp/home_sesp.html", {"modulos": modulos, "query_original": None})
 
 
 def pesquisa(request):
+ 
     query = request.GET.get('q', '').strip().lower()
-    
     modulos, resultados = obter_modulos_dinamicos(query)
     
     if request.GET.get('ajax') == '1':
@@ -113,20 +151,13 @@ def pesquisa(request):
     }
     return render(request, "base_sesp/home_sesp.html", contexto)
 
-from django.shortcuts import render
-from django.http import JsonResponse, Http404
-from django.conf import settings
-from django.template.loader import get_template
-from django.template import TemplateDoesNotExist
-from django.contrib import messages
 
 def carregar_template_dinamico(request, caminho):
+
     caminho_limpo = caminho.strip('/')
-    ultima_parte = caminho_limpo.split('/')[-1]
+    partes_caminho = caminho_limpo.split('/')
     
     modulos, _ = obter_modulos_dinamicos()
-    
-    partes_caminho = caminho_limpo.split('/')
     base_url = f"/{partes_caminho[0]}/{partes_caminho[1]}" if len(partes_caminho) >= 2 else f"/{caminho_limpo}"
 
     contexto = {
@@ -135,29 +166,29 @@ def carregar_template_dinamico(request, caminho):
         "url_atual": request.path
     }
     
-    arquivos_para_tentar = [
-        f"{caminho_limpo}.html",
-        f"{caminho_limpo}/dashboard.html",
-        f"{caminho_limpo}/{ultima_parte}.html",
-    ]
+    template_escolhido = _encontrar_template_dinamico(caminho_limpo)
     
-    for template_path in arquivos_para_tentar:
-        try:
-            get_template(template_path)
-            return render(request, template_path, contexto)
-        except TemplateDoesNotExist:
-            continue
-            
-    raise Http404(f"Arquivo HTML não encontrado: {caminho_limpo}")
+    if template_escolhido:
+        return render(request, template_escolhido, contexto)
+
+    raise Http404(f"Arquivo ou diretório HTML não encontrado: {caminho_limpo}")
+
 
 def carrega_submodulo_dinamico_profundo(request, modulo, nivel2, submodulo):
-    caminho_tpl = f"{modulo}/{nivel2}/{submodulo}/dashboard.html"
+
+    caminho_construido = f"{modulo}/{nivel2}/{submodulo}"
     modulos, _ = obter_modulos_dinamicos()
-    try:
-        get_template(caminho_tpl)
-        return render(request, caminho_tpl, {"modulos": modulos})
-    except TemplateDoesNotExist:
-        return render(request, "base_sesp/home_sesp.html", {
-            "modulos": modulos, 
-            "modulo_em_criacao": f"{modulo} / {nivel2} / {submodulo}"
+    
+    template_escolhido = _encontrar_template_dinamico(caminho_construido)
+    
+    if template_escolhido:
+        return render(request, template_escolhido, {
+            "modulos": modulos,
+            "base_url": f"/{modulo}/{nivel2}",
+            "url_atual": request.path
         })
+    
+    return render(request, "base_sesp/home_sesp.html", {
+        "modulos": modulos, 
+        "modulo_em_criacao": f"{modulo} / {nivel2} / {submodulo}"
+    })

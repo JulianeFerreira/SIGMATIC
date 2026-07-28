@@ -1,377 +1,503 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Aplicativo GAA - Novo Contrato{% endblock %}
-
-{% block content %}
+{% extends 'base/base.html' %} {% load static %} {% block title %}Aplicativo GAA
+- Novo Contrato{% endblock %} {% block content %}
 
 <header class="topbar">
-    <div class="search-box">
-        <input type="text" class="form-control" placeholder="Buscar contrato..." disabled>
-    </div>
+  <div class="search-box">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar contrato..."
+      disabled
+    />
+  </div>
 
-    <div class="user-area">
-        <span class="user-name">{{ current_user.name }}</span>
-    </div>
+  <div class="user-area">
+    <span class="user-name">{{ current_user.name }}</span>
+  </div>
 </header>
 
 <section class="page-header">
-    <h1>Novo Contrato</h1>
-    <p>Cadastre as informações necessárias para alimentar o dashboard de contratos.</p>
+  <h1>Novo Contrato</h1>
+  <p>
+    Cadastre as informações necessárias para alimentar o dashboard de contratos.
+  </p>
 </section>
 
 <section class="tabs-nav">
-    <a href="/ui/contratos/" class="tab-item">Dashboard</a>
-    <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
-    <a href="/ui/contratos/novo/" class="tab-item active">Novo Contrato</a>
-    <a href="/ui/contratos/relatorios/" class="tab-item">Relatórios</a>
+  <a href="/ui/contratos/" class="tab-item">Dashboard</a>
+  <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
+  <a href="/ui/contratos/novo/" class="tab-item active">Novo Contrato</a>
+  <a href="/ui/contratos/relatorios/" class="tab-item">Relatórios</a>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Identificação do Contrato</h2>
+  <div class="card-header-inline">
+    <h2>Identificação do Contrato</h2>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="field-label" for="gms">Número GMS *</label>
+      <input id="gms" class="form-control" placeholder="Ex: 12345/2025" />
     </div>
 
-    <div class="row g-3 mb-3">
-        <div class="col-md-3">
-            <label class="field-label" for="gms">Número GMS *</label>
-            <input id="gms" class="form-control" placeholder="Ex: 12345/2025">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="numero_contrato">Nº Contrato *</label>
-            <input id="numero_contrato" class="form-control" placeholder="Ex: 01/2025">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="numero_protocolo">e-Protocolo</label>
-            <input id="numero_protocolo" class="form-control" placeholder="Ex: 23.456.789-0">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="categoria_servico">Categoria *</label>
-            <select id="categoria_servico" class="form-control">
-                <option value="">Selecione</option>
-                <option value="LIMPEZA">Limpeza</option>
-                <option value="ASSISTENTE_ADMINISTRATIVO">Assistente Administrativo</option>
-                <option value="VIGILANCIA_ARMADA">Vigilância Armada</option>
-                <option value="COLETA_RESIDUOS">Coleta de Resíduos</option>
-                <option value="REPROGRAFIA">Reprografia</option>
-                <option value="CONTROLADORES_ACESSO">Controladores de Acesso</option>
-                <option value="MANUTENCAO_CAMARAS_FRIAS">Manutenção Câmaras Frias</option>
-                <option value="LOCACAO_VEICULOS">Locação de Veículos</option>
-                <option value="LOCACAO_IMOVEL">Locação de Imóvel</option>
-                <option value="LAVANDERIA">Lavanderia</option>
-                <option value="FLATSCAN">Flatscan</option>
-                <option value="ELEVADORES">Elevadores</option>
-                <option value="LIMPEZA_CAIXA_DAGUA_DEDETIZACAO">Limpeza Caixa d’Água / Dedetização</option>
-                <option value="DOSIMETRIA">Dosimetria</option>
-                <option value="MANUTENCAO_PREDIAL">Manutenção Predial</option>
-                <option value="CONTRATO_SOFTWARE">Contrato de Software</option>
-                <option value="CORREIOS">Correios</option>
-                <option value="CONVENIO">Convênio</option>
-                <option value="RASTREAMENTO">Rastreamento</option>
-            </select>
-        </div>
+    <div class="col-md-3">
+      <label class="field-label" for="numero_contrato">Nº Contrato *</label>
+      <input
+        id="numero_contrato"
+        class="form-control"
+        placeholder="Ex: 01/2025"
+      />
     </div>
 
-    <div class="row g-3 mb-3">
-        <div class="col-md-6">
-            <label class="field-label" for="empresa">Empresa / Contratada *</label>
-            <input id="empresa" class="form-control" placeholder="Nome da empresa contratada">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="cnpj">CNPJ</label>
-            <input id="cnpj" class="form-control" placeholder="00.000.000/0000-00">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="local">Local / Unidade *</label>
-            <input id="local" class="form-control" placeholder="Cidade / Unidade">
-        </div>
+    <div class="col-md-3">
+      <label class="field-label" for="numero_protocolo">e-Protocolo</label>
+      <input
+        id="numero_protocolo"
+        class="form-control"
+        placeholder="Ex: 23.456.789-0"
+      />
     </div>
 
-    <div class="mb-3">
-        <label class="field-label" for="objeto">Objeto do Contrato</label>
-        <textarea id="objeto" class="form-control" rows="3" placeholder="Descrição resumida do objeto contratual..."></textarea>
+    <div class="col-md-3">
+      <label class="field-label" for="categoria_servico">Categoria *</label>
+      <select id="categoria_servico" class="form-control">
+        <option value="">Selecione</option>
+        <option value="LIMPEZA">Limpeza</option>
+        <option value="ASSISTENTE_ADMINISTRATIVO">
+          Assistente Administrativo
+        </option>
+        <option value="VIGILANCIA_ARMADA">Vigilância Armada</option>
+        <option value="COLETA_RESIDUOS">Coleta de Resíduos</option>
+        <option value="REPROGRAFIA">Reprografia</option>
+        <option value="CONTROLADORES_ACESSO">Controladores de Acesso</option>
+        <option value="MANUTENCAO_CAMARAS_FRIAS">
+          Manutenção Câmaras Frias
+        </option>
+        <option value="LOCACAO_VEICULOS">Locação de Veículos</option>
+        <option value="LOCACAO_IMOVEL">Locação de Imóvel</option>
+        <option value="LAVANDERIA">Lavanderia</option>
+        <option value="FLATSCAN">Flatscan</option>
+        <option value="ELEVADORES">Elevadores</option>
+        <option value="LIMPEZA_CAIXA_DAGUA_DEDETIZACAO">
+          Limpeza Caixa d’Água / Dedetização
+        </option>
+        <option value="DOSIMETRIA">Dosimetria</option>
+        <option value="MANUTENCAO_PREDIAL">Manutenção Predial</option>
+        <option value="CONTRATO_SOFTWARE">Contrato de Software</option>
+        <option value="CORREIOS">Correios</option>
+        <option value="CONVENIO">Convênio</option>
+        <option value="RASTREAMENTO">Rastreamento</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <label class="field-label" for="empresa">Empresa / Contratada *</label>
+      <input
+        id="empresa"
+        class="form-control"
+        placeholder="Nome da empresa contratada"
+      />
     </div>
 
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label class="field-label" for="quantidade">Quantidade</label>
-            <input id="quantidade" class="form-control" placeholder="Ex: 10 postos, 2 equipamentos">
-        </div>
-
-        <div class="col-md-6">
-            <label class="field-label" for="posto">Descrição do Posto / Serviço</label>
-            <input id="posto" class="form-control" placeholder="Ex: 12x36, 44h semanais, dedicação exclusiva">
-        </div>
+    <div class="col-md-3">
+      <label class="field-label" for="cnpj">CNPJ</label>
+      <input id="cnpj" class="form-control" placeholder="00.000.000/0000-00" />
     </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="local">Local / Unidade *</label>
+      <input id="local" class="form-control" placeholder="Cidade / Unidade" />
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="field-label" for="objeto">Objeto do Contrato</label>
+    <textarea
+      id="objeto"
+      class="form-control"
+      rows="3"
+      placeholder="Descrição resumida do objeto contratual..."
+    ></textarea>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="field-label" for="quantidade">Quantidade</label>
+      <input
+        id="quantidade"
+        class="form-control"
+        placeholder="Ex: 10 postos, 2 equipamentos"
+      />
+    </div>
+
+    <div class="col-md-6">
+      <label class="field-label" for="posto"
+        >Descrição do Posto / Serviço</label
+      >
+      <input
+        id="posto"
+        class="form-control"
+        placeholder="Ex: 12x36, 44h semanais, dedicação exclusiva"
+      />
+    </div>
+  </div>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Dados Financeiros</h2>
+  <div class="card-header-inline">
+    <h2>Dados Financeiros</h2>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="field-label" for="valor_total">Valor Total</label>
+      <input
+        id="valor_total"
+        type="number"
+        step="0.01"
+        class="form-control"
+        placeholder="0,00"
+      />
     </div>
 
-    <div class="row g-3 mb-3">
-        <div class="col-md-3">
-            <label class="field-label" for="valor_total">Valor Total</label>
-            <input id="valor_total" type="number" step="0.01" class="form-control" placeholder="0,00">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="valor_mensal">Valor Mensal</label>
-            <input id="valor_mensal" type="number" step="0.01" class="form-control" placeholder="0,00">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="fonte_recurso">Fonte do Recurso</label>
-            <input id="fonte_recurso" class="form-control" placeholder="Ex: Tesouro / Convênio">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="numero_empenho">Nº Empenho</label>
-            <input id="numero_empenho" class="form-control" placeholder="Ex: 2025NE000123">
-        </div>
+    <div class="col-md-3">
+      <label class="field-label" for="valor_mensal">Valor Mensal</label>
+      <input
+        id="valor_mensal"
+        type="number"
+        step="0.01"
+        class="form-control"
+        placeholder="0,00"
+      />
     </div>
 
-    <div class="row g-3">
-        <div class="col-md-3">
-            <label class="field-label" for="indice_reajuste">Índice de Reajuste</label>
-            <select id="indice_reajuste" class="form-control">
-                <option value="">Selecione</option>
-                <option value="IPCA">IPCA</option>
-                <option value="IGP-M">IGP-M</option>
-                <option value="INPC">INPC</option>
-                <option value="CCT">CCT</option>
-                <option value="OUTRO">Outro</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="data_base_reajuste">Data-base Reajuste</label>
-            <input id="data_base_reajuste" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="ultimo_reajuste">Último Reajuste</label>
-            <input id="ultimo_reajuste" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="proximo_reajuste">Próximo Reajuste</label>
-            <input id="proximo_reajuste" type="date" class="form-control">
-        </div>
+    <div class="col-md-3">
+      <label class="field-label" for="fonte_recurso">Fonte do Recurso</label>
+      <input
+        id="fonte_recurso"
+        class="form-control"
+        placeholder="Ex: Tesouro / Convênio"
+      />
     </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="numero_empenho">Nº Empenho</label>
+      <input
+        id="numero_empenho"
+        class="form-control"
+        placeholder="Ex: 2025NE000123"
+      />
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-3">
+      <label class="field-label" for="indice_reajuste"
+        >Índice de Reajuste</label
+      >
+      <select id="indice_reajuste" class="form-control">
+        <option value="">Selecione</option>
+        <option value="IPCA">IPCA</option>
+        <option value="IGP-M">IGP-M</option>
+        <option value="INPC">INPC</option>
+        <option value="CCT">CCT</option>
+        <option value="OUTRO">Outro</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="data_base_reajuste"
+        >Data-base Reajuste</label
+      >
+      <input id="data_base_reajuste" type="date" class="form-control" />
+    </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="ultimo_reajuste">Último Reajuste</label>
+      <input id="ultimo_reajuste" type="date" class="form-control" />
+    </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="proximo_reajuste">Próximo Reajuste</label>
+      <input id="proximo_reajuste" type="date" class="form-control" />
+    </div>
+  </div>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Vigência e Situação</h2>
+  <div class="card-header-inline">
+    <h2>Vigência e Situação</h2>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="field-label" for="data_inicio">Data de Início *</label>
+      <input id="data_inicio" type="date" class="form-control" />
     </div>
 
-    <div class="row g-3 mb-3">
-        <div class="col-md-3">
-            <label class="field-label" for="data_inicio">Data de Início *</label>
-            <input id="data_inicio" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="data_termino">Data de Término *</label>
-            <input id="data_termino" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="prazo_meses">Prazo em Meses</label>
-            <input id="prazo_meses" type="number" class="form-control" placeholder="Ex: 12">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="status_vigencia">Status de Vigência</label>
-            <select id="status_vigencia" class="form-control">
-                <option value="">Calcular/Selecionar</option>
-                <option value="vigente">Vigente</option>
-                <option value="proximo_vencimento">Próximo do vencimento</option>
-                <option value="vencido">Vencido</option>
-                <option value="prorrogado">Prorrogado</option>
-                <option value="rescindido">Rescindido</option>
-            </select>
-        </div>
+    <div class="col-md-3">
+      <label class="field-label" for="data_termino">Data de Término *</label>
+      <input id="data_termino" type="date" class="form-control" />
     </div>
 
-    <div class="alert alert-light border mb-0">
-        <strong>Status sugerido:</strong>
-        <span id="statusVigenciaSugerido">Preencha as datas para calcular.</span>
+    <div class="col-md-3">
+      <label class="field-label" for="prazo_meses">Prazo em Meses</label>
+      <input
+        id="prazo_meses"
+        type="number"
+        class="form-control"
+        placeholder="Ex: 12"
+      />
     </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="status_vigencia"
+        >Status de Vigência</label
+      >
+      <select id="status_vigencia" class="form-control">
+        <option value="">Calcular/Selecionar</option>
+        <option value="vigente">Vigente</option>
+        <option value="proximo_vencimento">Próximo do vencimento</option>
+        <option value="vencido">Vencido</option>
+        <option value="prorrogado">Prorrogado</option>
+        <option value="rescindido">Rescindido</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="alert alert-light border mb-0">
+    <strong>Status sugerido:</strong>
+    <span id="statusVigenciaSugerido">Preencha as datas para calcular.</span>
+  </div>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Gestão e Fiscalização</h2>
+  <div class="card-header-inline">
+    <h2>Gestão e Fiscalização</h2>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <label class="field-label" for="gestor">Gestor do Contrato</label>
+      <input id="gestor" class="form-control" placeholder="Nome do gestor" />
     </div>
 
-    <div class="row g-3 mb-3">
-        <div class="col-md-4">
-            <label class="field-label" for="gestor">Gestor do Contrato</label>
-            <input id="gestor" class="form-control" placeholder="Nome do gestor">
-        </div>
-
-        <div class="col-md-4">
-            <label class="field-label" for="fiscal">Fiscal do Contrato</label>
-            <input id="fiscal" class="form-control" placeholder="Nome do fiscal">
-        </div>
-
-        <div class="col-md-4">
-            <label class="field-label" for="fiscal_substituto">Fiscal Substituto</label>
-            <input id="fiscal_substituto" class="form-control" placeholder="Nome do fiscal substituto">
-        </div>
+    <div class="col-md-4">
+      <label class="field-label" for="fiscal">Fiscal do Contrato</label>
+      <input id="fiscal" class="form-control" placeholder="Nome do fiscal" />
     </div>
 
-    <div class="row g-3">
-        <div class="col-md-4">
-            <label class="field-label" for="unidade_responsavel">Unidade Responsável</label>
-            <input id="unidade_responsavel" class="form-control" placeholder="Ex: GAA / Contratos">
-        </div>
-
-        <div class="col-md-4">
-            <label class="field-label" for="email_fiscal">E-mail do Fiscal</label>
-            <input id="email_fiscal" type="email" class="form-control" placeholder="email@exemplo.com">
-        </div>
-
-        <div class="col-md-4">
-            <label class="field-label" for="telefone_fiscal">Telefone</label>
-            <input id="telefone_fiscal" class="form-control" placeholder="(41) 99999-9999">
-        </div>
+    <div class="col-md-4">
+      <label class="field-label" for="fiscal_substituto"
+        >Fiscal Substituto</label
+      >
+      <input
+        id="fiscal_substituto"
+        class="form-control"
+        placeholder="Nome do fiscal substituto"
+      />
     </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <label class="field-label" for="unidade_responsavel"
+        >Unidade Responsável</label
+      >
+      <input
+        id="unidade_responsavel"
+        class="form-control"
+        placeholder="Ex: GAA / Contratos"
+      />
+    </div>
+
+    <div class="col-md-4">
+      <label class="field-label" for="email_fiscal">E-mail do Fiscal</label>
+      <input
+        id="email_fiscal"
+        type="email"
+        class="form-control"
+        placeholder="email@exemplo.com"
+      />
+    </div>
+
+    <div class="col-md-4">
+      <label class="field-label" for="telefone_fiscal">Telefone</label>
+      <input
+        id="telefone_fiscal"
+        class="form-control"
+        placeholder="(41) 99999-9999"
+      />
+    </div>
+  </div>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Garantia Contratual</h2>
+  <div class="card-header-inline">
+    <h2>Garantia Contratual</h2>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-3">
+      <label class="field-label" for="possui_garantia">Possui Garantia?</label>
+      <select id="possui_garantia" class="form-control">
+        <option value="">Selecione</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
     </div>
 
-    <div class="row g-3">
-        <div class="col-md-3">
-            <label class="field-label" for="possui_garantia">Possui Garantia?</label>
-            <select id="possui_garantia" class="form-control">
-                <option value="">Selecione</option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="tipo_garantia">Tipo de Garantia</label>
-            <select id="tipo_garantia" class="form-control">
-                <option value="">Selecione</option>
-                <option value="Seguro Garantia">Seguro Garantia</option>
-                <option value="Fiança Bancária">Fiança Bancária</option>
-                <option value="Caução">Caução</option>
-                <option value="Outro">Outro</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="valor_garantia">Valor da Garantia</label>
-            <input id="valor_garantia" type="number" step="0.01" class="form-control" placeholder="0,00">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="validade_garantia">Validade da Garantia</label>
-            <input id="validade_garantia" type="date" class="form-control">
-        </div>
+    <div class="col-md-3">
+      <label class="field-label" for="tipo_garantia">Tipo de Garantia</label>
+      <select id="tipo_garantia" class="form-control">
+        <option value="">Selecione</option>
+        <option value="Seguro Garantia">Seguro Garantia</option>
+        <option value="Fiança Bancária">Fiança Bancária</option>
+        <option value="Caução">Caução</option>
+        <option value="Outro">Outro</option>
+      </select>
     </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="valor_garantia">Valor da Garantia</label>
+      <input
+        id="valor_garantia"
+        type="number"
+        step="0.01"
+        class="form-control"
+        placeholder="0,00"
+      />
+    </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="validade_garantia"
+        >Validade da Garantia</label
+      >
+      <input id="validade_garantia" type="date" class="form-control" />
+    </div>
+  </div>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Prorrogação, Reajuste e Tramitação</h2>
+  <div class="card-header-inline">
+    <h2>Prorrogação, Reajuste e Tramitação</h2>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="field-label" for="status_prorrogacao"
+        >Status Prorrogação</label
+      >
+      <select id="status_prorrogacao" class="form-control">
+        <option value="">Selecione</option>
+        <option value="nao_iniciada">Não iniciada</option>
+        <option value="em_instrucao">Em instrução</option>
+        <option value="pge">PGE</option>
+        <option value="sefaz">SEFAZ</option>
+        <option value="assinatura">Aguardando assinatura</option>
+        <option value="concluida">Concluída</option>
+        <option value="rescindindo">Rescindindo</option>
+        <option value="rescindido">Rescindido</option>
+      </select>
     </div>
 
-    <div class="row g-3 mb-3">
-        <div class="col-md-3">
-            <label class="field-label" for="status_prorrogacao">Status Prorrogação</label>
-            <select id="status_prorrogacao" class="form-control">
-                <option value="">Selecione</option>
-                <option value="nao_iniciada">Não iniciada</option>
-                <option value="em_instrucao">Em instrução</option>
-                <option value="pge">PGE</option>
-                <option value="sefaz">SEFAZ</option>
-                <option value="assinatura">Aguardando assinatura</option>
-                <option value="concluida">Concluída</option>
-                <option value="rescindindo">Rescindindo</option>
-                <option value="rescindido">Rescindido</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="data_limite_prorrogacao">Limite p/ Iniciar Prorrogação</label>
-            <input id="data_limite_prorrogacao" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="status_reajuste">Status Reajuste</label>
-            <select id="status_reajuste" class="form-control">
-                <option value="">Selecione</option>
-                <option value="nao_iniciado">Não iniciado</option>
-                <option value="em_instrucao">Em instrução</option>
-                <option value="pendente">Pendente</option>
-                <option value="concluido">Concluído</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="status_tramitacao">Status de Tramitação</label>
-            <select id="status_tramitacao" class="form-control">
-                <option value="">Selecione</option>
-                <option value="execucao_regular">Execução regular</option>
-                <option value="em_analise">Em análise</option>
-                <option value="pendente_documentacao">Pendente documentação</option>
-                <option value="prorrogacao">Prorrogação</option>
-                <option value="aditivo">Aditivo</option>
-                <option value="reajuste">Reajuste</option>
-                <option value="finalizado">Finalizado</option>
-                <option value="rescindido">Rescindido</option>
-            </select>
-        </div>
+    <div class="col-md-3">
+      <label class="field-label" for="data_limite_prorrogacao"
+        >Limite p/ Iniciar Prorrogação</label
+      >
+      <input id="data_limite_prorrogacao" type="date" class="form-control" />
     </div>
 
-    <div class="mb-3">
-        <label class="field-label" for="descricao_tramitacao">Descrição da Tramitação</label>
-        <textarea id="descricao_tramitacao" class="form-control" rows="3" placeholder="Descreva movimentações, pendências, despachos ou providências..."></textarea>
+    <div class="col-md-3">
+      <label class="field-label" for="status_reajuste">Status Reajuste</label>
+      <select id="status_reajuste" class="form-control">
+        <option value="">Selecione</option>
+        <option value="nao_iniciado">Não iniciado</option>
+        <option value="em_instrucao">Em instrução</option>
+        <option value="pendente">Pendente</option>
+        <option value="concluido">Concluído</option>
+      </select>
     </div>
 
-    <div>
-        <label class="field-label" for="observacoes_ta">Observações sobre Aditivos / Prorrogação / Reajuste</label>
-        <textarea id="observacoes_ta" class="form-control" rows="3" placeholder="Registre informações relevantes sobre aditivos, reajustes e prorrogações..."></textarea>
+    <div class="col-md-3">
+      <label class="field-label" for="status_tramitacao"
+        >Status de Tramitação</label
+      >
+      <select id="status_tramitacao" class="form-control">
+        <option value="">Selecione</option>
+        <option value="execucao_regular">Execução regular</option>
+        <option value="em_analise">Em análise</option>
+        <option value="pendente_documentacao">Pendente documentação</option>
+        <option value="prorrogacao">Prorrogação</option>
+        <option value="aditivo">Aditivo</option>
+        <option value="reajuste">Reajuste</option>
+        <option value="finalizado">Finalizado</option>
+        <option value="rescindido">Rescindido</option>
+      </select>
     </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="field-label" for="descricao_tramitacao"
+      >Descrição da Tramitação</label
+    >
+    <textarea
+      id="descricao_tramitacao"
+      class="form-control"
+      rows="3"
+      placeholder="Descreva movimentações, pendências, despachos ou providências..."
+    ></textarea>
+  </div>
+
+  <div>
+    <label class="field-label" for="observacoes_ta"
+      >Observações sobre Aditivos / Prorrogação / Reajuste</label
+    >
+    <textarea
+      id="observacoes_ta"
+      class="form-control"
+      rows="3"
+      placeholder="Registre informações relevantes sobre aditivos, reajustes e prorrogações..."
+    ></textarea>
+  </div>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Observações Gerais</h2>
-    </div>
+  <div class="card-header-inline">
+    <h2>Observações Gerais</h2>
+  </div>
 
-    <div class="mb-3">
-        <label class="field-label" for="observacoes_gerais">Observações</label>
-        <textarea id="observacoes_gerais" class="form-control" rows="3" placeholder="Observações gerais sobre o contrato..."></textarea>
-    </div>
+  <div class="mb-3">
+    <label class="field-label" for="observacoes_gerais">Observações</label>
+    <textarea
+      id="observacoes_gerais"
+      class="form-control"
+      rows="3"
+      placeholder="Observações gerais sobre o contrato..."
+    ></textarea>
+  </div>
 
-    <div class="mb-3">
-        <label class="field-label" for="historico_alteracoes">Histórico de Alterações</label>
-        <textarea id="historico_alteracoes" class="form-control" rows="3" placeholder="Registre aditivos, supressões, reajustes e alterações relevantes..."></textarea>
-    </div>
+  <div class="mb-3">
+    <label class="field-label" for="historico_alteracoes"
+      >Histórico de Alterações</label
+    >
+    <textarea
+      id="historico_alteracoes"
+      class="form-control"
+      rows="3"
+      placeholder="Registre aditivos, supressões, reajustes e alterações relevantes..."
+    ></textarea>
+  </div>
 
-    <div class="form-actions">
-        <button class="btn secondary" id="btnCancelarContrato">Cancelar</button>
-        <button class="btn primary" id="btnSalvarContrato">Salvar Contrato</button>
-    </div>
+  <div class="form-actions">
+    <button class="btn secondary" id="btnCancelarContrato">Cancelar</button>
+    <button class="btn primary" id="btnSalvarContrato">Salvar Contrato</button>
+  </div>
 </section>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script src="{% static 'js/contratos/contratos_form.js' %}"></script>
 {% endblock %}

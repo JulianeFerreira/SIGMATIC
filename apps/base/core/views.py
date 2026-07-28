@@ -280,7 +280,7 @@ def pca(request):
 
 
 def configuracoes(request):
-    return render(request, 'configuracoes.html', _ctx(request))
+    return render(request, 'base/configuracoes.html', _ctx(request))
 
 
 def dashboard_metricas(request):

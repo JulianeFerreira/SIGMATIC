@@ -14,3 +14,4 @@ urlpatterns = [
     # Módulo de Planejamento
     path('planejamento/pdtic/', include('apps.planejamento.pdtic.urls')),
 ]
+

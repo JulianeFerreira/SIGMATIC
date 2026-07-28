@@ -1,128 +1,147 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}GAA Patrimônio - Bens{% endblock %}
-
-{% block content %}
+{% extends 'base/base.html' %} {% load static %} {% block title %}GAA Patrimônio
+- Bens{% endblock %} {% block content %}
 
 <header class="topbar">
-    <div class="search-box">
-        <input type="text" id="searchInputBens" class="form-control" placeholder="Buscar bem (tombamento, descrição, serial)...">
-    </div>
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInputBens"
+      class="form-control"
+      placeholder="Buscar bem (tombamento, descrição, serial)..."
+    />
+  </div>
 
-    <div class="topbar-actions">
-        <button class="btn secondary" id="btnExportarBens">Exportar</button>
-        <button class="btn primary" id="btnNovoBem">Novo Bem</button>
-    </div>
+  <div class="topbar-actions">
+    <button class="btn secondary" id="btnExportarBens">Exportar</button>
+    <button class="btn primary" id="btnNovoBem">Novo Bem</button>
+  </div>
 </header>
 
 <section class="page-header">
-    <h1>Bens Patrimoniais</h1>
-    <p>Gerencie tombamentos, responsáveis, locais e movimentações.</p>
+  <h1>Bens Patrimoniais</h1>
+  <p>Gerencie tombamentos, responsáveis, locais e movimentações.</p>
 </section>
 
 <section class="tabs-nav">
-    <a href="/ui/patrimonio/" class="tab-item">Dashboard</a>
-    <a href="/ui/patrimonio/bens/" class="tab-item active">Bens</a>
-    <a href="/ui/patrimonio/bens/novo/" class="tab-item">Novo Bem</a>
-    <a href="/ui/patrimonio/relatorios/" class="tab-item">Relatórios</a>
+  <a href="/ui/patrimonio/" class="tab-item">Dashboard</a>
+  <a href="/ui/patrimonio/bens/" class="tab-item active">Bens</a>
+  <a href="/ui/patrimonio/bens/novo/" class="tab-item">Novo Bem</a>
+  <a href="/ui/patrimonio/relatorios/" class="tab-item">Relatórios</a>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Filtros</h2>
+  <div class="card-header-inline">
+    <h2>Filtros</h2>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="field-label">Buscar</label>
+      <input
+        type="text"
+        id="filtroBuscaBem"
+        class="form-control"
+        placeholder="Tombamento, descrição, serial, responsável..."
+      />
     </div>
 
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label class="field-label">Buscar</label>
-            <input type="text" id="filtroBuscaBem" class="form-control"
-                   placeholder="Tombamento, descrição, serial, responsável...">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label">Situação</label>
-            <select id="filtroSituacaoBem" class="form-control">
-                <option value="">Todas</option>
-                <option value="em_uso">Em uso</option>
-                <option value="ocioso">Ocioso</option>
-                <option value="manutencao">Manutenção</option>
-                <option value="extraviado">Extraviado</option>
-                <option value="baixado">Baixado</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label">Unidade</label>
-            <input type="text" id="filtroUnidadeBem" class="form-control" placeholder="Ex: UETC Curitiba Centro">
-        </div>
+    <div class="col-md-3">
+      <label class="field-label">Situação</label>
+      <select id="filtroSituacaoBem" class="form-control">
+        <option value="">Todas</option>
+        <option value="em_uso">Em uso</option>
+        <option value="ocioso">Ocioso</option>
+        <option value="manutencao">Manutenção</option>
+        <option value="extraviado">Extraviado</option>
+        <option value="baixado">Baixado</option>
+      </select>
     </div>
+
+    <div class="col-md-3">
+      <label class="field-label">Unidade</label>
+      <input
+        type="text"
+        id="filtroUnidadeBem"
+        class="form-control"
+        placeholder="Ex: UETC Curitiba Centro"
+      />
+    </div>
+  </div>
 </section>
 
 <p class="result-info" id="infoQuantidadeBens">Mostrando 0 bens</p>
 
 <section class="table-card">
-    <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <h2>Lista de Bens</h2>
-        <span class="text-muted">Bens patrimoniais cadastrados</span>
-    </div>
+  <div
+    class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+  >
+    <h2>Lista de Bens</h2>
+    <span class="text-muted">Bens patrimoniais cadastrados</span>
+  </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead>
-            <tr>
-                <th>Tombamento</th>
-                <th>Descrição</th>
-                <th>Categoria</th>
-                <th>Unidade</th>
-                <th>Local</th>
-                <th>Responsável</th>
-                <th>Situação</th>
-                <th style="width:100px;">Ações</th>
-            </tr>
-            </thead>
-            <tbody id="table-bens-lista">
-            <tr>
-                <td colspan="8" class="text-center text-muted">Carregando...</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Tombamento</th>
+          <th>Descrição</th>
+          <th>Categoria</th>
+          <th>Unidade</th>
+          <th>Local</th>
+          <th>Responsável</th>
+          <th>Situação</th>
+          <th style="width: 100px">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="table-bens-lista">
+        <tr>
+          <td colspan="8" class="text-center text-muted">Carregando...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script>
-    const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(window.location.search);
 
-    function fmt(v){
-        return (v === null || v === undefined) ? "" : String(v);
+  function fmt(v) {
+    return v === null || v === undefined ? "" : String(v);
+  }
+
+  async function loadBens() {
+    const q = encodeURIComponent(
+      document.getElementById("filtroBuscaBem").value || "",
+    );
+    const situacao = encodeURIComponent(
+      document.getElementById("filtroSituacaoBem").value || "",
+    );
+    const unidade = encodeURIComponent(
+      document.getElementById("filtroUnidadeBem").value || "",
+    );
+
+    const r = await fetch(
+      `/api/patrimonio/bens?q=${q}&situacao=${situacao}&unidade=${unidade}`,
+    );
+    const bens = await r.json();
+
+    document.getElementById("infoQuantidadeBens").innerText =
+      `Mostrando ${bens.length} bens`;
+
+    const tb = document.getElementById("table-bens-lista");
+    tb.innerHTML = "";
+
+    if (!bens.length) {
+      tb.innerHTML = `<tr><td colspan="8" class="text-center text-muted">Nenhum bem encontrado.</td></tr>`;
+      return;
     }
 
-    async function loadBens(){
-        const q = encodeURIComponent(document.getElementById("filtroBuscaBem").value || "");
-        const situacao = encodeURIComponent(document.getElementById("filtroSituacaoBem").value || "");
-        const unidade = encodeURIComponent(document.getElementById("filtroUnidadeBem").value || "");
+    for (const b of bens) {
+      const tombamento = encodeURIComponent(fmt(b.tombamento));
 
-        const r = await fetch(`/api/patrimonio/bens?q=${q}&situacao=${situacao}&unidade=${unidade}`);
-        const bens = await r.json();
-
-        document.getElementById("infoQuantidadeBens").innerText = `Mostrando ${bens.length} bens`;
-
-        const tb = document.getElementById("table-bens-lista");
-        tb.innerHTML = "";
-
-        if (!bens.length) {
-            tb.innerHTML = `<tr><td colspan="8" class="text-center text-muted">Nenhum bem encontrado.</td></tr>`;
-            return;
-        }
-
-        for (const b of bens){
-            const tombamento = encodeURIComponent(fmt(b.tombamento));
-
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
                 <td><a href="/ui/patrimonio/bens/${tombamento}/">${fmt(b.tombamento)}</a></td>
                 <td>${fmt(b.descricao)}</td>
                 <td>${fmt(b.categoria)}</td>
@@ -135,71 +154,89 @@
                 </td>
             `;
 
-            tb.appendChild(tr);
-        }
+      tb.appendChild(tr);
     }
+  }
 
-    const q0 = params.get("q");
-    if (q0) {
-        document.getElementById("filtroBuscaBem").value = q0;
-        document.getElementById("searchInputBens").value = q0;
-    }
+  const q0 = params.get("q");
+  if (q0) {
+    document.getElementById("filtroBuscaBem").value = q0;
+    document.getElementById("searchInputBens").value = q0;
+  }
 
-    document.getElementById("btnNovoBem").addEventListener("click", () => {
-        window.location.href = "/ui/patrimonio/bens/novo/";
+  document.getElementById("btnNovoBem").addEventListener("click", () => {
+    window.location.href = "/ui/patrimonio/bens/novo/";
+  });
+
+  document
+    .getElementById("btnExportarBens")
+    .addEventListener("click", async () => {
+      const q = encodeURIComponent(
+        document.getElementById("filtroBuscaBem").value || "",
+      );
+      const situacao = encodeURIComponent(
+        document.getElementById("filtroSituacaoBem").value || "",
+      );
+      const unidade = encodeURIComponent(
+        document.getElementById("filtroUnidadeBem").value || "",
+      );
+
+      const r = await fetch(
+        `/api/patrimonio/bens?q=${q}&situacao=${situacao}&unidade=${unidade}`,
+      );
+      const bens = await r.json();
+
+      const headers = [
+        "tombamento",
+        "descricao",
+        "categoria",
+        "unidade_atual",
+        "local_fisico",
+        "responsavel_nome",
+        "situacao",
+      ];
+
+      const lines = [headers.join(",")];
+
+      for (const b of bens) {
+        const row = headers.map((h) => {
+          const val = b[h] ?? "";
+          const s = String(val).replaceAll('"', '""');
+          return `"${s}"`;
+        });
+        lines.push(row.join(","));
+      }
+
+      const blob = new Blob([lines.join("\n")], {
+        type: "text/csv;charset=utf-8;",
+      });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "bens_patrimoniais.csv";
+      a.click();
+
+      URL.revokeObjectURL(url);
     });
 
-    document.getElementById("btnExportarBens").addEventListener("click", async () => {
-        const q = encodeURIComponent(document.getElementById("filtroBuscaBem").value || "");
-        const situacao = encodeURIComponent(document.getElementById("filtroSituacaoBem").value || "");
-        const unidade = encodeURIComponent(document.getElementById("filtroUnidadeBem").value || "");
-
-        const r = await fetch(`/api/patrimonio/bens?q=${q}&situacao=${situacao}&unidade=${unidade}`);
-        const bens = await r.json();
-
-        const headers = [
-            "tombamento",
-            "descricao",
-            "categoria",
-            "unidade_atual",
-            "local_fisico",
-            "responsavel_nome",
-            "situacao"
-        ];
-
-        const lines = [headers.join(",")];
-
-        for (const b of bens){
-            const row = headers.map(h => {
-                const val = (b[h] ?? "");
-                const s = String(val).replaceAll('"','""');
-                return `"${s}"`;
-            });
-            lines.push(row.join(","));
-        }
-
-        const blob = new Blob([lines.join("\n")], {type: "text/csv;charset=utf-8;"});
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "bens_patrimoniais.csv";
-        a.click();
-
-        URL.revokeObjectURL(url);
+  document
+    .getElementById("searchInputBens")
+    .addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        document.getElementById("filtroBuscaBem").value = e.target.value || "";
+        loadBens();
+      }
     });
 
-    document.getElementById("searchInputBens").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            document.getElementById("filtroBuscaBem").value = e.target.value || "";
-            loadBens();
-        }
-    });
+  document.getElementById("filtroBuscaBem").addEventListener("input", loadBens);
+  document
+    .getElementById("filtroSituacaoBem")
+    .addEventListener("change", loadBens);
+  document
+    .getElementById("filtroUnidadeBem")
+    .addEventListener("input", loadBens);
 
-    document.getElementById("filtroBuscaBem").addEventListener("input", loadBens);
-    document.getElementById("filtroSituacaoBem").addEventListener("change", loadBens);
-    document.getElementById("filtroUnidadeBem").addEventListener("input", loadBens);
-
-    loadBens();
+  loadBens();
 </script>
 {% endblock %}
