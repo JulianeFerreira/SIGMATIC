@@ -70,14 +70,13 @@
   {% endfor %} {% endif %}
 
   <!-- CARD DO FORMULÁRIO -->
-  <div class="card shadow-sm border-0 bg-white">
+  <div class="bg-white h-100 p-3 mb-4" style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240);">
     <div class="card-header bg-transparent border-bottom pt-3 pb-2">
-      <h5 class="m-0 fw-bold" style="font-size: 20px; color: #194161">
-        Formulário Único de Solicitação de Acesso
-      </h5>
+      <h3 class="m-0 fw-bold" style="color: #194161">
+        Formulário de solicitação de acesso
+      </h3>
       <small class="text-muted"
-        >Preencha os dados abaixo para submeter o pedido à avaliação do DPO e
-        CTIC.</small
+        >Preencha os dados abaixo para submeter o pedido à avaliação do CTIC.</small
       >
     </div>
 
@@ -88,15 +87,15 @@
         <!-- SEÇÃO 1: DADOS DO SOLICITANTE / CHEFE DE DEPARTAMENTO -->
         <div class="mb-4">
           <h6
-            class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3"
-            style="font-size: 13px; letter-spacing: 0.5px"
+            class="fw-bold text-secondary border-bottom pb-2 mb-3"
+            style="font-size: 15px; letter-spacing: 0.5px"
           >
             1. Identificação do Solicitante / Usuário
           </h6>
 
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Nome Completo <span class="text-danger">*</span></label
               >
               <input
@@ -109,7 +108,7 @@
             </div>
 
             <div class="col-md-3">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >CPF <span class="text-danger">*</span></label
               >
               <input
@@ -122,7 +121,7 @@
             </div>
 
             <div class="col-md-3">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Origem / Vínculo <span class="text-danger">*</span></label
               >
               <select name="origem" class="form-select" required>
@@ -133,7 +132,7 @@
             </div>
 
             <div class="col-md-4">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Cargo / Função <span class="text-danger">*</span></label
               >
               <input
@@ -146,7 +145,7 @@
             </div>
 
             <div class="col-md-4">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Lotação / Departamento
                 <span class="text-danger">*</span></label
               >
@@ -160,7 +159,7 @@
             </div>
 
             <div class="col-md-4">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >E-mail Institucional <span class="text-danger">*</span></label
               >
               <input
@@ -176,15 +175,15 @@
 
         <!-- SEÇÃO 2: TIPO DE SOLICITAÇÃO -->
         <div class="mb-4">
-          <h6
-            class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3"
-            style="font-size: 13px; letter-spacing: 0.5px"
+          <h4
+            class="fw-bold text-secondary border-bottom pb-2 mb-3"
+            style="font-size: 15px; letter-spacing: 0.5px"
           >
             2. Perfil e Tipo de Acesso Pretendido
           </h6>
 
           <div class="mb-3">
-            <label class="form-label fw-bold"
+            <label class="form-label"
               >Selecione a Modalidade <span class="text-danger">*</span></label
             >
             <select
@@ -194,11 +193,11 @@
               required
               onchange="mudarFormulario()"
             >
-              <option value="">-- Clique aqui para escolher o perfil --</option>
-              <option value="ANALISTA">
+              <option style="font-size: 15px;" value="">Escolher o perfil de acesso</option>
+              <option style="font-size: 15px;" value="ANALISTA">
                 Solicitar Acesso Direto para Analista de Dados (Pessoa)
               </option>
-              <option value="APLICACAO">
+              <option style="font-size: 15px;" value="APLICACAO">
                 Solicitar Criação de Usuário de Aplicação (Conta Técnica /
                 Sistema)
               </option>
@@ -212,14 +211,14 @@
           class="p-4 mb-4 border rounded bg-light shadow-sm"
           style="display: none; border-left: 5px solid #0d6efd !important"
         >
-          <h6 class="fw-bold text-primary mb-3">
+          <h6 class= text-primary mb-3">
             <i class="bi bi-person-badge"></i> Detalhes do Acesso Direto
             (Analista de Dados)
           </h6>
 
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Nome do Banco de Dados
                 <span class="text-danger">*</span></label
               >
@@ -232,7 +231,7 @@
             </div>
 
             <div class="col-md-6">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Nome do Usuário Pretendido
                 <span class="text-danger">*</span></label
               >
@@ -245,7 +244,7 @@
             </div>
 
             <div class="col-md-12">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >IP(s) de Origem Autorizados
                 <span class="text-danger">*</span></label
               >
@@ -258,7 +257,7 @@
             </div>
 
             <div class="col-md-12">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Justificativa do Acesso
                 <span class="text-danger">*</span></label
               >
@@ -278,14 +277,14 @@
           class="p-4 mb-4 border rounded bg-light shadow-sm"
           style="display: none; border-left: 5px solid #198754 !important"
         >
-          <h6 class="fw-bold text-success mb-3">
+          <h6 class= text-success mb-3">
             <i class="bi bi-cpu"></i> Detalhes da Conta Técnica (Aplicação /
             Sistema)
           </h6>
 
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Nome do Sistema / Aplicação
                 <span class="text-danger">*</span></label
               >
@@ -298,7 +297,7 @@
             </div>
 
             <div class="col-md-6">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Banco de Dados Destino
                 <span class="text-danger">*</span></label
               >
@@ -311,7 +310,7 @@
             </div>
 
             <div class="col-md-6">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Forma de Acesso <span class="text-danger">*</span></label
               >
               <input
@@ -323,7 +322,7 @@
             </div>
 
             <div class="col-md-6">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >IP(s) de Origem da Aplicação
                 <span class="text-danger">*</span></label
               >
@@ -336,7 +335,7 @@
             </div>
 
             <div class="col-md-12">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Tabelas e Campos Acessados
                 <span class="text-danger">*</span></label
               >
@@ -349,7 +348,7 @@
             </div>
 
             <div class="col-md-12">
-              <label class="form-label fw-bold"
+              <label class="form-label"
                 >Finalidade e Justificativa Técnica
                 <span class="text-danger">*</span></label
               >
@@ -366,8 +365,8 @@
         <!-- SEÇÃO 3: TERMOS LEGAIS E LGPD -->
         <div class="mb-4">
           <h6
-            class="fw-bold text-uppercase text-secondary border-bottom pb-2 mb-3"
-            style="font-size: 13px; letter-spacing: 0.5px"
+            class="fw-bold text-secondary border-bottom pb-2 mb-3"
+            style="font-size: 15px; letter-spacing: 0.5px"
           >
             3. Termos de Responsabilidade e LGPD
           </h6>
@@ -381,7 +380,7 @@
               required
             />
             <label
-              class="form-check-label fw-bold"
+              class="form-check-label"
               for="termo_confidencialidade"
             >
               Declaro ciência dos Termos de Confidencialidade e Segurança da
@@ -397,7 +396,7 @@
               id="termo_lgpd"
               required
             />
-            <label class="form-check-label fw-bold" for="termo_lgpd">
+            <label class="form-check-label" for="termo_lgpd">
               Comprometo-me com o tratamento adequado dos dados conforme as
               diretrizes da Lei Geral de Proteção de Dados (LGPD).
               <span class="text-danger">*</span>
@@ -406,9 +405,9 @@
         </div>
 
         <!-- BOTÃO DE ENVIO -->
-        <div class="pt-2 border-top">
-          <button type="submit" class="btn btn-primary btn-lg px-5">
-            Encaminhar Solicitação ao DPO
+        <div class="d-flex justify-content-center pt-2 border-top mt-4">
+          <button  type="submit" class="btn btn-primary btn-lg px-3 mt-4">
+            Enviar Solicitação
           </button>
         </div>
       </form>

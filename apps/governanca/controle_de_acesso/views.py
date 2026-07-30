@@ -26,3 +26,19 @@ def dashboard_acessos_view(request):
     }
 
     return render(request, 'governanca/controle_de_acesso/dashboard.html', context)
+
+def nova_solicitacao_view(request):
+    """
+    View responsável pelo formulário de nova solicitação de acesso.
+    """
+    return render(request, 'governanca/controle_de_acesso/form_solicitacao.html')
+
+
+def nova_solicitacao_view(request):
+    return render(request, 'governanca/controle_de_acesso/form_solicitacao.html')
+
+def painel_solicitacoes_view(request):
+    return render(request, 'governanca/controle_de_acesso/painel_solicitacoes.html')
+
+def atualizar_status_solicitacao(request, pk):
+    pass  # Lógica de atualização a ser implementada
