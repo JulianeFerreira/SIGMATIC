@@ -247,6 +247,10 @@ def contratos_form(request):
     return render(request, 'contratacoes/contratos/contratos_form.html', _ctx(request))
 
 
+def contratos_acompanhamento(request):
+    return render(request, 'core/contratos_acompanhamento.html', _ctx(request))
+
+
 def contratos_relatorios(request):
     return render(request, 'contratacoes/contratos/contratos_relatorios.html', _ctx(request))
 
@@ -280,7 +284,7 @@ def pca(request):
 
 
 def configuracoes(request):
-    return render(request, 'configuracoes.html', _ctx(request))
+    return render(request, 'base/configuracoes.html', _ctx(request))
 
 
 def dashboard_metricas(request):

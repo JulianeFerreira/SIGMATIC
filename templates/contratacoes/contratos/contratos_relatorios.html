@@ -1,291 +1,311 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Aplicativo GAA - Relatórios de Contratos{% endblock %}
-
-{% block content %}
+{% extends 'base/base.html' %} {% load static %} {% block title %}Aplicativo GAA
+- Relatórios de Contratos{% endblock %} {% block content %}
 
 <header class="topbar">
-    <div class="search-box">
-        <input type="text" class="form-control" placeholder="Buscar contrato..." disabled>
-    </div>
+  <div class="search-box">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar contrato..."
+      disabled
+    />
+  </div>
 
-    <div class="user-area">
-        <span>{{ current_user.name }}</span>
-    </div>
+  <div class="user-area">
+    <span>{{ current_user.name }}</span>
+  </div>
 </header>
 
 <section class="page-header">
-    <h1>Relatórios de Contratos</h1>
-    <p>Relatórios operacionais, financeiros e de governança contratual.</p>
+  <h1>Relatórios de Contratos</h1>
+  <p>Relatórios operacionais, financeiros e de governança contratual.</p>
 </section>
 
 <section class="tabs-nav">
-    <a href="/ui/contratos/" class="tab-item">Dashboard</a>
-    <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
-    <a href="/ui/contratos/novo/" class="tab-item">Novo Contrato</a>
-    <a href="/ui/contratos/relatorios/" class="tab-item active">Relatórios</a>
+  <a href="/ui/contratos/" class="tab-item">Dashboard</a>
+  <a href="/ui/contratos/lista/" class="tab-item">Contratos</a>
+  <a href="/ui/contratos/novo/" class="tab-item">Novo Contrato</a>
+  <a href="/ui/contratos/acompanhamento/" class="tab-item">Acompanhamento do Contrato</a>
+  <a href="/ui/contratos/relatorios/" class="tab-item active">Relatórios</a>
 </section>
 
 <div class="row g-4 mb-4">
-
-    <div class="col-lg-3 col-md-6">
-        <div class="report-card h-100">
-            <div>
-                <h2>Vencendo em 30 dias</h2>
-                <p>Contratos com vigência crítica.</p>
-            </div>
-            <button class="btn primary" id="btnRelVencendo30">Gerar</button>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="report-card h-100">
+      <div>
+        <h2>Vencendo em 30 dias</h2>
+        <p>Contratos com vigência crítica.</p>
+      </div>
+      <button class="btn primary" id="btnRelVencendo30">Gerar</button>
     </div>
+  </div>
 
-    <div class="col-lg-3 col-md-6">
-        <div class="report-card h-100">
-            <div>
-                <h2>Vencendo em 90 dias</h2>
-                <p>Planejamento de prorrogação.</p>
-            </div>
-            <button class="btn primary" id="btnRelVencendo90">Gerar</button>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="report-card h-100">
+      <div>
+        <h2>Vencendo em 90 dias</h2>
+        <p>Planejamento de prorrogação.</p>
+      </div>
+      <button class="btn primary" id="btnRelVencendo90">Gerar</button>
     </div>
+  </div>
 
-    <div class="col-lg-3 col-md-6">
-        <div class="report-card h-100">
-            <div>
-                <h2>Contratos Vencidos</h2>
-                <p>Contratos com prazo expirado.</p>
-            </div>
-            <button class="btn primary" id="btnRelVencidos">Gerar</button>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="report-card h-100">
+      <div>
+        <h2>Contratos Vencidos</h2>
+        <p>Contratos com prazo expirado.</p>
+      </div>
+      <button class="btn primary" id="btnRelVencidos">Gerar</button>
     </div>
+  </div>
 
-    <div class="col-lg-3 col-md-6">
-        <div class="report-card h-100">
-            <div>
-                <h2>Sem Fiscal/Gestor</h2>
-                <p>Falhas de governança.</p>
-            </div>
-            <button class="btn primary" id="btnRelGovernanca">Gerar</button>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="report-card h-100">
+      <div>
+        <h2>Sem Fiscal/Gestor</h2>
+        <p>Falhas de governança.</p>
+      </div>
+      <button class="btn primary" id="btnRelGovernanca">Gerar</button>
     </div>
+  </div>
 
-    <div class="col-lg-3 col-md-6">
-        <div class="report-card h-100">
-            <div>
-                <h2>Reajuste Pendente</h2>
-                <p>Contratos com indicativo de reajuste.</p>
-            </div>
-            <button class="btn primary" id="btnRelReajuste">Gerar</button>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="report-card h-100">
+      <div>
+        <h2>Reajuste Pendente</h2>
+        <p>Contratos com indicativo de reajuste.</p>
+      </div>
+      <button class="btn primary" id="btnRelReajuste">Gerar</button>
     </div>
+  </div>
 
-    <div class="col-lg-3 col-md-6">
-        <div class="report-card h-100">
-            <div>
-                <h2>Prorrogação Pendente</h2>
-                <p>Contratos exigindo providências.</p>
-            </div>
-            <button class="btn primary" id="btnRelProrrogacao">Gerar</button>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="report-card h-100">
+      <div>
+        <h2>Prorrogação Pendente</h2>
+        <p>Contratos exigindo providências.</p>
+      </div>
+      <button class="btn primary" id="btnRelProrrogacao">Gerar</button>
     </div>
+  </div>
 
-    <div class="col-lg-3 col-md-6">
-        <div class="report-card h-100">
-            <div>
-                <h2>Por Fornecedor</h2>
-                <p>Agrupamento por empresa contratada.</p>
-            </div>
-            <button class="btn primary" id="btnRelEmpresa">Gerar</button>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="report-card h-100">
+      <div>
+        <h2>Por Fornecedor</h2>
+        <p>Agrupamento por empresa contratada.</p>
+      </div>
+      <button class="btn primary" id="btnRelEmpresa">Gerar</button>
     </div>
+  </div>
 
-    <div class="col-lg-3 col-md-6">
-        <div class="report-card h-100">
-            <div>
-                <h2>Por Categoria</h2>
-                <p>Distribuição por tipo de serviço.</p>
-            </div>
-            <button class="btn primary" id="btnRelCategoria">Gerar</button>
-        </div>
+  <div class="col-lg-3 col-md-6">
+    <div class="report-card h-100">
+      <div>
+        <h2>Por Categoria</h2>
+        <p>Distribuição por tipo de serviço.</p>
+      </div>
+      <button class="btn primary" id="btnRelCategoria">Gerar</button>
     </div>
-
+  </div>
 </div>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Filtros Avançados</h2>
+  <div class="card-header-inline">
+    <h2>Filtros Avançados</h2>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="field-label" for="filtroPeriodoInicioContrato"
+        >Período - Início</label
+      >
+      <input
+        id="filtroPeriodoInicioContrato"
+        type="date"
+        class="form-control"
+      />
     </div>
 
-    <div class="row g-3 mb-3">
-
-        <div class="col-md-3">
-            <label class="field-label" for="filtroPeriodoInicioContrato">Período - Início</label>
-            <input id="filtroPeriodoInicioContrato" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="filtroPeriodoFimContrato">Período - Fim</label>
-            <input id="filtroPeriodoFimContrato" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="filtroCategoriaRel">Categoria</label>
-            <select id="filtroCategoriaRel" class="form-control">
-                <option value="">Todas</option>
-                <option value="LIMPEZA">Limpeza</option>
-                <option value="ASSISTENTE_ADMINISTRATIVO">Assistente Administrativo</option>
-                <option value="VIGILANCIA_ARMADA">Vigilância Armada</option>
-                <option value="COLETA_RESIDUOS">Coleta de Resíduos</option>
-                <option value="REPROGRAFIA">Reprografia</option>
-                <option value="CONTROLADORES_ACESSO">Controladores de Acesso</option>
-                <option value="MANUTENCAO_CAMARAS_FRIAS">Manutenção Câmaras Frias</option>
-                <option value="LOCACAO_VEICULOS">Locação de Veículos</option>
-                <option value="LOCACAO_IMOVEL">Locação de Imóvel</option>
-                <option value="LAVANDERIA">Lavanderia</option>
-                <option value="FLATSCAN">Flatscan</option>
-                <option value="ELEVADORES">Elevadores</option>
-                <option value="LIMPEZA_CAIXA_DAGUA_DEDETIZACAO">Limpeza Caixa d’Água / Dedetização</option>
-                <option value="DOSIMETRIA">Dosimetria</option>
-                <option value="MANUTENCAO_PREDIAL">Manutenção Predial</option>
-                <option value="CONTRATO_SOFTWARE">Contrato de Software</option>
-                <option value="CORREIOS">Correios</option>
-                <option value="CONVENIO">Convênio</option>
-                <option value="RASTREAMENTO">Rastreamento</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="filtroEmpresaRel">Empresa</label>
-            <input id="filtroEmpresaRel" class="form-control" placeholder="Nome da empresa">
-        </div>
-
+    <div class="col-md-3">
+      <label class="field-label" for="filtroPeriodoFimContrato"
+        >Período - Fim</label
+      >
+      <input id="filtroPeriodoFimContrato" type="date" class="form-control" />
     </div>
 
-    <div class="row g-3 mb-3">
-
-        <div class="col-md-3">
-            <label class="field-label" for="filtroStatusVigRel">Status de Vigência</label>
-            <select id="filtroStatusVigRel" class="form-control">
-                <option value="">Todos</option>
-                <option value="vigente">Vigente</option>
-                <option value="proximo_vencimento">Próximo do vencimento</option>
-                <option value="vencido">Vencido</option>
-                <option value="prorrogado">Prorrogado</option>
-                <option value="rescindido">Rescindido</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="filtroStatusTramRel">Status de Tramitação</label>
-            <select id="filtroStatusTramRel" class="form-control">
-                <option value="">Todos</option>
-                <option value="execucao_regular">Execução regular</option>
-                <option value="em_analise">Em análise</option>
-                <option value="pendente_documentacao">Pendente documentação</option>
-                <option value="prorrogacao">Prorrogação</option>
-                <option value="aditivo">Aditivo</option>
-                <option value="reajuste">Reajuste</option>
-                <option value="finalizado">Finalizado</option>
-                <option value="rescindido">Rescindido</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="filtroFiscalRel">Fiscal</label>
-            <input id="filtroFiscalRel" class="form-control" placeholder="Nome do fiscal">
-        </div>
-
-        <div class="col-md-3">
-            <label class="field-label" for="formatoRel">Formato</label>
-            <select id="formatoRel" class="form-control">
-                <option value="tela">Visualizar na tela</option>
-                <option value="pdf" disabled>PDF - em breve</option>
-                <option value="excel" disabled>Excel - em breve</option>
-                <option value="csv" disabled>CSV - em breve</option>
-            </select>
-        </div>
-
+    <div class="col-md-3">
+      <label class="field-label" for="filtroCategoriaRel">Categoria</label>
+      <select id="filtroCategoriaRel" class="form-control">
+        <option value="">Todas</option>
+        <option value="LIMPEZA">Limpeza</option>
+        <option value="ASSISTENTE_ADMINISTRATIVO">
+          Assistente Administrativo
+        </option>
+        <option value="VIGILANCIA_ARMADA">Vigilância Armada</option>
+        <option value="COLETA_RESIDUOS">Coleta de Resíduos</option>
+        <option value="REPROGRAFIA">Reprografia</option>
+        <option value="CONTROLADORES_ACESSO">Controladores de Acesso</option>
+        <option value="MANUTENCAO_CAMARAS_FRIAS">
+          Manutenção Câmaras Frias
+        </option>
+        <option value="LOCACAO_VEICULOS">Locação de Veículos</option>
+        <option value="LOCACAO_IMOVEL">Locação de Imóvel</option>
+        <option value="LAVANDERIA">Lavanderia</option>
+        <option value="FLATSCAN">Flatscan</option>
+        <option value="ELEVADORES">Elevadores</option>
+        <option value="LIMPEZA_CAIXA_DAGUA_DEDETIZACAO">
+          Limpeza Caixa d’Água / Dedetização
+        </option>
+        <option value="DOSIMETRIA">Dosimetria</option>
+        <option value="MANUTENCAO_PREDIAL">Manutenção Predial</option>
+        <option value="CONTRATO_SOFTWARE">Contrato de Software</option>
+        <option value="CORREIOS">Correios</option>
+        <option value="CONVENIO">Convênio</option>
+        <option value="RASTREAMENTO">Rastreamento</option>
+      </select>
     </div>
 
-    <button class="btn primary w-100" id="btnGerarRelatorioPersonalizado">
-        Gerar Relatório Personalizado
-    </button>
+    <div class="col-md-3">
+      <label class="field-label" for="filtroEmpresaRel">Empresa</label>
+      <input
+        id="filtroEmpresaRel"
+        class="form-control"
+        placeholder="Nome da empresa"
+      />
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="field-label" for="filtroStatusVigRel"
+        >Status de Vigência</label
+      >
+      <select id="filtroStatusVigRel" class="form-control">
+        <option value="">Todos</option>
+        <option value="vigente">Vigente</option>
+        <option value="proximo_vencimento">Próximo do vencimento</option>
+        <option value="vencido">Vencido</option>
+        <option value="prorrogado">Prorrogado</option>
+        <option value="rescindido">Rescindido</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="filtroStatusTramRel"
+        >Status de Tramitação</label
+      >
+      <select id="filtroStatusTramRel" class="form-control">
+        <option value="">Todos</option>
+        <option value="execucao_regular">Execução regular</option>
+        <option value="em_analise">Em análise</option>
+        <option value="pendente_documentacao">Pendente documentação</option>
+        <option value="prorrogacao">Prorrogação</option>
+        <option value="aditivo">Aditivo</option>
+        <option value="reajuste">Reajuste</option>
+        <option value="finalizado">Finalizado</option>
+        <option value="rescindido">Rescindido</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="filtroFiscalRel">Fiscal</label>
+      <input
+        id="filtroFiscalRel"
+        class="form-control"
+        placeholder="Nome do fiscal"
+      />
+    </div>
+
+    <div class="col-md-3">
+      <label class="field-label" for="formatoRel">Formato</label>
+      <select id="formatoRel" class="form-control">
+        <option value="tela">Visualizar na tela</option>
+        <option value="pdf" disabled>PDF - em breve</option>
+        <option value="excel" disabled>Excel - em breve</option>
+        <option value="csv" disabled>CSV - em breve</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn primary w-100" id="btnGerarRelatorioPersonalizado">
+    Gerar Relatório Personalizado
+  </button>
 </section>
 
 <section class="card mb-4">
-    <div class="card-header-inline">
-        <h2>Estatísticas Rápidas</h2>
+  <div class="card-header-inline">
+    <h2>Estatísticas Rápidas</h2>
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-md-3">
+      <div class="quick-stat">
+        <span class="quick-value" id="qs-total-contratos">0</span>
+        <span class="quick-label">Total de Contratos</span>
+      </div>
     </div>
 
-    <div class="row g-4 mt-1">
-
-        <div class="col-md-3">
-            <div class="quick-stat">
-                <span class="quick-value" id="qs-total-contratos">0</span>
-                <span class="quick-label">Total de Contratos</span>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="quick-stat">
-                <span class="quick-value success" id="qs-vigentes">0</span>
-                <span class="quick-label">Vigentes</span>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="quick-stat">
-                <span class="quick-value warning" id="qs-prox-venc">0</span>
-                <span class="quick-label">Próx. Vencimento</span>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="quick-stat">
-                <span class="quick-value danger" id="qs-vencidos">0</span>
-                <span class="quick-label">Vencidos</span>
-            </div>
-        </div>
-
+    <div class="col-md-3">
+      <div class="quick-stat">
+        <span class="quick-value success" id="qs-vigentes">0</span>
+        <span class="quick-label">Vigentes</span>
+      </div>
     </div>
+
+    <div class="col-md-3">
+      <div class="quick-stat">
+        <span class="quick-value warning" id="qs-prox-venc">0</span>
+        <span class="quick-label">Próx. Vencimento</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="quick-stat">
+        <span class="quick-value danger" id="qs-vencidos">0</span>
+        <span class="quick-label">Vencidos</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="table-card">
-    <div class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <h2>Resultados do Relatório</h2>
-        <span class="text-muted">Visualização conforme filtros aplicados</span>
-    </div>
+  <div
+    class="table-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+  >
+    <h2>Resultados do Relatório</h2>
+    <span class="text-muted">Visualização conforme filtros aplicados</span>
+  </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead>
-            <tr>
-                <th>Contrato</th>
-                <th>Empresa</th>
-                <th>Valor</th>
-                <th>Fiscal</th>
-                <th>Início</th>
-                <th>Término</th>
-                <th>Dias</th>
-                <th>Prorrogação</th>
-                <th>Reajuste</th>
-                <th>Status</th>
-            </tr>
-            </thead>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Contrato</th>
+          <th>Empresa</th>
+          <th>Valor</th>
+          <th>Fiscal</th>
+          <th>Início</th>
+          <th>Término</th>
+          <th>Dias</th>
+          <th>Prorrogação</th>
+          <th>Reajuste</th>
+          <th>Status</th>
+        </tr>
+      </thead>
 
-            <tbody id="tabela-relatorios-contratos">
-            <tr>
-                <td colspan="10" class="text-center text-muted">
-                    Nenhum relatório gerado ainda.
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+      <tbody id="tabela-relatorios-contratos">
+        <tr>
+          <td colspan="10" class="text-center text-muted">
+            Nenhum relatório gerado ainda.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script src="{% static 'js/contratos/contratos_relatorios.js' %}"></script>
 {% endblock %}

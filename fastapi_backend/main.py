@@ -142,6 +142,15 @@ async def contratos_novo_page(
         {"request": request, "current_user": current_user},
     )
 
+@app.get("/ui/contratos/acompanhamento", include_in_schema=False)
+async def contratos_acompanhamento_page(
+    request: Request,
+    current_user=Depends(get_current_user),
+):
+    return templates.TemplateResponse(
+        "contratos/contratos_acompanhamento.html",
+        {"request": request, "current_user": current_user},
+    )
 
 @app.get("/ui/contratos/relatorios", include_in_schema=False)
 async def contratos_relatorios_page(

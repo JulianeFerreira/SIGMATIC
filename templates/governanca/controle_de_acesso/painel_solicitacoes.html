@@ -1,0 +1,171 @@
+{% extends 'base_sesp/base_sesp.html' %} 
+{% load static %}
+{% block title %}SIGMATIC - Governança de Dados{% endblock %} 
+{% block content %}
+
+<div class="container-fluid py-4">
+  <div class="mb-4 pt-2">
+    <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161">
+      Controle de Acesso
+    </h1>
+    <p class="text-muted small mb-0">Acompanhamento de solicitações de acesso aos dados SESP.</p>
+  </div>
+
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/dashboard/" 
+           class="nav-link {% if '/dashboard/' in request.path or request.path == '/governancacontrole_de_acesso/' %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Dashboard
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/nova_solicitacao/" 
+           class="nav-link {% if '/nova_solicitacao/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Solicitar acesso
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/lista/"
+           class="nav-link {% if '/lista/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Lista de Usuários
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/dicionario/"
+           class="nav-link {% if '/dicionario/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Dicionário
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/painel_solicitacoes/"
+           class="nav-link {% if '/painel_solicitacoes/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Painel de Solicitações
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="/governanca/controle_de_acesso/qualidade_dados/"
+           class="nav-link {% if '/qualidade_dados/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+           Qualidade dos Dados
+        </a>
+    </li>
+</ul>
+</div>
+
+<!-- MENSAGENS -->
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %} {% endif %}
+
+  <!-- TABELA DE SOLICITAÇÕES COM AÇÕES -->
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3">Solicitante</th>
+              <th>Origem</th>
+              <th>Tipo Acesso</th>
+              <th>Status Atual</th>
+              <th>Data</th>
+              <th class="text-end pe-4">Ações da Governança</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in solicitacoes %}
+            <tr>
+              <td class="ps-3">
+                <span class="fw-bold text-dark">
+                  {% if item.nome_completo %}{{ item.nome_completo }}{% else
+                  %}Solicitante sem nome{% endif %} </span
+                ><br />
+                <small class="text-muted"
+                  >{{ item.cargo }} - {{ item.lotacao }}</small
+                >
+              </td>
+              <td>
+                <span class="badge bg-secondary border text-white"
+                  >{{ item.origem }}</span
+                >
+              </td>
+              <td>
+                <small class="fw-bold"
+                  >{{ item.get_tipo_acesso_display }}</small
+                >
+              </td>
+              <td>
+                {% if item.status == 'CRIADA' %}<span class="badge bg-secondary"
+                  >Criada</span
+                >
+                {% elif item.status == 'EM_ANALISE_DPO' %}<span
+                  class="badge bg-warning text-dark"
+                  >Em Análise DPO</span
+                >
+                {% elif item.status == 'RECUSADA_DPO' %}<span
+                  class="badge bg-danger"
+                  >Recusada DPO</span
+                >
+                {% elif item.status == 'EM_ANALISE_CONTROLADOR' %}<span
+                  class="badge bg-info text-dark"
+                  >Em Controlador</span
+                >
+                {% elif item.status == 'CONCLUIDA' %}<span
+                  class="badge bg-success"
+                  >Concluída / Ativo</span
+                >
+                {% else %}<span class="badge bg-light text-dark"
+                  >{{ item.status }}</span
+                >
+                {% endif %}
+              </td>
+              <td>
+                <small class="text-muted"
+                  >{{ item.criado_em|date:"d/m/Y H:i" }}</small
+                >
+              </td>
+              <td class="text-end pe-4">
+                <!-- BOTOES DE AÇÃO -->
+                <form
+                  method="POST"
+                  action="/governanca/governanca_dados/atualizar_status/{{ item.id }}/"
+                  class="d-inline"
+                >
+                  {% csrf_token %} {% if item.status == 'CRIADA' %}
+                  <input
+                    type="hidden"
+                    name="novo_status"
+                    value="EM_ANALISE_DPO"
+                  />
+                  <button type="submit" class="btn btn-sm btn-outline-warning">
+                    Encaminhar DPO
+                  </button>
+                  {% elif item.status == 'EM_ANALISE_DPO' %}
+                  <input type="hidden" name="novo_status" value="CONCLUIDA" />
+                  <button type="submit" class="btn btn-sm btn-outline-success">
+                    Aprovar e Liberar
+                  </button>
+                  {% else %}
+                  <span class="text-muted small">Processado</span>
+                  {% endif %}
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">
+                Nenhuma solicitação encontrada no banco de dados.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
