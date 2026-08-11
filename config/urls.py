@@ -3,15 +3,13 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
-    # Rota Base (Telas iniciais/Login) - Apenas uma vez!
-    path('', include('apps.base.urls')),
-
-    # Módulo de Governança
-    path('governanca/', include('apps.governanca.urls')),
-    path('governanca/controle_de_acesso/', include('apps.governanca.controle_de_acesso.urls')), # <- Sua pasta
-    
-    # Módulo de Planejamento
+    path('governanca/governanca_dados/', include('apps.governanca.governanca_dados.urls')),
     path('planejamento/pdtic/', include('apps.planejamento.pdtic.urls')),
+    path('planejamento/pca/', include('apps.planejamento.pca.urls')),
+    
+    # Módulo de Contratações - Contratos
+    path('contratacoes/contratos/', include('apps.contratacoes.contratos.urls')),
+    
+    # Rota raiz (deve ficar por último)
+    path('', include('apps.base.urls')),
 ]
-

@@ -1,329 +1,334 @@
-{% extends 'base_sesp/base_sesp.html ' %}
+{% extends 'base_sesp/base_sesp.html' %}
 
-{% block title %}SIGMATIC -Compras/Novo Processo{% endblock %}
+{% block title %}SIGMATIC - Compras/Novo Processo{% endblock %}
 
 {% block extra_css %}
 {% endblock %}
 
 {% block content %}
 
- <div class="mb-4 pt-2">
+<div class="mb-4 pt-2">
     <h1 class="fw-bold m-0" style="font-size: 40px; color: #194161;">Novo Processo</h1>
     <p class="text-muted small mb-0">Cadastre e organize toda a tramitação documental do processo.</p>
 </div>
 
 <!-- Cabeçalho Interno da Página -->
 <div class="mb-4 pt-2">
-        <!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
-<!-- Navegação por Abas (Estilo Clássico / Padrão Dashboard) -->
-<ul class="nav nav-tabs mb-4">
-    <!-- Aba Dashboard -->
-    <li class="nav-item">
-        <a href="/contratacoes/compras/dashboard/" 
-           class="nav-link {% if '/compras/dashboard/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Dashboard
-        </a>
-    </li>
-    
-    <!-- Aba Processos -->
-    <li class="nav-item">
-        <a href="/contratacoes/compras/processos/" 
-           class="nav-link {% if '/compras/processos/' in request.path and not '/processos_form/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Processos
-        </a>
-    </li>
-    
-    <!-- Aba Novo Processo -->
-    <li class="nav-item">
-        <a href="/contratacoes/compras/processo_form/" 
-           class="nav-link {% if '/processo_form/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Novo Processo
-        </a>
-    </li>
-    
-    <!-- Aba Relatórios -->
-    <li class="nav-item">
-        <a href="/contratacoes/compras/relatorios/" 
-           class="nav-link {% if '/compras/relatorios/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
-           Relatórios
-        </a>
-    </li>
-</ul>
+    <!-- Navegação por Abas -->
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a href="/contratacoes/compras/dashboard/" 
+               class="nav-link {% if '/compras/dashboard/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+                Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/contratacoes/compras/processos/" 
+               class="nav-link {% if '/compras/processos/' in request.path and not '/processos_form/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+                Processos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/contratacoes/compras/processo_form/" 
+               class="nav-link {% if '/processo_form/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+                Novo Processo
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/contratacoes/compras/relatorios/" 
+               class="nav-link {% if '/compras/relatorios/' in request.path %}active text-white bg-primary border-primary{% else %}text-secondary{% endif %}">
+                Relatórios
+            </a>
+        </li>
+    </ul>
 
-<form class="mb-4 pt-2" id="processoForm">
+    <form class="mb-4 pt-2" id="processoForm">
 
-    <!-- ========================================= -->
-    <!-- INFORMAÇÕES GERAIS -->
-    <!-- ========================================= -->
+        <!-- ========================================= -->
+        <!-- INFORMAÇÕES GERAIS -->
+        <!-- ========================================= -->
 
-    <section class="p-4"  style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
-        <div class="card-body mb-4">
-            <h5 class="mb-3" style="font-size: 25px; color: #194161;">
-                Informações Gerais
-            </h5>
-            <div class="row g-3 mb-3">
-
-                <div class="col-md-4">
-                    <label class="field-label">
-                        Número do Processo Interno
-                    </label>
-
-                    <input name="numero_processo"
-                           class="form-control"
-                           placeholder="Ex: COMP-2026-001">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="field-label">
-                        Modalidade *
-                    </label>
-
-                    <select name="modalidade"
-                            id="modalidadeSelect"
-                            class="form-select"
-                            required>
-
-                        <option value="">
-                            Selecione
-                        </option>
-
-                        <option value="licitacao">
-                            Licitação
-                        </option>
-
-                        <option value="dispensa">
-                            Dispensa de Licitação
-                        </option>
-
-                        <option value="inexigibilidade">
-                            Inexigibilidade
-                        </option>
-
-                        <option value="srp_participante">
-                            SRP - Participante
-                        </option>
-
-                        <option value="srp_adesao">
-                            SRP - Adesão
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="field-label">
-                        Situação
-                    </label>
-
-                    <select name="situacao"
-                            class="form-select">
-
-                        <option value="EM_MONTAGEM">
-                            Em montagem documental
-                        </option>
-
-                        <option value="PRONTO_PROTOCOLO">
-                            Pronto para protocolar
-                        </option>
-
-                        <option value="PROTOCOLADO">
-                            Protocolado
-                        </option>
-
-                        <option value="TRAMITANDO">
-                            Em tramitação
-                        </option>
-
-                        <option value="FINALIZADO">
-                            Finalizado
-                        </option>
-
-                        <option value="ARQUIVADO">
-                            Arquivado
-                        </option>
-
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="row g-3 mb-3">
-
-                <div class="col-md-6">
-                    <label class="field-label">
-                        Número do e-Protocolo
-                    </label>
-
-                    <input name="eprotocolo"
-                           class="form-control"
-                           placeholder="Ex: 23.456.789-0">
-                </div>
-
-                <div class="col-md-6">
-                    <label class="field-label">
-                        Unidade Demandante
-                    </label>
-
-                    <input name="unidade"
-                           class="form-control"
-                           placeholder="Ex: GAA / UETC Londrina">
-                </div>
-
-            </div>
-
-            <div class="mb-3">
-
-                <label class="field-label">
-                    Descrição do Objeto
-                </label>
-
-                <textarea name="descricao"
-                          class="form-control"
-                          rows="4"
-                          placeholder="Objeto da contratação..."></textarea>
-
-            </div>
-
-            <div class="row g-3">
-
-                <div class="col-md-6">
-                    <label class="field-label">
-                        Valor Estimado
-                    </label>
-
-                    <input name="valor_estimado"
-                           type="number"
-                           step="0.01"
-                           class="form-control"
-                           placeholder="0,00">
-                </div>
-
-                <div class="col-md-6">
-                    <label class="field-label">
-                        Responsável
-                    </label>
-
-                    <input name="responsavel"
-                           class="form-control"
-                           placeholder="Servidor responsável">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================= -->
-    <!-- PROGRESSO -->
-    <!-- ========================================= -->
-
-    <section class="p-4"  style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
-
-        <div class="card-body">
-
-            <div class="d-flex justify-content-between align-items-center">
-
+        <section class="p-4" style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
+            <div class="card-body mb-4">
                 <h5 class="mb-3" style="font-size: 25px; color: #194161;">
-                    Tramitação Documental
+                    Informações Gerais
                 </h5>
 
-                <span id="percentualTexto"
-                      class="fw-bold text-primary">
-                    0%
-                </span>
+                <!-- Linha 1: Identificação Básica e Fonte de Recurso -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="field-label">Número do Processo Interno</label>
+                        <input name="numero_processo"
+                               class="form-control"
+                               placeholder="Ex: COMP-2026-001">
+                    </div>
 
-            </div>
+                    <div class="col-md-3">
+                        <label class="field-label">Modalidade *</label>
+                        <select name="modalidade"
+                                id="modalidadeSelect"
+                                class="form-select"
+                                required>
+                            <option value="">Selecione</option>
+                            <option value="licitacao">Licitação</option>
+                            <option value="dispensa">Dispensa de Licitação</option>
+                            <option value="inexigibilidade">Inexigibilidade</option>
+                            <option value="srp_participante">SRP - Participante</option>
+                            <option value="srp_adesao">SRP - Adesão</option>
+                        </select>
+                    </div>
 
-            <div class="progress"
-                 style="height: 24px;">
+                    <div class="col-md-3">
+                        <label class="field-label">Situação</label>
+                        <select name="situacao" class="form-select">
+                            <option value="EM_MONTAGEM">Em montagem documental</option>
+                            <option value="PRONTO_PROTOCOLO">Pronto para protocolar</option>
+                            <option value="PROTOCOLADO">Protocolado</option>
+                            <option value="TRAMITANDO">Em tramitação</option>
+                            <option value="FINALIZADO">Finalizado</option>
+                            <option value="ARQUIVADO">Arquivado</option>
+                        </select>
+                    </div>
 
-                <div id="barraProgresso"
-                     class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
-                     role="progressbar"
-                     style="width: 0%">
-                    0%
+                    <div class="col-md-3">
+                        <label class="field-label">Fonte de Recurso</label>
+                        <select name="fonte_recurso" class="form-select">
+                            <option value="">Selecione</option>
+                            <option value="INVESTIMENTO">INVESTIMENTO</option>
+                            <option value="CUSTEIO">CUSTEIO</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Protocolo, Unidade e Responsável -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="field-label">Número do e-Protocolo</label>
+                        <input name="eprotocolo"
+                               class="form-control"
+                               placeholder="Ex: 26.123.456-7">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="field-label">Unidade Demandante</label>
+                        <input name="unidade"
+                               class="form-control"
+                               placeholder="Ex: Setor/Unidade">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="field-label">Responsável</label>
+                        <input name="responsavel"
+                               class="form-control"
+                               placeholder="Servidor responsável">
+                    </div>
+                </div>
+
+                <!-- Linha 3: Gestores, Valor Estimado e Pregão -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="field-label">Gestor do Processo</label>
+                        <input name="gestor"
+                               class="form-control"
+                               placeholder="Nome do Gestor">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label">Fiscal do Processo</label>
+                        <input name="fiscal"
+                               class="form-control"
+                               placeholder="Nome do Fiscal">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label">Valor Estimado</label>
+                        <input name="valor_estimado"
+                               type="number"
+                               step="0.01"
+                               class="form-control"
+                               placeholder="0,00">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label">Data do Pregão</label>
+                        <input name="data_pregao"
+                               type="date"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <!-- Descrição do Objeto -->
+                <div class="mb-4">
+                    <label class="field-label">Descrição do Objeto</label>
+                    <textarea name="descricao"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Objeto da contratação..."></textarea>
+                </div>
+
+                <hr class="my-4" style="border-top: 1px dashed #cbd5e1;">
+
+                <!-- Subseção: Datas de Execução, Prazos e Pagamento -->
+                <h6 class="fw-bold mb-3" style="color: #194161; font-size: 18px;">
+                    Contratação, Prazos e Execução
+                </h6>
+
+                <!-- Linha 4: Assinaturas, Envio e Nota Fiscal -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="field-label">Contrato Assinado</label>
+                        <input name="contrato_assinado"
+                               type="date"
+                               class="form-control">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label">Empenho Assinado</label>
+                        <input name="empenho_assinado"
+                               type="date"
+                               class="form-control">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label" style="font-size: 0.9rem;">Empenho/Contrato enviado</label>
+                        <input name="empenho_enviado_fornecedor"
+                               id="empenhoEnviadoFornecedor"
+                               type="date"
+                               class="form-control">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label">Nota Fiscal</label>
+                        <input name="nota_fiscal"
+                               type="text"
+                               class="form-control"
+                               placeholder="Ex: NF-123456">
+                    </div>
+                </div>
+
+                <!-- Linha 5: Prazos, Cálculo de Entrega e Pagamento -->
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="field-label">Prazo de entrega/Dias</label>
+                        <input name="prazo_entrega_dias"
+                               id="prazoEntregaDias"
+                               type="number"
+                               min="0"
+                               class="form-control"
+                               placeholder="Ex: 30">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label">Data Prevista de entrega</label>
+                        <input name="data_prevista_entrega"
+                               id="dataPrevistaEntrega"
+                               type="date"
+                               class="form-control bg-light"
+                               readonly
+                               title="Calculado automaticamente: Data Envio ao Fornecedor + Prazo em dias">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label">Data de entrega do material</label>
+                        <input name="data_entrega_material"
+                               type="date"
+                               class="form-control">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="field-label">Enviado para pagamento</label>
+                        <input name="enviado_pagamento"
+                               type="date"
+                               class="form-control">
+                    </div>
                 </div>
 
             </div>
+        </section>
 
-            <div class="mt-3">
+        <!-- ========================================= -->
+        <!-- PROGRESSO -->
+        <!-- ========================================= -->
 
-                <button type="button"
-                        class="btn btn-outline-success btn-sm"
-                        id="btnMarcarObrigatorios">
-
-                    Marcar obrigatórios como conferidos
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ========================================= -->
-    <!-- CHECKLIST -->
-    <!-- ========================================= -->
-
-    <section class="p-4"  style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
-
-        <div class="card-body">
-
-            <h5 class="mb-3" style="font-size: 25px; color: #194161; margin-bottom: 0;">
-                Checklist da Modalidade
-            </h5>
-
-            <div id="checklistContainer">
-
-                <div class="alert alert-secondary">
-                    Selecione uma modalidade para gerar o checklist.
+        <section class="p-4" style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-3" style="font-size: 25px; color: #194161;">
+                        Tramitação Documental
+                    </h5>
+                    <span id="percentualTexto" class="fw-bold text-primary">0%</span>
                 </div>
 
+                <div class="progress" style="height: 24px;">
+                    <div id="barraProgresso"
+                         class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                         role="progressbar"
+                         style="width: 0%">
+                        0%
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <button type="button"
+                            class="btn btn-outline-success btn-sm"
+                            id="btnMarcarObrigatorios">
+                        Marcar obrigatórios como conferidos
+                    </button>
+                </div>
             </div>
+        </section>
 
+        <!-- ========================================= -->
+        <!-- CHECKLIST -->
+        <!-- ========================================= -->
+
+        <section class="p-4" style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
+            <div class="card-body">
+                <h5 class="mb-3" style="font-size: 25px; color: #194161; margin-bottom: 0;">
+                    Checklist da Modalidade
+                </h5>
+
+                <div id="checklistContainer">
+                    <div class="alert alert-secondary">
+                        Selecione uma modalidade para gerar o checklist.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- OBSERVAÇÕES -->
+        <!-- ========================================= -->
+
+        <section class="p-4" style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
+            <div class="card-body">
+                <h5 class="mb-3" style="font-size: 25px; color: #194161;">
+                    Observações Gerais
+                </h5>
+                <textarea class="form-control"
+                          rows="5"
+                          placeholder="Observações adicionais do processo..."></textarea>
+            </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- BOTÕES -->
+        <!-- ========================================= -->
+
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    id="btnCancelarProcesso">
+                Cancelar
+            </button>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Salvar Processo
+            </button>
         </div>
 
-    </section>
-
-    <!-- ========================================= -->
-    <!-- OBSERVAÇÕES -->
-    <!-- ========================================= -->
-
-    <section class="p-4"  style="border-radius: 8px; box-shadow: 0 0 20px 2px rgb(241, 240, 240); margin-top: 1.5rem !important">
-        <div class="card-body">
-            <h5 class="mb-3" style="font-size: 25px; color: #194161;">
-                Observações Gerais
-            </h5>
-            <textarea class="form-control"
-                      rows="5"
-                      placeholder="Observações adicionais do processo..."></textarea>
-        </div>
-    </section>
-
-    <!-- ========================================= -->
-    <!-- BOTÕES -->
-    <!-- ========================================= -->
-
-    <div class="d-flex justify-content-end gap-2 mt-3">
-
-        <button type="button"
-                class="btn btn-outline-secondary"
-                id="btnCancelarProcesso">
-
-            Cancelar
-
-        </button>
-
-        <button type="submit"
-                class="btn btn-primary">
-
-            Salvar Processo
-
-        </button>
-
-    </div>
-
-</form>
-
+    </form>
 </div>
 
 {% endblock %}
@@ -331,267 +336,209 @@
 {% block extra_scripts %}
 
 <script>
+(function () {
+    const CHECKLISTS = {
+        licitacao: [
+            "DFD", "ETP", "Aprovação do ETP", "Gerenciamento de Riscos", "Mapa de Risco",
+            "TR", "Aprovação do TR", "Pesquisa de Preços", "Mapa de Formação de Preços",
+            "Solicitação GMS", "Informações Complementares", "Justificativa SRP",
+            "Aprovação ETP/TR/PCA", "Designação Gestor", "Designação Fiscal", "Autorização de Despesa"
+        ],
+        dispensa: [
+            "DFD", "ETP", "Aprovação do ETP", "Gerenciamento de Riscos", "Mapa de Risco",
+            "TR", "Aprovação do TR", "Pesquisa de Preços", "Mapa de Formação de Preços",
+            "Solicitação GMS", "Justificativa SRP", "Designação Gestor", "Designação Fiscal",
+            "Minuta Aviso Dispensa", "Declaração Autenticidade", "Portaria Agente Contratação", "Resolução Pregoeiro"
+        ],
+        inexigibilidade: [
+            "DFD", "ETP", "Aprovação do ETP", "TR", "Pesquisa de Preços", "CRC", "CRF",
+            "CADIN", "CEIS", "TCU", "Carta de Aceite", "Atestado Exclusividade", "Lista Verificação PGE"
+        ],
+        srp_participante: [
+            "DFD", "ATA", "Publicação ATA", "PNCP", "Edital", "Homologação", "Autorização",
+            "CRC", "CRF", "CADIN", "Pesquisa de Preços", "Tabela de Vantajosidade",
+            "Designação Gestor", "Designação Fiscal", "Lista Verificação PGE"
+        ],
+        srp_adesao: [
+            "DFD", "ETP", "ATA", "Publicação ATA", "PNCP", "Edital", "Carta de Aceite",
+            "CRC", "CRF", "CADIN", "Pesquisa de Preços", "Tabela de Vantajosidade",
+            "Justificativa Vantajosidade", "Designação Gestor", "Designação Fiscal", "Lista Verificação PGE"
+        ]
+    };
 
-const CHECKLISTS = {
+    function init() {
+        const modalidadeSelect = document.getElementById("modalidadeSelect");
+        const checklistContainer = document.getElementById("checklistContainer");
+        const barra = document.getElementById("barraProgresso");
+        const percentualTexto = document.getElementById("percentualTexto");
 
-    licitacao: [
-        "DFD",
-        "ETP",
-        "Aprovação do ETP",
-        "Gerenciamento de Riscos",
-        "Mapa de Risco",
-        "TR",
-        "Aprovação do TR",
-        "Pesquisa de Preços",
-        "Mapa de Formação de Preços",
-        "Solicitação GMS",
-        "Informações Complementares",
-        "Justificativa SRP",
-        "Aprovação ETP/TR/PCA",
-        "Designação Gestor",
-        "Designação Fiscal",
-        "Autorização de Despesa"
-    ],
+        const inputEmpenhoEnviado = document.getElementById("empenhoEnviadoFornecedor");
+        const inputPrazoDias = document.getElementById("prazoEntregaDias");
+        const inputDataPrevista = document.getElementById("dataPrevistaEntrega");
 
-    dispensa: [
-        "DFD",
-        "ETP",
-        "Aprovação do ETP",
-        "Gerenciamento de Riscos",
-        "Mapa de Risco",
-        "TR",
-        "Aprovação do TR",
-        "Pesquisa de Preços",
-        "Mapa de Formação de Preços",
-        "Solicitação GMS",
-        "Justificativa SRP",
-        "Designação Gestor",
-        "Designação Fiscal",
-        "Minuta Aviso Dispensa",
-        "Declaração Autenticidade",
-        "Portaria Agente Contratação",
-        "Resolução Pregoeiro"
-    ],
+        function calcularDataPrevista() {
+            if (!inputEmpenhoEnviado || !inputPrazoDias || !inputDataPrevista) return;
 
-    inexigibilidade: [
-        "DFD",
-        "ETP",
-        "Aprovação do ETP",
-        "TR",
-        "Pesquisa de Preços",
-        "CRC",
-        "CRF",
-        "CADIN",
-        "CEIS",
-        "TCU",
-        "Carta de Aceite",
-        "Atestado Exclusividade",
-        "Lista Verificação PGE"
-    ],
+            const dataEnvioVal = inputEmpenhoEnviado.value;
+            const prazoDiasVal = parseInt(inputPrazoDias.value, 10);
 
-    srp_participante: [
-        "DFD",
-        "ATA",
-        "Publicação ATA",
-        "PNCP",
-        "Edital",
-        "Homologação",
-        "Autorização",
-        "CRC",
-        "CRF",
-        "CADIN",
-        "Pesquisa de Preços",
-        "Tabela de Vantajosidade",
-        "Designação Gestor",
-        "Designação Fiscal",
-        "Lista Verificação PGE"
-    ],
+            if (dataEnvioVal && !isNaN(prazoDiasVal)) {
+                const parts = dataEnvioVal.split('-');
+                if (parts.length === 3) {
+                    const year = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10) - 1;
+                    const day = parseInt(parts[2], 10);
 
-    srp_adesao: [
-        "DFD",
-        "ETP",
-        "ATA",
-        "Publicação ATA",
-        "PNCP",
-        "Edital",
-        "Carta de Aceite",
-        "CRC",
-        "CRF",
-        "CADIN",
-        "Pesquisa de Preços",
-        "Tabela de Vantajosidade",
-        "Justificativa Vantajosidade",
-        "Designação Gestor",
-        "Designação Fiscal",
-        "Lista Verificação PGE"
-    ]
-};
+                    const dataCalculada = new Date(year, month, day);
+                    dataCalculada.setDate(dataCalculada.getDate() + prazoDiasVal);
 
-const modalidadeSelect =
-    document.getElementById("modalidadeSelect");
+                    const resYear = dataCalculada.getFullYear();
+                    const resMonth = String(dataCalculada.getMonth() + 1).padStart(2, '0');
+                    const resDay = String(dataCalculada.getDate()).padStart(2, '0');
 
-const checklistContainer =
-    document.getElementById("checklistContainer");
+                    inputDataPrevista.value = `${resYear}-${resMonth}-${resDay}`;
+                    return;
+                }
+            }
+            inputDataPrevista.value = "";
+        }
 
-const barra =
-    document.getElementById("barraProgresso");
+        if (inputEmpenhoEnviado && inputPrazoDias) {
+            inputEmpenhoEnviado.addEventListener("input", calcularDataPrevista);
+            inputEmpenhoEnviado.addEventListener("change", calcularDataPrevista);
+            inputPrazoDias.addEventListener("input", calcularDataPrevista);
+            inputPrazoDias.addEventListener("change", calcularDataPrevista);
+        }
 
-const percentualTexto =
-    document.getElementById("percentualTexto");
+        function atualizarProgresso() {
+            const checks = document.querySelectorAll(".check-doc");
 
-function atualizarProgresso() {
+            if (!checks.length) {
+                if (barra) {
+                    barra.style.width = "0%";
+                    barra.innerText = "0%";
+                }
+                if (percentualTexto) percentualTexto.innerText = "0%";
+                return;
+            }
 
-    const checks =
-        document.querySelectorAll(".check-doc");
+            let marcados = 0;
+            checks.forEach(c => {
+                if (c.checked) marcados++;
+            });
 
-    if (!checks.length) {
-        barra.style.width = "0%";
-        barra.innerText = "0%";
-        percentualTexto.innerText = "0%";
-        return;
+            const percentual = Math.round((marcados / checks.length) * 100);
+
+            if (barra) {
+                barra.style.width = percentual + "%";
+                barra.innerText = percentual + "%";
+                barra.classList.remove("bg-danger", "bg-warning", "bg-success");
+
+                if (percentual < 50) {
+                    barra.classList.add("bg-danger");
+                } else if (percentual < 80) {
+                    barra.classList.add("bg-warning");
+                } else {
+                    barra.classList.add("bg-success");
+                }
+            }
+
+            if (percentualTexto) {
+                percentualTexto.innerText = percentual + "%";
+            }
+        }
+
+        function renderizarChecklist() {
+            if (!modalidadeSelect || !checklistContainer) return;
+
+            const modalidade = modalidadeSelect.value;
+            const lista = CHECKLISTS[modalidade] || [];
+
+            if (!lista.length) {
+                checklistContainer.innerHTML = `
+                    <div class="alert alert-secondary">
+                        Selecione uma modalidade para gerar o checklist.
+                    </div>
+                `;
+                atualizarProgresso();
+                return;
+            }
+
+            checklistContainer.innerHTML = lista.map((item, index) => `
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="form-check">
+                                <input class="form-check-input check-doc"
+                                       type="checkbox"
+                                       id="doc_${index}">
+                                <label class="form-check-label fw-semibold"
+                                       for="doc_${index}">
+                                    ${item}
+                                </label>
+                            </div>
+                            <span class="badge bg-secondary">
+                                Documento
+                            </span>
+                        </div>
+                        <div class="row mt-3 g-2">
+                            <div class="col-md-4">
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       placeholder="Nº movimento / link">
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       placeholder="Observações">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+
+            document.querySelectorAll(".check-doc").forEach(c => {
+                c.addEventListener("change", atualizarProgresso);
+            });
+
+            atualizarProgresso();
+        }
+
+        if (modalidadeSelect) {
+            modalidadeSelect.addEventListener("change", renderizarChecklist);
+            renderizarChecklist();
+        }
+
+        const btnMarcar = document.getElementById("btnMarcarObrigatorios");
+        if (btnMarcar) {
+            btnMarcar.addEventListener("click", () => {
+                document.querySelectorAll(".check-doc").forEach(c => c.checked = true);
+                atualizarProgresso();
+            });
+        }
+
+        const btnCancelar = document.getElementById("btnCancelarProcesso");
+        if (btnCancelar) {
+            btnCancelar.addEventListener("click", () => {
+                window.location.href = "/contratacoes/compras/processos/";
+            });
+        }
+
+        const form = document.getElementById("processoForm");
+        if (form) {
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                alert("Processo salvo com sucesso.");
+            });
+        }
     }
 
-    let marcados = 0;
-
-    checks.forEach(c => {
-        if (c.checked) marcados++;
-    });
-
-    const percentual =
-        Math.round((marcados / checks.length) * 100);
-
-    barra.style.width = percentual + "%";
-    barra.innerText = percentual + "%";
-    percentualTexto.innerText = percentual + "%";
-
-    barra.classList.remove(
-        "bg-danger",
-        "bg-warning",
-        "bg-success"
-    );
-
-    if (percentual < 50) {
-        barra.classList.add("bg-danger");
-    } else if (percentual < 80) {
-        barra.classList.add("bg-warning");
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
     } else {
-        barra.classList.add("bg-success");
+        init();
     }
-}
-
-modalidadeSelect.addEventListener("change", () => {
-
-    const modalidade =
-        modalidadeSelect.value;
-
-    const lista =
-        CHECKLISTS[modalidade] || [];
-
-    if (!lista.length) {
-
-        checklistContainer.innerHTML = `
-            <div class="alert alert-secondary">
-                Nenhum checklist disponível.
-            </div>
-        `;
-
-        return;
-    }
-
-    checklistContainer.innerHTML =
-        lista.map((item, index) => `
-
-        <div class="card border-0 shadow-sm mb-3">
-
-            <div class="card-body">
-
-                <div class="d-flex justify-content-between align-items-start">
-
-                    <div class="form-check">
-
-                        <input class="form-check-input check-doc"
-                               type="checkbox"
-                               id="doc_${index}">
-
-                        <label class="form-check-label fw-semibold"
-                               for="doc_${index}">
-
-                            ${item}
-
-                        </label>
-
-                    </div>
-
-                    <span class="badge bg-secondary">
-                        Documento
-                    </span>
-
-                </div>
-
-                <div class="row mt-3 g-2">
-
-                    <div class="col-md-4">
-
-                        <input type="text"
-                               class="form-control form-control-sm"
-                               placeholder="Nº movimento / link">
-
-                    </div>
-
-                    <div class="col-md-8">
-
-                        <input type="text"
-                               class="form-control form-control-sm"
-                               placeholder="Observações">
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `).join("");
-
-    document
-        .querySelectorAll(".check-doc")
-        .forEach(c => {
-            c.addEventListener("change",
-                atualizarProgresso);
-        });
-
-    atualizarProgresso();
-
-});
-
-document
-    .getElementById("btnMarcarObrigatorios")
-    .addEventListener("click", () => {
-
-        document
-            .querySelectorAll(".check-doc")
-            .forEach(c => c.checked = true);
-
-        atualizarProgresso();
-    });
-
-document
-    .getElementById("btnCancelarProcesso")
-    .addEventListener("click", () => {
-
-        window.location.href = "/ui/processos/";
-    });
-
-document
-    .getElementById("processoForm")
-    .addEventListener("submit", async (e) => {
-
-        e.preventDefault();
-
-        alert("Processo salvo com sucesso.");
-    });
-
+})();
 </script>
 
 {% endblock %}

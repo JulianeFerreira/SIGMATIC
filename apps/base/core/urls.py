@@ -25,6 +25,7 @@ urlpatterns = [
     path('ui/contratos/', views.contratos, name='contratos_dashboard'),
     path('ui/contratos/lista/', views.contratos_lista, name='contratos_lista'),
     path('ui/contratos/novo/', views.contratos_form, name='contratos_form'),
+    path('ui/contratos/acompanhamento/', views.contratos_acompanhamento, name='contrato_acompanhamento'),
     path('ui/contratos/relatorios/', views.contratos_relatorios, name='contratos_relatorios'),
 
     # Patrimônio
