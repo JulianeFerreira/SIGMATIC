@@ -30,6 +30,10 @@ htmlcov/
 .vscode/
 .idea/
 
+# ferramentas de agente (Claude Code / GSD) — locais, não versionar
+.claude/
+.planning/
+
 # sistema
 .DS_Store
 Thumbs.db

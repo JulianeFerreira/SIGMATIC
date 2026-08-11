@@ -1,8 +1,55 @@
 services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-sigmatic_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-sigmatic_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "1025:1025" # servidor SMTP — aponte SMTP_HOST/SMTP_PORT para cá
+      - "8025:8025" # UI web para visualizar os e-mails capturados
+    restart: always
+
   web:
     build: .
+    # A imagem (Dockerfile) sobe com gunicorn, voltado para produção.
+    # Em dev, sobrescrevemos para manage.py runserver: aplica as migrações
+    # pendentes e sobe com autoreload a cada `docker compose up`.
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     env_file:
       - .env
+    environment:
+      # Overrides do .env para que o app fale com os serviços do Docker
+      # (nomes dos serviços) em vez de localhost.
+      DB_HOST: db
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+    volumes:
+      # Bind mount do código para refletir mudanças sem rebuild da imagem.
+      # As dependências ficam instaladas no site-packages da imagem, então
+      # não são afetadas por este mount.
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
     restart: always
+
+volumes:
+  postgres_data:
